@@ -1,0 +1,23 @@
+{
+  "manifest_version": 2,
+  "description": "An addon to manage (view, search, create, edit, remove, backup, restore) cookies.",
+  "homepage_url": "https://github.com/ysard/cookie-quick-manager",
+  "author": "Ysard",
+  "name": "Cookie Quick Manager",
+  "version": "0.1beta1",
+  "permissions": ["cookies","<all_urls>","tabs"],
+  "browser_action": {
+    "browser_style": true,
+    "default_title": "Cookie Quick Manager",
+    "default_popup": "menu.html",
+    "default_icon": {
+      "48": "icons/icon48.png",
+      "96": "icons/icon96.png"
+    }
+  },
+  "icons": {
+    "48": "icons/icon48.png",
+    "96": "icons/icon96.png"
+  }
+}
+ 

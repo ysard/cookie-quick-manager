@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="static/css/bootstrap.min.css">
+    <link rel="stylesheet" href="static/css/bootstrap-datetimepicker.min.css">
+    <title>Cookie Quick Manager</title>
+    <style>
+      /*
+      .panel {
+      padding: 5px;
+      }
+      */
+      h2 {
+        font-size: 1.2em;
+        margin: 4px;
+      }
+      .list-group-item {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        /*word-wrap: break-word; */
+      }
+      #domain-list, #cookie-list {
+        height: 450px;
+        overflow-y: auto;
+      }
+      #value {height: 166px;}
+      .private-badge {
+        background-image: url("icons/private-browsing.svg");
+        background-repeat: no-repeat;
+        background-size: 18px;
+        width: 18px;
+        height: 18px;
+        vertical-align: middle;
+        /*padding: 3px 7px;*/
+        display: inline-block;
+        position: absolute;
+        right: 40px;
+      }
+      .private-cookie {
+        background-image: url("icons/private-browsing.svg");
+        background-repeat: no-repeat;
+        background-size: 18px;
+        width: 18px;
+        height: 18px;
+        display: inline-block;
+        position: absolute;
+        left: 0px;
+        top: 0px;
+      }
+      .cookie-expired, .cookie-expired.active, .cookie-expired.active:hover, .button-error {
+        color: red;
+      }
+      .list-group-item {
+        /* bootstrap: padding: 10px 15px; */
+        padding: 3px 17px;
+      }
+      .form-group {
+        /* Reduce space between input lines in cookie details */
+        margin-bottom: 5px;
+      }
+      form label {
+        color: grey;
+        font-weight: normal;
+      }
+      .dropup-custom {
+        display: inline-block;
+      }
+      #toggle_url, #toggle_b64 {
+        font-size: 0.7em;
+        padding: 0px;
+        /* Position under "Value" text, with the same padding */
+        position: relative;
+        left: 15px;
+        bottom: 145px;
+      }
+      .down {
+        border-color: #00ff00;
+      }
+      #clipboard_textarea {
+        height: 350px;
+      }
+      #donate_button, .btc-color {
+        color: rgb(247, 148, 19);
+      }
+      #contribute-content ul {
+        padding-left: 15px;
+      }
+      .popover {
+        max-width: 500px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="panel">
+      <!--<div class="panel-section panel-section-header">
+        <div class="text-section-header" id="header-title">Cookie Quick Manager</div>
+        </div>-->
+      <div class="container">
+        <!-- 3 columns for domains, cookies, details -->
+        <div class="row">
+
+          <div class="col-sm-4">
+            <h2>Domains</h2>
+            <ul id="domain-list" class="list-group"></ul>
+          </div>
+
+          <div class="col-sm-4">
+            <h2>Cookies</h2>
+            <ul id="cookie-list" class="list-group"></ul>
+          </div>
+
+          <div class="col-sm-4">
+            <h2>Details</h2>
+            <form id="cookie-details">
+              <div class="form-group row">
+                <label for="domain" class="col-sm-3 col-form-label">Domain </label>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" name="domain" id="domain" readonly>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="name" class="col-sm-3 col-form-label">Name </label>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" name="name" id="name" readonly>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="value" class="col-sm-3 col-form-label">Value </label>
+                <div class="col-sm-9">
+                  <textarea class="form-control" name="value" id="value"></textarea>
+                </div>
+                <button type="button" class="btn btn-dark" id="toggle_url">URL</button>
+                <button type="button" class="btn btn-dark" id="toggle_b64">B64</button>
+              </div>
+              <div class="form-group row">
+                <label for="path" class="col-sm-3 col-form-label">Path </label>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" name="path" id="path" readonly>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-3 col-form-label">isPrivate</label>
+                <div class="col-sm-9">
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" name="isprivate" id="isprivate">
+                  </div>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-3 col-form-label">httpOnly</label>
+                <div class="col-sm-9">
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" name="httponly" id="httponly">
+                  </div>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-3 col-form-label">isSecure</label>
+                <div class="col-sm-9">
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" name="issecure" id="issecure" checked>
+                  </div>
+                </div>
+              </div>
+              <!-- Session related block: checkbox + datetimepicker -->
+              <div class="form-group row">
+                <label class="col-sm-3 col-form-label">isSession</label>
+                <div class="col-sm-9">
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" name="issession" id="issession" checked>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group row" style="display:none;">
+                <label for="expiration_date" class="col-sm-3 col-form-label">Expire </label>
+                <div class="col-sm-9">
+                  <div class='input-group date' id='expiration_date'>
+                    <input type='text' class="form-control" readonly>
+                    <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+        <!-- Commands -->
+        <div class="row">
+          <!-- Generic commands -->
+          <div class="col-sm-8">
+            <!-- Search -->
+            <div class="form-row">
+              <div class="col-sm-4 input-group" style="float:left">
+                <input type="text" class="form-control" name="search_domain" id="search_domain" placeholder="Search">
+                <div class="input-group-btn">
+                  <button class="btn btn-default" type="submit" id="search_domain_submit"><span class="glyphicon glyphicon-search"></span></button>
+                </div>
+              </div>
+              <div class="col-sm-8 checkbox form-check">
+                <label class="form-check-label">
+                <input class="form-check-input" type="checkbox" id="query-subdomains"> Sub-domains
+                </label>
+              </div>
+            </div>
+            <!-- Buttons -->
+            <div>
+              <button type="button" class="btn btn-dark" id="actualize_button"><span class="glyphicon glyphicon-refresh"></span></button>
+              <button type="button" class="btn btn-dark" id="delete_domain_button"><span class="glyphicon glyphicon-trash"></span></button>
+              <div class="dropup dropup-custom">
+                <button type="button" class="btn btn-dark dropdown-toggle" id="export_button" data-toggle="dropdown"><span class="glyphicon glyphicon-folder-open"></span></button>
+                <ul class="dropdown-menu">
+                  <li class="dropdown-header">Export</li>
+                  <li><a href="#" id="clipboard_cookie_export" data-toggle="modal" data-target="#modal_clipboard">Copy selected cookie to clipboard</a></li>
+                  <li><a href="#" id="clipboard_domain_export" data-toggle="modal" data-target="#modal_clipboard">Copy selected domain to clipboard</a></li>
+                  <!--<li><a href="#" id="file_export">Save to file</a></li>-->
+                  <li class="dropdown-header">Import</li>
+                  <li>
+                    <a href="#" id="import_file">Restore from file</a>
+                    <!--accept="text/plain"-->
+                    <input type="file" id="file_elem" style="display:none">
+                  </li>
+                </ul>
+              </div>
+              <button type="button" class="btn btn-dark" id="donate_button"
+              data-toggle="popover" data-placement="top" data-html="true"
+              title="Contribute"
+              data-content="<div id='contribute-content'>You can contribute to development in several ways:<br>
+              <ul>
+                <li>If you would like to make a donation to reward the many hours of development, please consider this bitcoin address:<br><span class='btc-color'>15qduxA755YANqGcbd8VvBmm8DmR4rCg1i</span></li>
+
+                <li>You can note the application on https://addons.mozilla.org/.</li>
+
+                <li>Participate in the review of the code on GitHub.</li>
+
+                <li>Talk about it around you!</li></ul></div>"><span class="glyphicon glyphicon-bitcoin"></span></button>
+            </div>
+          </div>
+          <!-- Specific commands for current cookie -->
+          <div class="col-sm-4">
+            <button type="button" class="btn btn-dark" id="save_button"><span class="glyphicon glyphicon-floppy-disk"></span></button>
+            <button type="button" class="btn btn-dark" id="edit_button"><span class="glyphicon glyphicon-pencil"></span></button>
+            <button type="button" class="btn btn-dark" id="delete_button"><span class="glyphicon glyphicon-trash"></span></button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal overlay for export selection -->
+    <div id="modal_clipboard" class="modal fade" role="dialog">
+      <div class="modal-dialog modal-sm">
+        <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Export</h4>
+          </div>
+          <div class="modal-body">
+            <textarea class="form-control" id="clipboard_textarea"></textarea>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+     <!-- Modal overlay for import results -->
+    <div id="modal_info" class="modal fade" role="dialog">
+      <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Import</h4>
+          </div>
+          <div class="modal-body">
+            <p>ici</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="static/js/jquery.min.js"></script>
+    <script src="static/js/bootstrap.min.js"></script>
+    <script src="static/js/moment.min.js"></script>
+    <script src="static/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="cookies.js"></script>
+    <script src="export.js"></script>
+  </body>
+</html>
