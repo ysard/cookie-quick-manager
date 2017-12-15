@@ -226,61 +226,131 @@ $("#clipboard_cookie_export").click(function() {
 });
 
 $("#clipboard_domain_export").click(function() {
-    // TODO: dynamic selection of domains
-    //var ids = [".google.com", ".google.fr"];
-    //var storeIds = ['firefox-default', 'firefox-private'];
+    // Build 1 json template for each cookie for the selected domain
 
-    // Workaround to get click event data of the selected domain
-    // Get pure HTML document (not a JQuery one)
-    var domain = document.querySelector('#domain-list li.active');
-    console.log($._data(domain, "events" ));
-    // Get data of the first click event registered
-    var click_event_data = $._data(domain, "events" ).click[0].data
-    var id = click_event_data.id;
-    var storeIds = click_event_data.storeIds;
-    var ids = [id, ];
-
-
-    // Get 1 promise for each cookie store
-    // Each promise stores all associated cookies
-    var promises = [];
-    for (let id of ids) {
-        for (let storeId of storeIds) {
-            promises.push(browser.cookies.getAll({domain: id, storeId: storeId}));
+    let promise = getCookiesFromSelectedDomain();
+    promise.then((cookies) => {
+        // Make 1 json for each cookie and store it
+        var templates = [];
+        for (let cookie of cookies) {
+            // Build a template for the current cookie
+            templates.push(build_domain_dump(cookie));
         }
+        // Merge and display templates, update title with the number of cookies
+        $('#clipboard_textarea').val('[' + templates.join(',') + ']');
+        // Count cookies displayed (not subdomains filtered)
+        $('#modal_clipboard h4.modal-title').html("Export " + templates.length + " cookie(s)");
+
+    }, (error) => {
+        // No cookie
+        $('#clipboard_textarea').val('');
+        $('#modal_clipboard h4.modal-title').html("Export 0 cookie");
+    });
+});
+
+function getCookiesFromSelectedDomain() {
+    // Return a Promise with cookies that belong to the selected domain;
+    // Return also cookies for subdomains if the subdomain checkbox is checked.
+    // https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Objets_globaux/Promise
+    // TODO: handle multiple domains
+
+    return new Promise((resolve, reject) => {
+
+        // Workaround to get click event data of the selected domain
+        // Get pure HTML document (not a JQuery one)
+        var domain = document.querySelector('#domain-list li.active');
+        //console.log($._data(domain, "events" ));
+        // Get data of the first click event registered
+        var click_event_data = $._data(domain, "events" ).click[0].data
+        var id = click_event_data.id;
+        var storeIds = click_event_data.storeIds;
+        // TODO: simulate multiple domains
+        var ids = [id, ];
+
+        // Get 1 promise for each cookie store for each domain
+        // Each promise stores all associated cookies
+        var promises = [];
+        for (let id of ids) {
+            for (let storeId of storeIds) {
+                promises.push(browser.cookies.getAll({domain: id, storeId: storeId}));
+            }
+        }
+
+        // Merge all promises
+        Promise.all(promises).then((cookies_array) => {
+
+            // Merge all results of promises
+            let cookies = [];
+            for (let cookie_subset of cookies_array) {
+                cookies = cookies.concat(cookie_subset);
+            }
+
+            if (cookies.length > 0) {
+                // Build filtered cookies list
+                let filtered_cookies = [];
+                let query_subdomains = $('#query-subdomains').is(':checked');
+                for (let cookie of cookies) {
+                    // Filter on exact domain (remove sub domains from the list)
+                    if (!query_subdomains) {
+                        // If current domain is not found in ids => go to next cookie
+                        if (ids.indexOf(cookie.domain) === -1)
+                            continue;
+                    }
+                    // OK: send filtered cookies
+                    filtered_cookies.push(cookie);
+                }
+                resolve(filtered_cookies);
+            } else {
+                reject("NoCookies");
+            }
+        });
+    });
+}
+
+$("#delete_domain_button").click(function() {
+    // Remove each cookie for the selected domain
+
+    function getHostUrl(cookie) {
+        // If the modified cookie has the flag isSecure, the host protocol must be https:// in order to
+        // modify or delete it.
+        var host_protocol = (cookie.secure) ? 'https://' : 'http://';
+        return host_protocol + cookie.domain + cookie.path;
     }
 
-    // Merge all promises
-    Promise.all(promises).then((cookies_array) => {
+    let promise = getCookiesFromSelectedDomain();
+    promise.then((cookies) => {
 
-        // Merge all results of promises
-        var cookies = [];
-        for (let cookie_subset of cookies_array) {
-            cookies = cookies.concat(cookie_subset);
+        let fails_number = 0;
+        for (let cookie of cookies) {
+            // Remove current cookie
+            let params = {
+                url: getHostUrl(cookie),
+                name: cookie.name,
+                storeId: cookie.storeId,
+            };
+            let removing = browser.cookies.remove(params);
+            removing.then((cookie) => {
+                // Reactivate the interface
+                console.log({"Removed:": cookie});
+
+                // If null: no error but no suppression
+                // => display button content in red
+                if (cookie === null)
+                    fails_number++;
+            }, onError);
         }
 
-        if (cookies.length > 0) {
-
-            // Make 1 json for each cookie and store it
-            // Count cookies displayed (not subdomains filtered)
-            var display_count = 0;
-            var templates = [];
-            var query_subdomains = $('#query-subdomains').is(':checked');
-            for (let cookie of cookies) {
-                // Filter on exact domain (remove sub domains from the list)
-                if (!query_subdomains) {
-                    // If current domain is not found in ids => go to next cookie
-                    if (ids.indexOf(cookie.domain) === -1)
-                        continue;
-                }
-                display_count++;
-                templates.push(build_domain_dump(cookie));
-            }
-            // Merge and display templates, update title with the number of cookies
-            $('#clipboard_textarea').val('[' + templates.join(',') + ']');
-            $('#modal_clipboard h4.modal-title').html("Export " + display_count + " cookie(s)");
+        if (fails_number > 0) {
+            // => display button content in red
+            $("#delete_domain_button span").addClass("button-error");
+        } else {
+            // Supress red color, disable & reset text editing for the next cookie
+            $("#delete_domain_button span").removeClass("button-error");
         }
-    });
+        //disable_cookie_details();
+        //reset_cookie_details();
+        // actualizeDomains
+    }, onError);
 });
 
 $("#import_file").click(function(event) {
