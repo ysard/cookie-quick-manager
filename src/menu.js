@@ -18,6 +18,13 @@
  *
  *  Home: https://github.com/ysard/cookie-quick-manager
  */
+// IIFE - Immediately Invoked Function Expression
+(function(mycode) {
+
+  mycode(window, document);
+
+}(function(window, document) {
+
 //get active tab to run an callback function.
 //it sends to our callback an array of tab objects
 function getActiveTab() {
@@ -71,3 +78,5 @@ getActiveTab().then((tabs) => {
   a.appendChild(img);
   a.appendChild(content);
 });
+
+}));
