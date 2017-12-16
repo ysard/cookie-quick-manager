@@ -39,6 +39,8 @@ function createWindow(createData) {
 }
 
 document.addEventListener("click", (e) => {
+  let height = 585;
+  let width = 1200;
 
   if (e.target.id === "search_cookie_manager") {
 
@@ -47,6 +49,8 @@ document.addEventListener("click", (e) => {
       let createData = {
         type: "panel",
         url: "cookies.html?parent_url=" + tabs[0].url,
+        height: height,
+        width: width,
       };
       createWindow(createData);
     });
@@ -57,6 +61,8 @@ document.addEventListener("click", (e) => {
     let createData = {
       type: "panel",
       url: "cookies.html?parent_url=",
+      height: height,
+      width: width,
     };
     createWindow(createData);
   }
