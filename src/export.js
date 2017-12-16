@@ -18,7 +18,99 @@
  *
  *  Home: https://github.com/ysard/cookie-quick-manager
  */
-$(function () {
+// IIFE - Immediately Invoked Function Expression
+(function(mycode) {
+
+    // The global jQuery object is passed as a parameter
+    mycode(window.jQuery, window, document);
+
+}(function($, window, document) {
+
+    // The $ is now locally scoped
+    $(function () {
+
+/*********** Events attached to UI elements ***********/
+$('#clipboard_textarea').focus(function() {
+    // Capture the focus on textarea and select all its content
+    $(this).select();
+});
+/* Bug in FF ? see download().
+ $ ("*#file_export").click(function() {
+ download($('#domain').val() + ".txt", build_cookie_dump());
+});
+*/
+$("#file_export").click(function() {
+    var f = document.createElement('iframe');
+    f.style.position = 'fixed';
+    //f.style.left = f.style.top = '-999px';
+    //f.style.width = f.style.height = '99px';
+    f.srcdoc = '<a download="cookies.json" target="_blank">cookies.json</a>';
+    f.onload = function() {
+        var blob = new Blob([build_cookie_dump()], {type: 'application/json'});
+        var a = f.contentDocument.querySelector('a');
+        a.href = f.contentWindow.URL.createObjectURL(blob);
+        a.click();
+        // Removing the frame document implicitly revokes the blob:-URL too.
+        setTimeout(function() { f.remove(); }, 2000);
+    };
+    document.body.appendChild(f);
+});
+
+$("#clipboard_cookie_export").click(function() {
+    // Handle the copy of the current cookie displayed in details zone
+    // Build text according to template
+    $('#clipboard_textarea').val(build_cookie_dump());
+    // Update title of the dialog box (1 only cookie at the time here)
+    $('#modal_clipboard h4.modal-title').text("Export 1 cookie");
+});
+
+$("#clipboard_domain_export").click(function() {
+    // Build 1 json template for each cookie for the selected domain
+
+    let promise = window.getCookiesFromSelectedDomain();
+    promise.then((cookies) => {
+        // Make 1 json for each cookie and store it
+        var templates = [];
+        for (let cookie of cookies) {
+            // Build a template for the current cookie
+            templates.push(build_domain_dump(cookie));
+        }
+        // Merge and display templates, update title with the number of cookies
+        $('#clipboard_textarea').val('[' + templates.join(',') + ']');
+        // Count cookies displayed (not subdomains filtered)
+        $('#modal_clipboard h4.modal-title').text("Export " + templates.length + " cookie(s)");
+
+    }, (error) => {
+        // No cookie
+        $('#clipboard_textarea').val('');
+        $('#modal_clipboard h4.modal-title').text("Export 0 cookie");
+    });
+});
+
+$("#import_file").click(function(event) {
+    // Overlay for <input type=file>
+    var file_elem = document.getElementById("file_elem");
+    if (file_elem) {
+        file_elem.click();
+    }
+    event.preventDefault(); // prevent navigation to "#"
+});
+
+$("#file_elem").change(function(event) {
+    // File load onto the browser
+    var file = event.target.files[0];
+    if (!file)
+        return;
+
+    var reader = new FileReader();
+    reader.onload = function(event) {
+        // Restore content
+        handleUploadedFile(event.target.result);
+    };
+    reader.readAsText(file);
+});
+
+});
 
 /*********** Utils ***********/
 function build_cookie_dump() {
@@ -190,192 +282,6 @@ function onError(error) {
     console.log({"Error removing/saving cookie:": error});
 }
 
-/*********** Events attached to UI elements ***********/
-$('#clipboard_textarea').focus(function() {
-    // Capture the focus on textarea and select all its content
-    $(this).select();
-});
-/* Bug in FF ? see download().
- $ ("*#file_export").click(function() {
- download($('#domain').val() + ".txt", build_cookie_dump());
-});
-*/
-$("#file_export").click(function() {
-    var f = document.createElement('iframe');
-    f.style.position = 'fixed';
-    //f.style.left = f.style.top = '-999px';
-    //f.style.width = f.style.height = '99px';
-    f.srcdoc = '<a download="cookies.json" target="_blank">cookies.json</a>';
-    f.onload = function() {
-        var blob = new Blob([build_cookie_dump()], {type: 'application/json'});
-        var a = f.contentDocument.querySelector('a');
-        a.href = f.contentWindow.URL.createObjectURL(blob);
-        a.click();
-        // Removing the frame document implicitly revokes the blob:-URL too.
-        setTimeout(function() { f.remove(); }, 2000);
-    };
-    document.body.appendChild(f);
-});
-
-$("#clipboard_cookie_export").click(function() {
-    // Handle the copy of the current cookie displayed in details zone
-    // Build text according to template
-    $('#clipboard_textarea').val(build_cookie_dump());
-    // Update title of the dialog box (1 only cookie at the time here)
-    $('#modal_clipboard h4.modal-title').html("Export 1 cookie");
-});
-
-$("#clipboard_domain_export").click(function() {
-    // Build 1 json template for each cookie for the selected domain
-
-    let promise = getCookiesFromSelectedDomain();
-    promise.then((cookies) => {
-        // Make 1 json for each cookie and store it
-        var templates = [];
-        for (let cookie of cookies) {
-            // Build a template for the current cookie
-            templates.push(build_domain_dump(cookie));
-        }
-        // Merge and display templates, update title with the number of cookies
-        $('#clipboard_textarea').val('[' + templates.join(',') + ']');
-        // Count cookies displayed (not subdomains filtered)
-        $('#modal_clipboard h4.modal-title').html("Export " + templates.length + " cookie(s)");
-
-    }, (error) => {
-        // No cookie
-        $('#clipboard_textarea').val('');
-        $('#modal_clipboard h4.modal-title').html("Export 0 cookie");
-    });
-});
-
-function getCookiesFromSelectedDomain() {
-    // Return a Promise with cookies that belong to the selected domain;
-    // Return also cookies for subdomains if the subdomain checkbox is checked.
-    // https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Objets_globaux/Promise
-    // TODO: handle multiple domains
-
-    return new Promise((resolve, reject) => {
-
-        // Workaround to get click event data of the selected domain
-        // Get pure HTML document (not a JQuery one)
-        var domain = document.querySelector('#domain-list li.active');
-        //console.log($._data(domain, "events" ));
-        // Get data of the first click event registered
-        var click_event_data = $._data(domain, "events" ).click[0].data
-        var id = click_event_data.id;
-        var storeIds = click_event_data.storeIds;
-        // TODO: simulate multiple domains
-        var ids = [id, ];
-
-        // Get 1 promise for each cookie store for each domain
-        // Each promise stores all associated cookies
-        var promises = [];
-        for (let id of ids) {
-            for (let storeId of storeIds) {
-                promises.push(browser.cookies.getAll({domain: id, storeId: storeId}));
-            }
-        }
-
-        // Merge all promises
-        Promise.all(promises).then((cookies_array) => {
-
-            // Merge all results of promises
-            let cookies = [];
-            for (let cookie_subset of cookies_array) {
-                cookies = cookies.concat(cookie_subset);
-            }
-
-            if (cookies.length > 0) {
-                // Build filtered cookies list
-                let filtered_cookies = [];
-                let query_subdomains = $('#query-subdomains').is(':checked');
-                for (let cookie of cookies) {
-                    // Filter on exact domain (remove sub domains from the list)
-                    if (!query_subdomains) {
-                        // If current domain is not found in ids => go to next cookie
-                        if (ids.indexOf(cookie.domain) === -1)
-                            continue;
-                    }
-                    // OK: send filtered cookies
-                    filtered_cookies.push(cookie);
-                }
-                resolve(filtered_cookies);
-            } else {
-                reject("NoCookies");
-            }
-        });
-    });
-}
-
-$("#delete_domain_button").click(function() {
-    // Remove each cookie for the selected domain
-
-    function getHostUrl(cookie) {
-        // If the modified cookie has the flag isSecure, the host protocol must be https:// in order to
-        // modify or delete it.
-        var host_protocol = (cookie.secure) ? 'https://' : 'http://';
-        return host_protocol + cookie.domain + cookie.path;
-    }
-
-    let promise = getCookiesFromSelectedDomain();
-    promise.then((cookies) => {
-
-        let fails_number = 0;
-        for (let cookie of cookies) {
-            // Remove current cookie
-            let params = {
-                url: getHostUrl(cookie),
-                name: cookie.name,
-                storeId: cookie.storeId,
-            };
-            let removing = browser.cookies.remove(params);
-            removing.then((cookie) => {
-                // Reactivate the interface
-                console.log({"Removed:": cookie});
-
-                // If null: no error but no suppression
-                // => display button content in red
-                if (cookie === null)
-                    fails_number++;
-            }, onError);
-        }
-
-        if (fails_number > 0) {
-            // => display button content in red
-            $("#delete_domain_button span").addClass("button-error");
-        } else {
-            // Supress red color, disable & reset text editing for the next cookie
-            $("#delete_domain_button span").removeClass("button-error");
-        }
-        //disable_cookie_details();
-        //reset_cookie_details();
-        // actualizeDomains
-    }, onError);
-});
-
-$("#import_file").click(function(event) {
-    // Overlay for <input type=file>
-    var file_elem = document.getElementById("file_elem");
-    if (file_elem) {
-        file_elem.click();
-    }
-    event.preventDefault(); // prevent navigation to "#"
-});
-
-$("#file_elem").change(function(event) {
-    // File load onto the browser
-    var file = event.target.files[0];
-    if (!file)
-        return;
-
-    var reader = new FileReader();
-    reader.onload = function(event) {
-        // Restore content
-        handleUploadedFile(event.target.result);
-    };
-    reader.readAsText(file);
-});
-
 function handleUploadedFile(content) {
     // Take a file content and dispatch it to the good parser
     try {
@@ -463,4 +369,4 @@ var cookie_clipboard_template = '{\n\
 \t"Private raw": "{ISPRIVATE_RAW}"\n\
 }';
 
-});
+}));

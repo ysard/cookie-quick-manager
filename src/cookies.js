@@ -18,7 +18,281 @@
  *
  *  Home: https://github.com/ysard/cookie-quick-manager
  */
-$(function () {
+// IIFE - Immediately Invoked Function Expression
+(function(mycode) {
+
+        // The global jQuery object is passed as a parameter
+        mycode(window.jQuery, window, document);
+
+    }(function($, window, document) {
+
+    // The $ is now locally scoped
+    $(function () {
+
+/*********** Events attached to UI elements ***********/
+// Search box: handle keyboard inputs
+$('#search_domain').on('input', actualizeDomains);
+// Search box : handle button pressed
+$('#search_domain_submit').click(actualizeDomains);
+// Actualize button pressed
+$("#actualize_button").click(actualizeDomains);
+
+$( "#save_button" ).click(function() {
+    /* Save a cookie displayed on details zone
+     * ---
+     * NOTE: If the expirationDate is set in the past and the cookie was not expired,
+     * it will be automatically deleted.
+     * If the cookie is already expired, there is no suppression and no update (no changed event emitted)
+     * ---
+     *
+     * Leading dot:
+     * The leading dot means that the cookie is valid for subdomains as well; nevertheless recent HTTP
+     * specifications (RFC 6265) changed this rule so modern browsers should not care about the leading dot.
+     * The dot may be needed by old browser implementing the deprecated RFC 2109.
+     *
+     * isSecure:
+     * The Secure attribute limits the scope of the cookie to "secure" channels (where "secure" is
+     * defined by the user agent). When a cookie has the Secure attribute, the user agent will include
+     * the cookie in an HTTP request only if the request is transmitted over a secure channel (typically
+     * HTTP over Transport Layer Security (TLS) [RFC2818]).
+     *
+     * Although seemingly useful for protecting cookies from active network attackers, the Secure
+     * attribute protects only the cookie's confidentiality. An active network attacker can overwrite
+     * Secure cookies from an insecure channel, disrupting their integrity (see Section 8.6 for more details).
+     *
+     * https://stackoverflow.com/questions/9618217/what-does-the-dot-prefix-in-the-cookie-domain-mean
+     * https://www.mxsasha.eu/blog/2014/03/04/definitive-guide-to-cookie-domains/
+     */
+    var params = {
+        url: getHostUrl(),
+        name: $('#name').val(),
+        value: $('#value').val(),
+        path: $('#path').val(),
+        httpOnly: $('#httponly').is(':checked'),
+        secure: $('#issecure').is(':checked'),
+        storeId: $('#isprivate').is(':checked') ? 'firefox-private' : 'firefox-default',
+    };
+    // If there is no leading dot => the cookie becomes a host-only cookie.
+    // To make a host-only cookie, we must omit the domain
+    // To make a subdomain cookie, we must specify the domain
+    // check that: we take the url which is based on the domain.
+    // so if we omit the domain, the url is used to rebuild the domain internally
+    // BUT if we give a url with http://.website.com
+    // the leading dot makes this cookie a subdomain cookie
+    // if we give a url with http://www.website.com
+    // no leading dot makes a host-only cookie
+    // SO we don't have to consider anymore the presence/absence of the domain
+    // in the set query...
+    /* PS:
+     * foo.com => host-only
+     * .foo.com => subdomains
+     * www.foo.com => host-only
+     */
+    // Set expiration date if cookie is not a session cookie
+    if (!$('#issession').is(':checked')) {
+        var unix_timestamp = $('#expiration_date').data("DateTimePicker").date().unix();
+        params['expirationDate'] = unix_timestamp;
+        console.log(new Date(unix_timestamp * 1000));
+    }
+    // Set cookie
+    console.log(params);
+    var promise = browser.cookies.set(params);
+
+    promise.then((cookie) => {
+        // Reactivate the interface
+        console.log({"Cookie saved: ": cookie});
+
+        // If null: no error but no save
+        // => display button content in red
+        if (cookie === null) {
+            $("#save_button span").addClass("button-error");
+        } else {
+            // Supress red color, disable & reset text editing for the next cookie
+            // Simulate click on the same domain
+            $("#save_button span").removeClass("button-error");
+            disable_cookie_details();
+            reset_cookie_details();
+            $('#domain-list').find('li.active').click();
+        }
+    }, onError);
+});
+
+$("#edit_button").click(function() {
+    // When edit button is pressed, a class "down" is added.
+    // First press: allow editing of text fields other than value, and allow expiration date modifying
+    // Second press: disallow ...
+    if ($(this).hasClass("down")) {
+        disable_cookie_details();
+    } else {
+        enable_cookie_details();
+    }
+    $(this).toggleClass("down");
+});
+
+$("#delete_button").click(function() {
+    /* Remove a cookie displayed on details zone
+     * NOTE: Remove inexistant cookie: Removed: null
+     */
+    var params = {
+        url: getHostUrl(),
+        name: $('#name').val(),
+        storeId: $('#isprivate').is(':checked') ? 'firefox-private' : 'firefox-default',
+    }
+
+    var removing = browser.cookies.remove(params);
+    removing.then((cookie) => {
+        // Reactivate the interface
+        console.log({"Removed:": cookie});
+
+        // If null: no error but no suppression
+        // => display button content in red
+        if (cookie === null) {
+            $("#delete_button span").addClass("button-error");
+        } else {
+            // Supress red color, disable & reset text editing for the next cookie
+            // Simulate click on the same domain
+            $("#delete_button span").removeClass("button-error");
+            disable_cookie_details();
+            reset_cookie_details();
+            $('#domain-list').find('li.active').click();
+        }
+    }, onError);
+});
+
+$("#delete_domain_button").click(function() {
+    // Remove each cookie for the selected domain
+
+    function getHostUrl(cookie) {
+        // If the modified cookie has the flag isSecure, the host protocol must be https:// in order to
+        // modify or delete it.
+        var host_protocol = (cookie.secure) ? 'https://' : 'http://';
+        return host_protocol + cookie.domain + cookie.path;
+    }
+
+    // Supress red color, disable & reset text editing for the next cookie
+    $("#delete_domain_button span").removeClass("button-error");
+
+    let promise = getCookiesFromSelectedDomain();
+    promise.then((cookies) => {
+
+        for (let cookie of cookies) {
+            // Remove current cookie
+            let params = {
+                url: getHostUrl(cookie),
+                 name: cookie.name,
+                 storeId: cookie.storeId,
+            };
+            let removing = browser.cookies.remove(params);
+            removing.then((cookie) => {
+                // Reactivate the interface
+                console.log({"Removed:": cookie});
+
+                // If null: no error but no suppression
+                // => display button content in red
+                if (cookie === null)
+                    // => display button content in red
+                    $("#delete_domain_button span").addClass("button-error");
+            }, onError);
+        }
+
+        disable_cookie_details();
+        reset_cookie_details();
+        actualizeDomains();
+    }, onError);
+});
+
+$("#toggle_b64").click(function() {
+    // When edit button is pressed, a class "down" is added.
+    // First press: allow editing of text fields other than value, and allow expiration date modifying
+    // Second press: disallow ...
+    // NOTE: When the decoding/encoding is not possible,
+    // this function is stopped without modifying the UI.
+    var $value = $("#value");
+
+    // Useful functions to encode/decode in base64
+    // https://stackoverflow.com/questions/30106476/using-javascripts-atob-to-decode-base64-doesnt-properly-decode-utf-8-strings
+    function b64EncodeUnicode(str) {
+        return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function(match, p1) {
+            return String.fromCharCode(parseInt(p1, 16))
+        }))
+    }
+
+    function b64DecodeUnicode(str) {
+        return decodeURIComponent(Array.prototype.map.call(atob(str), function(c) {
+            return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)
+        }).join(''))
+    }
+
+    if ($(this).hasClass("down")) {
+        // second click => encode
+        $value.val(b64EncodeUnicode($value.val()));
+    } else {
+        // first click => decode
+        $value.val(b64DecodeUnicode($value.val()));
+    }
+    // Toggle .down class
+    $(this).toggleClass("down");
+});
+
+$("#toggle_url").click(function() {
+    // When edit button is pressed, a class "down" is added.
+    // First press: allow editing of text fields other than value, and allow expiration date modifying
+    // Second press: disallow ...
+    var $value = $("#value");
+
+    if ($(this).hasClass("down")) {
+        // second click => encode
+        $value.val(encodeURIComponent($value.val()));
+    } else {
+        // first click => decode
+        $value.val(decodeURIComponent($value.val()));
+    }
+    // Toggle .down class
+    $(this).toggleClass("down");
+});
+
+$('input[type=checkbox][name=issession]').change(function() {
+    // Hide/Show datetimepicker according to the session checkbox state
+    if(!$(this).is(':checked')) {
+        // Not session => show
+        $('#expiration_date').closest('.form-group').show();
+    } else {
+        // Session => hide
+        $('#expiration_date').closest('.form-group').hide();
+    }
+});
+
+$('#expiration_date').on("dp.change", function(event) {
+    // Emited by DateTimePicker when date(newDate) is called, and when input field is edited
+    if (isExpired(event.date.unix())) {
+        $('#expiration_date input').addClass("cookie-expired");
+    } else {
+        $('#expiration_date input').removeClass("cookie-expired");
+    }
+});
+
+
+/*********** Initializations ***********/
+
+// Init datetimepicker object
+$('#expiration_date').datetimepicker({
+    format: date_format,
+        defaultDate: moment(new Date(), date_format),
+            useCurrent: false, // Set to current date
+            showClear: true // Trash button
+});
+
+// Enable popovers
+$('[data-toggle="popover"]').popover();
+
+// Set default domain in search box
+setDefaultDomain();
+
+// Fill the domains list
+getStores();
+
+
+});
 
 /*********** Utils ***********/
 function uniqueDomains(cookies) {
@@ -374,205 +648,64 @@ function display_cookie_details(event) {
     }
 }
 
-/*********** Events attached to UI elements ***********/
-// Search box: handle keyboard inputs
-$('#search_domain').on('input', actualizeDomains);
-// Search box : handle button pressed
-$('#search_domain_submit').click(actualizeDomains);
-// Actualize button pressed
-$("#actualize_button").click(actualizeDomains);
+function getCookiesFromSelectedDomain() {
+    // Return a Promise with cookies that belong to the selected domain;
+    // Return also cookies for subdomains if the subdomain checkbox is checked.
+    // https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Objets_globaux/Promise
+    // TODO: handle multiple domains
 
-$( "#save_button" ).click(function() {
-    /* Save a cookie displayed on details zone
-     * ---
-     * NOTE: If the expirationDate is set in the past and the cookie was not expired,
-     * it will be automatically deleted.
-     * If the cookie is already expired, there is no suppression and no update (no changed event emitted)
-     * ---
-     *
-     * Leading dot:
-     * The leading dot means that the cookie is valid for subdomains as well; nevertheless recent HTTP
-     * specifications (RFC 6265) changed this rule so modern browsers should not care about the leading dot.
-     * The dot may be needed by old browser implementing the deprecated RFC 2109.
-     *
-     * isSecure:
-     * The Secure attribute limits the scope of the cookie to "secure" channels (where "secure" is
-     * defined by the user agent). When a cookie has the Secure attribute, the user agent will include
-     * the cookie in an HTTP request only if the request is transmitted over a secure channel (typically
-     * HTTP over Transport Layer Security (TLS) [RFC2818]).
-     *
-     * Although seemingly useful for protecting cookies from active network attackers, the Secure
-     * attribute protects only the cookie's confidentiality. An active network attacker can overwrite
-     * Secure cookies from an insecure channel, disrupting their integrity (see Section 8.6 for more details).
-     *
-     * https://stackoverflow.com/questions/9618217/what-does-the-dot-prefix-in-the-cookie-domain-mean
-     * https://www.mxsasha.eu/blog/2014/03/04/definitive-guide-to-cookie-domains/
-     */
-    var params = {
-        url: getHostUrl(),
-        name: $('#name').val(),
-        value: $('#value').val(),
-        path: $('#path').val(),
-        httpOnly: $('#httponly').is(':checked'),
-        secure: $('#issecure').is(':checked'),
-        storeId: $('#isprivate').is(':checked') ? 'firefox-private' : 'firefox-default',
-    };
-    // If there is no leading dot => the cookie becomes a host-only cookie.
-    // To make a host-only cookie, we must omit the domain
-    // To make a subdomain cookie, we must specify the domain
-    // check that: we take the url which is based on the domain.
-    // so if we omit the domain, the url is used to rebuild the domain internally
-    // BUT if we give a url with http://.website.com
-    // the leading dot makes this cookie a subdomain cookie
-    // if we give a url with http://www.website.com
-    // no leading dot makes a host-only cookie
-    // SO we don't have to consider anymore the presence/absence of the domain
-    // in the set query...
-    /* PS:
-     * foo.com => host-only
-     * .foo.com => subdomains
-     * www.foo.com => host-only
-     */
-    // Set expiration date if cookie is not a session cookie
-    if (!$('#issession').is(':checked')) {
-        var unix_timestamp = $('#expiration_date').data("DateTimePicker").date().unix();
-        params['expirationDate'] = unix_timestamp;
-        console.log(new Date(unix_timestamp * 1000));
-    }
-    // Set cookie
-    console.log(params);
-    var gettingAllCookies = browser.cookies.set(params);
+    return new Promise((resolve, reject) => {
 
-    gettingAllCookies.then((cookie) => {
-        // Reactivate the interface
-        console.log({"Cookie saved: ": cookie});
+        // Workaround to get click event data of the selected domain
+        // Get pure HTML document (not a JQuery one)
+        var domain = document.querySelector('#domain-list li.active');
+        //console.log($._data(domain, "events" ));
+        // Get data of the first click event registered
+        var click_event_data = $._data(domain, "events" ).click[0].data
+        var id = click_event_data.id;
+        var storeIds = click_event_data.storeIds;
+        // TODO: simulate multiple domains
+        var ids = [id, ];
 
-        // If null: no error but no save
-        // => display button content in red
-        if (cookie === null) {
-            $("#save_button span").addClass("button-error");
-        } else {
-            // Supress red color, disable & reset text editing for the next cookie
-            // Simulate click on the same domain
-            $("#save_button span").removeClass("button-error");
-            disable_cookie_details();
-            reset_cookie_details();
-            $('#domain-list').find('li.active').click();
+        // Get 1 promise for each cookie store for each domain
+        // Each promise stores all associated cookies
+        var promises = [];
+        for (let id of ids) {
+            for (let storeId of storeIds) {
+                promises.push(browser.cookies.getAll({domain: id, storeId: storeId}));
+            }
         }
-    }, onError);
-});
 
-$("#edit_button").click(function() {
-    // When edit button is pressed, a class "down" is added.
-    // First press: allow editing of text fields other than value, and allow expiration date modifying
-    // Second press: disallow ...
-    if ($(this).hasClass("down")) {
-        disable_cookie_details();
-    } else {
-        enable_cookie_details();
-    }
-    $(this).toggleClass("down");
-});
+        // Merge all promises
+        Promise.all(promises).then((cookies_array) => {
 
-$("#delete_button").click(function() {
-    /* Remove a cookie displayed on details zone
-     * NOTE: Remove inexistant cookie: Removed: null
-     */
-    var params = {
-        url: getHostUrl(),
-        name: $('#name').val(),
-        storeId: $('#isprivate').is(':checked') ? 'firefox-private' : 'firefox-default',
-    }
+            // Merge all results of promises
+            let cookies = [];
+            for (let cookie_subset of cookies_array) {
+                cookies = cookies.concat(cookie_subset);
+            }
 
-    var removing = browser.cookies.remove(params);
-    removing.then((cookie) => {
-        // Reactivate the interface
-        console.log({"Removed:": cookie});
-
-        // If null: no error but no suppression
-        // => display button content in red
-        if (cookie === null) {
-            $("#delete_button span").addClass("button-error");
-        } else {
-            // Supress red color, disable & reset text editing for the next cookie
-            // Simulate click on the same domain
-            $("#delete_button span").removeClass("button-error");
-            disable_cookie_details();
-            reset_cookie_details();
-            $('#domain-list').find('li.active').click();
-        }
-    }, onError);
-});
-
-$("#toggle_b64").click(function() {
-    // When edit button is pressed, a class "down" is added.
-    // First press: allow editing of text fields other than value, and allow expiration date modifying
-    // Second press: disallow ...
-    // NOTE: When the decoding/encoding is not possible,
-    // this function is stopped without modifying the UI.
-    var $value = $("#value");
-
-    // Useful functions to encode/decode in base64
-    // https://stackoverflow.com/questions/30106476/using-javascripts-atob-to-decode-base64-doesnt-properly-decode-utf-8-strings
-    function b64EncodeUnicode(str) {
-        return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function(match, p1) {
-            return String.fromCharCode(parseInt(p1, 16))
-        }))
-    }
-
-    function b64DecodeUnicode(str) {
-        return decodeURIComponent(Array.prototype.map.call(atob(str), function(c) {
-            return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)
-        }).join(''))
-    }
-
-    if ($(this).hasClass("down")) {
-        // second click => encode
-        $value.val(b64EncodeUnicode($value.val()));
-    } else {
-        // first click => decode
-        $value.val(b64DecodeUnicode($value.val()));
-    }
-    // Toggle .down class
-    $(this).toggleClass("down");
-});
-
-$("#toggle_url").click(function() {
-    // When edit button is pressed, a class "down" is added.
-    // First press: allow editing of text fields other than value, and allow expiration date modifying
-    // Second press: disallow ...
-    var $value = $("#value");
-
-    if ($(this).hasClass("down")) {
-        // second click => encode
-        $value.val(encodeURIComponent($value.val()));
-    } else {
-        // first click => decode
-        $value.val(decodeURIComponent($value.val()));
-    }
-    // Toggle .down class
-    $(this).toggleClass("down");
-});
-
-$('input[type=checkbox][name=issession]').change(function() {
-    // Hide/Show datetimepicker according to the session checkbox state
-    if(!$(this).is(':checked')) {
-        // Not session => show
-        $('#expiration_date').closest('.form-group').show();
-    } else {
-        // Session => hide
-        $('#expiration_date').closest('.form-group').hide();
-    }
-});
-
-$('#expiration_date').on("dp.change", function(event) {
-    // Emited by DateTimePicker when date(newDate) is called, and when input field is edited
-    if (isExpired(event.date.unix())) {
-        $('#expiration_date input').addClass("cookie-expired");
-    } else {
-        $('#expiration_date input').removeClass("cookie-expired");
-    }
-});
+            if (cookies.length > 0) {
+                // Build filtered cookies list
+                let filtered_cookies = [];
+                let query_subdomains = $('#query-subdomains').is(':checked');
+                for (let cookie of cookies) {
+                    // Filter on exact domain (remove sub domains from the list)
+                    if (!query_subdomains) {
+                        // If current domain is not found in ids => go to next cookie
+                        if (ids.indexOf(cookie.domain) === -1)
+                            continue;
+                    }
+                    // OK: send filtered cookies
+                    filtered_cookies.push(cookie);
+                }
+                resolve(filtered_cookies);
+            } else {
+                reject("NoCookies");
+            }
+        });
+    });
+}
 
 browser.cookies.onChanged.addListener(function(changeInfo) {
     /* Callback when the cookie store is updated
@@ -619,23 +752,6 @@ browser.cookies.onChanged.addListener(function(changeInfo) {
 // PS: "DD-MM-YYYY hh:mm:ss a"), 'a' is for am/pm
 var date_format = "DD-MM-YYYY HH:mm:ss";
 
-
-/*********** Initializations ***********/
-
-// Init datetimepicker object
-$('#expiration_date').datetimepicker({
-    format: date_format,
-    defaultDate: moment(new Date(), date_format),
-    useCurrent: false, // Set to current date
-    showClear: true // Trash button
-});
-
-// Enable popovers
-$('[data-toggle="popover"]').popover();
-
-// Set default domain in search box
-setDefaultDomain();
-
-// Fill the domains list
-getStores();
-});
+// Used by export.js on #clipboard_domain_export click event
+window.getCookiesFromSelectedDomain = getCookiesFromSelectedDomain;
+}));
