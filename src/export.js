@@ -381,24 +381,24 @@ function handleUploadedFile(content) {
     try {
         parseJSONFile(content);
         // Display modal info
-        $('#modal_info .modal-body').html("Cookie successfully restored");
-        $('#modal_info').modal('show');
+        $('#info_text').text("Cookie successfully restored");
         // Actualize interface
         $("#actualize_button").click();
     } catch (error) {
         if (error instanceof SyntaxError) {
             console.log(error);
-            $('#modal_info .modal-body').html("No cookie restored");
-            $('#modal_info').modal('show');
-        }
-        else {
+            $('#info_text').text("Error, no cookie restored.\n" + error);
+        } else {
             throw error;
         }
+    } finally {
+        $('#modal_info').modal('show');
     }
 }
 
 function parseJSONFile(content) {
     // Parse json file and return a cookie object
+    // Throw syntax error if cookies can't be saved
 
     var json_content = JSON.parse(content);
 
@@ -432,17 +432,9 @@ function parseJSONFile(content) {
             console.log({"Cookie saved: ": cookie});
 
             // If null: no error but no save
-            // => display button content in red
             if (cookie === null) {
-                //$("#save_button span").addClass("button-error");
-                alert("error");
-            } else {
-                /*// Supress red color, disable & reset text editing for the next cookie
-                // Simulate click on the same domain
-                $("#save_button span").removeClass("button-error");
-                disable_cookie_details();
-                reset_cookie_details();
-                $('#domain-list').find('li.active').click();*/
+                // TODO: handle this error (the exception is not catched)
+                throw new SyntaxError("Cookie " + JSON.stringify(cookie) + "can't be saved");
             }
         }, onError);
     }
