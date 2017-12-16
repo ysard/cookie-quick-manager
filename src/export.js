@@ -194,7 +194,6 @@ function build_domain_dump(cookie) {
         // otherwise, return 0.
         // If raw is false, return human readable date or "At the end of the session" for a
         // session cookie.
-        var issession = $('#issession').is(':checked');
         if (raw) {
             return (!cookie.session) ? cookie.expirationDate : 0;
         }
