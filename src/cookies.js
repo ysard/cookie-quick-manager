@@ -277,9 +277,9 @@ $('#expiration_date').on("dp.change", function(event) {
 // Init datetimepicker object
 $('#expiration_date').datetimepicker({
     format: date_format,
-        defaultDate: moment(new Date(), date_format),
-            useCurrent: false, // Set to current date
-            showClear: true // Trash button
+    defaultDate: moment(new Date(), date_format),
+    useCurrent: false, // Set to current date
+    showClear: true // Trash button
 });
 
 // Enable popovers
