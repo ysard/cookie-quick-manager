@@ -116,7 +116,9 @@
           <h2>Details</h2>
           <form id="cookie-details">
             <div class="form-group row">
-              <label for="domain" class="col-sm-3 col-form-label">Domain </label>
+              <label for="domain" class="col-sm-3 col-form-label"
+              data-toggle="tooltip" data-placement="bottom"
+              title="A host-only cookie, applies only to the current domain. Other cookies also apply to subdomains, and their domain has a leading point.">Domain </label>
               <div class="col-sm-9">
                 <input type="text" class="form-control" name="domain" id="domain" readonly>
               </div>
@@ -132,8 +134,12 @@
               <div class="col-sm-9">
                 <textarea class="form-control" name="value" id="value"></textarea>
               </div>
-              <button type="button" class="btn btn-dark" id="toggle_url">URL</button>
-              <button type="button" class="btn btn-dark" id="toggle_b64">B64</button>
+              <button type="button" class="btn btn-dark" id="toggle_url"
+              data-html="true" data-toggle="tooltip"
+              title="URL decode<br>click to activate/deactivate">URL</button>
+              <button type="button" class="btn btn-dark" id="toggle_b64"
+              data-html="true" data-toggle="tooltip"
+              title="Base64 decode<br>click to activate/deactivate">B64</button>
             </div>
             <div class="form-group row">
               <label for="path" class="col-sm-3 col-form-label">Path </label>
@@ -142,7 +148,9 @@
               </div>
             </div>
             <div class="form-group row">
-              <label class="col-sm-3 col-form-label">isPrivate</label>
+              <label class="col-sm-3 col-form-label" for="isprivate"
+              data-html="true" data-toggle="tooltip"
+              title="Browsing context.<br>Check to make sure that the cookie is accessible in private browsing.">isPrivate</label>
               <div class="col-sm-9">
                 <div class="form-check form-check-inline">
                   <input class="form-check-input" type="checkbox" name="isprivate" id="isprivate">
@@ -150,7 +158,9 @@
               </div>
             </div>
             <div class="form-group row">
-              <label class="col-sm-3 col-form-label">httpOnly</label>
+              <label class="col-sm-3 col-form-label" for="httponly"
+              data-html="true" data-toggle="tooltip"
+              title="Theft protection.<br>Check to force the cookie to be sent only over HTTP(S),<br> i.e. block JavaScript access like in XSS context.">httpOnly</label>
               <div class="col-sm-9">
                 <div class="form-check form-check-inline">
                   <input class="form-check-input" type="checkbox" name="httponly" id="httponly">
@@ -158,7 +168,9 @@
               </div>
             </div>
             <div class="form-group row">
-              <label class="col-sm-3 col-form-label">isSecure</label>
+              <label class="col-sm-3 col-form-label" for="issecure"
+              data-html="true" data-toggle="tooltip"
+              title="Theft protection.<br>Check to force the cookie to be sent only over secure channels like HTTPS.">isSecure</label>
               <div class="col-sm-9">
                 <div class="form-check form-check-inline">
                   <input class="form-check-input" type="checkbox" name="issecure" id="issecure" checked>
@@ -167,7 +179,9 @@
             </div>
             <!-- Session related block: checkbox + datetimepicker -->
             <div class="form-group row">
-              <label class="col-sm-3 col-form-label">isSession</label>
+              <label class="col-sm-3 col-form-label" for="issession"
+              data-html="true" data-toggle="tooltip"
+              title="Validity period.<br>Check to force the cookie to expire at the end of the session.">isSession</label>
               <div class="col-sm-9">
                 <div class="form-check form-check-inline">
                   <input class="form-check-input" type="checkbox" name="issession" id="issession" checked>
@@ -201,15 +215,21 @@
               </div>
             </div>
             <div class="col-sm-8 checkbox form-check">
-              <label class="form-check-label">
+              <label class="form-check-label"
+              data-toggle="tooltip"
+              title="Display also the cookies of the subdomains concerned by the selected domain.">
               <input class="form-check-input" type="checkbox" id="query-subdomains"> Sub-domains
               </label>
             </div>
           </div>
           <!-- Buttons -->
           <div>
-            <button type="button" class="btn btn-dark" id="actualize_button"><span class="glyphicon glyphicon-refresh"></span></button>
-            <button type="button" class="btn btn-dark" id="delete_domain_button"><span class="glyphicon glyphicon-trash"></span></button>
+            <button type="button" class="btn btn-dark" id="actualize_button"
+            data-toggle="tooltip"
+            title="Refresh the list of domains."><span class="glyphicon glyphicon-refresh"></span></button>
+            <button type="button" class="btn btn-dark" id="delete_domain_button"
+            data-toggle="tooltip"
+            title="Delete cookies from the selected domain."><span class="glyphicon glyphicon-trash"></span></button>
             <div class="dropup dropup-custom">
               <button type="button" class="btn btn-dark dropdown-toggle" id="export_button" data-toggle="dropdown"><span class="glyphicon glyphicon-folder-open"></span></button>
               <ul class="dropdown-menu">
@@ -227,7 +247,7 @@
             </div>
             <button type="button" class="btn btn-dark" id="donate_button"
             data-toggle="popover" data-placement="top" data-html="true"
-            title="Contribute"
+            title="How to contribute?"
             data-content="<div id='contribute-content'>You can contribute to development in several ways:<br>
             <ul>
               <li>If you would like to make a donation to reward the many hours of development, please consider this bitcoin address:<br><span class='btc-color'>15qduxA755YANqGcbd8VvBmm8DmR4rCg1i</span></li>
@@ -241,9 +261,15 @@
         </div>
         <!-- Specific commands for current cookie -->
         <div class="col-sm-4">
-          <button type="button" class="btn btn-dark" id="save_button"><span class="glyphicon glyphicon-floppy-disk"></span></button>
-          <button type="button" class="btn btn-dark" id="edit_button"><span class="glyphicon glyphicon-pencil"></span></button>
-          <button type="button" class="btn btn-dark" id="delete_button"><span class="glyphicon glyphicon-trash"></span></button>
+          <button type="button" class="btn btn-dark" id="save_button"
+          data-toggle="tooltip"
+          title="Save the current cookie."><span class="glyphicon glyphicon-floppy-disk"></span></button>
+          <button type="button" class="btn btn-dark" id="edit_button"
+          data-toggle="tooltip"
+          title="Allow to edit the current cookie."><span class="glyphicon glyphicon-pencil"></span></button>
+          <button type="button" class="btn btn-dark" id="delete_button"
+          data-toggle="tooltip"
+          title="Remove the current cookie."><span class="glyphicon glyphicon-trash"></span></button>
         </div>
       </div>
     </div>

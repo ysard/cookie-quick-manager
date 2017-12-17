@@ -285,6 +285,9 @@ $('#expiration_date').datetimepicker({
 // Enable popovers
 $('[data-toggle="popover"]').popover();
 
+// Enable tooltips
+$('[data-toggle="tooltip"]').tooltip();
+
 // Set default domain in search box
 setDefaultDomain();
 
