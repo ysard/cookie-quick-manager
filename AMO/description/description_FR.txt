@@ -1,0 +1,31 @@
+# Présentation
+
+Cookie Quick Manager : Un gestionnaire complet pour les cookies utilisés en cours de navigation.
+Il permet notamment de visualiser, éditer, créer supprimer sauvegarder, restaurer et rechercher
+les cookies par noms de domaines; la navigation privée est également supportée.
+
+Cookie Quick Manager est destinée aux développeurs, aux testeurs ou aux personnes
+soucieuses du respect de leur vie privée sur Internet.
+
+Cette WebExtension est compatible avec Firefox 57 et s'inspire des addons
+[Cookies Manager+](https://addons.mozilla.org/fr/firefox/addon/cookies-manager-plus/) et
+[Advanced Cookie Manager](https://addons.mozilla.org/fr/firefox/addon/cookie-manager/)
+dont le développement a été arrêté à cause de l'abandon du support des extensions "Legacy".
+
+# Fonctionnalités
+
+Un utilisateur peut rechercher les cookies d'un domaine et des sous-domaines
+qui en dépendent.
+
+Tous les attributs d'un cookie peuvent être modifiés: domaine, chemin, nom, valeur,
+date d'expiration ainsi que les flags secure et httponly.
+
+L'exportation et l'importation d'un cookie ou des cookies d'un domaine au format JSON est tout aussi facile.
+
+Chaque paramètre et fonctionnalité est brièvement décrit au survol de la souris.
+
+# Support
+
+L'extension est en plein développement avec l'arrivée de Firefox Quantum;
+les questions, rapports de bugs et demandes de fonctionnalités sont ouvertes sur le
+dépôt GitHub [GitHub repository](https://github.com/ysard/cookie-quick-manager/issues).
