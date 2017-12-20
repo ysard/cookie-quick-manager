@@ -288,16 +288,34 @@ $('[data-toggle="popover"]').popover();
 // Enable tooltips
 $('[data-toggle="tooltip"]').tooltip();
 
+firefox57_workaround_for_blank_panel();
+
 // Set default domain in search box
 setDefaultDomain();
 
 // Fill the domains list
 getStores();
 
-
 });
 
 /*********** Utils ***********/
+function firefox57_workaround_for_blank_panel() {
+    // browser.windows.create() displays blank windows (panel, popup or detached_panel)
+    // The trick to display content is to resize the window...
+
+    function getCurrentWindow() {
+        return browser.windows.getCurrent();
+    }
+
+    getCurrentWindow().then((currentWindow) => {
+        var updateInfo = {
+            width: 1200,
+            height: 586, // 1 pixel more than original size...
+        };
+        browser.windows.update(currentWindow.id, updateInfo);
+    });
+}
+
 function uniqueDomains(cookies) {
     /* Return a dict with domains as keys and storeIds and number of cookies for that domain.
      */
