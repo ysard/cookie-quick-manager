@@ -30,9 +30,10 @@
     $(function () {
 
 /*********** Events attached to UI elements ***********/
-$('#clipboard_textarea').focus(function() {
+$("#modal_clipboard").on('shown.bs.modal', function () {
     // Capture the focus on textarea and select all its content
-    $(this).select();
+    // Event is triggered when the modal is fully shown (CSS transitions included)
+    $('#clipboard_textarea').select();
 });
 
 /* Bug in FF ? see download().
