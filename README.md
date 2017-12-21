@@ -7,7 +7,7 @@ domain name cookies; private browsing is also supported.
 Cookie Quick Manager is designed for developers, testers or people
 concerned about their privacy on the Internet.
 
-This WebExtension is compatible with Firefox 57 and is based on the following addons
+This WebExtension is compatible with Firefox 57 and is inspired by addons like
 [Cookies Manager+](https://addons.mozilla.org/fr/firefox/addon/cookies-manager-plus/) and
 [Advanced Cookie Manager](https://addons.mozilla.org/fr/firefox/addon/cookie-manager/)
 whose development has been discontinued due to the withdrawal of support for "Legacy" extensions.
