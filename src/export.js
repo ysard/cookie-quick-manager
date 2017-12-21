@@ -34,26 +34,33 @@ $('#clipboard_textarea').focus(function() {
     // Capture the focus on textarea and select all its content
     $(this).select();
 });
+
 /* Bug in FF ? see download().
  $ ("*#file_export").click(function() {
  download($('#domain').val() + ".txt", build_cookie_dump());
 });
 */
-$("#file_export").click(function() {
-    var f = document.createElement('iframe');
-    f.style.position = 'fixed';
-    //f.style.left = f.style.top = '-999px';
-    //f.style.width = f.style.height = '99px';
-    f.srcdoc = '<a download="cookies.json" target="_blank">cookies.json</a>';
-    f.onload = function() {
-        var blob = new Blob([build_cookie_dump()], {type: 'application/json'});
-        var a = f.contentDocument.querySelector('a');
-        a.href = f.contentWindow.URL.createObjectURL(blob);
-        a.click();
-        // Removing the frame document implicitly revokes the blob:-URL too.
-        setTimeout(function() { f.remove(); }, 2000);
-    };
-    document.body.appendChild(f);
+$("#file_cookie_export").click(function() {
+    export_content_to_file(build_cookie_dump());
+});
+
+$("#file_domain_export").click(function() {
+    // Build 1 json template for each cookie for the selected domain
+    let promise = window.getCookiesFromSelectedDomain();
+    promise.then((cookies) => {
+        // Make 1 json for each cookie and store it
+        var templates = [];
+        for (let cookie of cookies) {
+            // Build a template for the current cookie
+            templates.push(build_domain_dump(cookie));
+        }
+        // Merge and display templates, update title with the number of cookies
+        export_content_to_file('[' + templates.join(',') + ']');
+
+    }, (error) => {
+        // No cookie
+        console.log({"error:": "No domain selected"});
+    });
 });
 
 $("#clipboard_cookie_export").click(function() {
@@ -274,6 +281,25 @@ function download(filename, text) {
     element.click();
 
     document.body.removeChild(element);
+}
+
+function export_content_to_file(content) {
+    // Due do FF bug (cf download() function)
+    // We have to create an iframe to propose a file to the user
+    var f = document.createElement('iframe');
+    f.style.position = 'fixed';
+    //f.style.left = f.style.top = '-999px';
+    //f.style.width = f.style.height = '99px';
+    f.srcdoc = '<a download="cookies.json" target="_blank">cookies.json</a>';
+    f.onload = function() {
+        var blob = new Blob([content], {type: 'application/json'});
+        var a = f.contentDocument.querySelector('a');
+        a.href = f.contentWindow.URL.createObjectURL(blob);
+        a.click();
+        // Removing the frame document implicitly revokes the blob:-URL too.
+        setTimeout(function() { f.remove(); }, 2000);
+    };
+    document.body.appendChild(f);
 }
 
 function onError(error) {
