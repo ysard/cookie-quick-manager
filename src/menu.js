@@ -80,7 +80,7 @@ getActiveTab().then((tabs) => {
   let img = document.createElement("img");
   img.src = favIconUrl;
   img.className = 'favicon';
-  let content = document.createTextNode('Search: ' + (new URL(current_tab.url)).hostname);
+  let content = document.createTextNode('Search cookie for: ' + (new URL(current_tab.url)).hostname);
   a.appendChild(img);
   a.appendChild(content);
 });
