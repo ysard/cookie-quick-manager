@@ -1,17 +1,17 @@
 WEB-EXT=../node_modules/.bin/web-ext
 
-mk_sources:
-	@mkdir -p dst
-	@cp -R src/* dst/
-	@cp LICENSE dst/
+mk_sources: clean
+	@mkdir -p build
+	@cp -R src/* build/
+	@cp LICENSE build/
 	@echo "sources ready"
 
 lint: mk_sources
-	$(WEB-EXT) lint --source-dir=dst
+	$(WEB-EXT) lint --source-dir=build
 
 build: mk_sources
-	$(WEB-EXT) build --source-dir=dst --artifacts-dir=dist
+	$(WEB-EXT) build --source-dir=build --artifacts-dir=dist
 
 clean:
-	@rm -rf dst/
+	@rm -rf build/
 	@echo "clean done"
