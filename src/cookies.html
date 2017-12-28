@@ -233,14 +233,15 @@
             <div class="dropup dropup-custom">
               <button type="button" class="btn btn-dark dropdown-toggle" id="export_button" data-toggle="dropdown"><span class="glyphicon glyphicon-folder-open"></span></button>
               <ul class="dropdown-menu">
-                <li class="dropdown-header">Export</li>
-                <li><a href="#" id="clipboard_cookie_export" data-toggle="modal" data-target="#modal_clipboard">Copy selected cookie to clipboard</a></li>
-                <li><a href="#" id="clipboard_domain_export" data-toggle="modal" data-target="#modal_clipboard">Copy selected domain to clipboard</a></li>
-                <li><a href="#" id="file_cookie_export">Save selected cookie to file</a></li>
-                <li><a href="#" id="file_domain_export">Save selected domain to file</a></li>
-                <li class="dropdown-header">Import</li>
+                <li class="dropdown-header">Export:</li>
+                <li><a href="#" id="clipboard_cookie_export" data-toggle="modal" data-target="#modal_clipboard">Copy cookie to clipboard</a></li>
+                <li><a href="#" id="clipboard_domain_export" data-toggle="modal" data-target="#modal_clipboard">Copy domain to clipboard</a></li>
+                <li><a href="#" id="file_cookie_export">Save cookie to file</a></li>
+                <li><a href="#" id="file_domain_export">Save domain to file</a></li>
+                <li class="divider"></li>
+                <li class="dropdown-header">Import:</li>
                 <li>
-                  <a href="#" id="import_file">Restore from file</a>
+                  <a href="#" id="import_file">Restore cookies from file</a>
                   <!--accept="text/plain"-->
                   <input type="file" id="file_elem" style="display:none">
                 </li>

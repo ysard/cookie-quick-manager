@@ -1,7 +1,7 @@
 # Présentation
 
 Cookie Quick Manager : Un gestionnaire complet pour les cookies utilisés en cours de navigation.
-Il permet notamment de visualiser, éditer, créer supprimer sauvegarder, restaurer et rechercher
+Il permet notamment de visualiser, éditer, créer, supprimer, sauvegarder, restaurer et rechercher
 les cookies par noms de domaines; la navigation privée est également supportée.
 
 Cookie Quick Manager est destinée aux développeurs, aux testeurs ou aux personnes
