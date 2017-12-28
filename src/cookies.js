@@ -133,30 +133,7 @@ $("#delete_button").click(function() {
     /* Remove a cookie displayed on details zone
      * NOTE: Remove inexistant cookie: Removed: null
      */
-    var params = {
-        url: getHostUrl(),
-        name: $('#name').val(),
-        storeId: $('#isprivate').is(':checked') ? 'firefox-private' : 'firefox-default',
-    }
-
-    var removing = browser.cookies.remove(params);
-    removing.then((cookie) => {
-        // Reactivate the interface
-        console.log({"Removed:": cookie});
-
-        // If null: no error but no suppression
-        // => display button content in red
-        if (cookie === null) {
-            $("#delete_button span").addClass("button-error");
-        } else {
-            // Supress red color, disable & reset text editing for the next cookie
-            // Simulate click on the same domain
-            $("#delete_button span").removeClass("button-error");
-            disable_cookie_details();
-            reset_cookie_details();
-            $('#domain-list').find('li.active').click();
-        }
-    }, onError);
+    delete_current_cookie();
 });
 
 $("#delete_domain_button").click(function() {
@@ -270,7 +247,6 @@ $('#expiration_date').on("dp.change", function(event) {
         $('#expiration_date input').removeClass("cookie-expired");
     }
 });
-
 
 /*********** Initializations ***********/
 
@@ -726,6 +702,36 @@ function getCookiesFromSelectedDomain() {
             }
         });
     });
+}
+
+function delete_current_cookie() {
+    /* Remove a cookie displayed on details zone
+     * NOTE: Remove inexistant cookie: Removed: null
+     */
+    var params = {
+        url: getHostUrl(),
+      name: $('#name').val(),
+      storeId: $('#isprivate').is(':checked') ? 'firefox-private' : 'firefox-default',
+    }
+
+    var removing = browser.cookies.remove(params);
+    removing.then((cookie) => {
+        // Reactivate the interface
+        console.log({"Removed:": cookie});
+
+        // If null: no error but no suppression
+        // => display button content in red
+        if (cookie === null) {
+            $("#delete_button span").addClass("button-error");
+        } else {
+            // Supress red color, disable & reset text editing for the next cookie
+            // Simulate click on the same domain
+            $("#delete_button span").removeClass("button-error");
+            disable_cookie_details();
+            reset_cookie_details();
+            $('#domain-list').find('li.active').click();
+        }
+    }, onError);
 }
 
 browser.cookies.onChanged.addListener(function(changeInfo) {
