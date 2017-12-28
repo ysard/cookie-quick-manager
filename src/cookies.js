@@ -491,7 +491,11 @@ function showDomains(storeIds) {
             if (display_count == 0) {
                 // No domain to display
                 no_cookie_alert(domainList);
+                return;
             }
+
+            // Simulate click on the first domain in the list when the list is built
+            $("#domain-list li").first().click();
         } else {
             // No domain to display
             no_cookie_alert(domainList);
