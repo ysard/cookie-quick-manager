@@ -345,16 +345,18 @@ function getHostUrl() {
 
 function disable_cookie_details() {
     // Disable all text inputs
-    $("#cookie-details input[type=text]").each(function() {
-        $(this).attr("readonly", true);
-    });
+    // Note: These inputs create a NEW cookie if they are modified
+    $("#domain").attr("readonly", true);
+    $("#name").attr("readonly", true);
+    $("#path").attr("readonly", true);
 }
 
 function enable_cookie_details() {
     // Enable all text inputs
-    $("#cookie-details input[type=text]").each(function() {
-        $(this).attr("readonly", false);
-    });
+    // Note: These inputs create a NEW cookie if they are modified
+    $("#domain").attr("readonly", false);
+    $("#name").attr("readonly", false);
+    $("#path").attr("readonly", false);
 }
 
 function onError(error) {

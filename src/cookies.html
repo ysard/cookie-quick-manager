@@ -150,7 +150,7 @@
             <div class="form-group row">
               <label class="col-sm-3 col-form-label" for="isprivate"
               data-html="true" data-toggle="tooltip"
-              title="Browsing context.<br>Check to make sure that the cookie is accessible in private browsing.">isPrivate</label>
+              title="Browsing context<br>Check to make sure that the cookie is accessible in private browsing.">isPrivate</label>
               <div class="col-sm-9">
                 <div class="form-check form-check-inline">
                   <input class="form-check-input" type="checkbox" name="isprivate" id="isprivate">
@@ -160,7 +160,7 @@
             <div class="form-group row">
               <label class="col-sm-3 col-form-label" for="httponly"
               data-html="true" data-toggle="tooltip"
-              title="Theft protection.<br>Check to force the cookie to be sent only over HTTP(S),<br> i.e. block JavaScript access like in XSS context.">httpOnly</label>
+              title="Theft protection<br>Check to force the cookie to be sent only over HTTP(S),<br> i.e. block JavaScript access like in XSS context.">httpOnly</label>
               <div class="col-sm-9">
                 <div class="form-check form-check-inline">
                   <input class="form-check-input" type="checkbox" name="httponly" id="httponly">
@@ -170,7 +170,7 @@
             <div class="form-group row">
               <label class="col-sm-3 col-form-label" for="issecure"
               data-html="true" data-toggle="tooltip"
-              title="Theft protection.<br>Check to force the cookie to be sent only over secure channels like HTTPS.">isSecure</label>
+              title="Theft protection<br>Check to force the cookie to be sent only over secure channels like HTTPS.">isSecure</label>
               <div class="col-sm-9">
                 <div class="form-check form-check-inline">
                   <input class="form-check-input" type="checkbox" name="issecure" id="issecure" checked>
@@ -181,7 +181,7 @@
             <div class="form-group row">
               <label class="col-sm-3 col-form-label" for="issession"
               data-html="true" data-toggle="tooltip"
-              title="Validity period.<br>Check to force the cookie to expire at the end of the session.">isSession</label>
+              title="Validity period<br>Check to force the cookie to expire at the end of the session.">isSession</label>
               <div class="col-sm-9">
                 <div class="form-check form-check-inline">
                   <input class="form-check-input" type="checkbox" name="issession" id="issession" checked>
@@ -192,7 +192,7 @@
               <label for="expiration_date" class="col-sm-3 col-form-label">Expire </label>
               <div class="col-sm-9">
                 <div class='input-group date' id='expiration_date'>
-                  <input type='text' class="form-control" readonly>
+                  <input type='text' class="form-control">
                   <span class="input-group-addon">
                   <span class="glyphicon glyphicon-calendar"></span>
                   </span>
@@ -267,8 +267,8 @@
           data-toggle="tooltip"
           title="Save the current cookie"><span class="glyphicon glyphicon-floppy-disk"></span></button>
           <button type="button" class="btn btn-dark" id="edit_button"
-          data-toggle="tooltip"
-          title="Allow to edit the current cookie"><span class="glyphicon glyphicon-pencil"></span></button>
+          data-html="true" data-toggle="tooltip"
+          title="Unlock the gray fields<br>Allow to create a new cookie by editing the current one as a template."><span class="glyphicon glyphicon-pencil"></span></button>
           <button type="button" class="btn btn-dark" id="delete_button"
           data-toggle="tooltip"
           title="Remove the current cookie"><span class="glyphicon glyphicon-trash"></span></button>
