@@ -262,7 +262,7 @@ $('#expiration_date').datetimepicker({
 $('[data-toggle="popover"]').popover();
 
 // Enable tooltips
-$('[data-toggle="tooltip"]').tooltip();
+$('[data-toggle="tooltip"]').tooltip({placement: "right", trigger: "hover"});
 
 firefox57_workaround_for_blank_panel();
 
