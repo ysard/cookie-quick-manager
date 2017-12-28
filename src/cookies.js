@@ -228,6 +228,69 @@ $("#toggle_url").click(function() {
     $(this).toggleClass("down");
 });
 
+$(document).keydown(function(event){
+    let key = event.which;
+
+    // Delete current cookie with suppr.
+    if (key == 46) {
+        delete_current_cookie();
+        return;
+    }
+
+    /*************************************************************************/
+    // Change selected list with Ctrl + left or Ctrl + right
+    if (event.ctrlKey) {
+        if (key == 37) { // left
+            $current_selected_list = $('#domain-list');
+        } else if (key == 39) { // right
+            $current_selected_list = $('#cookie-list');
+        }
+        return;
+    }
+
+    /*************************************************************************/
+    // Up & down key pressed
+    // Make a loop on all items of the list.
+    // When the end is reached, the next selected item is then the first of the list.
+    if (key != 40 && key != 38)
+        return;
+
+    // Init default selected list => done in main namespace
+    /*if ($current_selected_list === undefined)
+        $current_selected_list = $('#domain-list');
+     */
+
+    // Focus on items in the current list
+    let $listItems = $current_selected_list.find('li');
+    let $selected = $listItems.filter('.active');
+    let $current;
+    $listItems.removeClass('selected');
+
+    if ( key == 40 ) // Down key
+    {
+        console.log($selected.length);
+        if ( ! $selected.length || $selected.is(':last-child') ) {
+            $current = $listItems.eq(0);
+        }
+        else {
+            $current = $selected.next();
+        }
+    }
+    else if ( key == 38 ) // Up key
+    {
+        if ( ! $selected.length || $selected.is(':first-child') ) {
+            $current = $listItems.last();
+        }
+        else {
+            $current = $selected.prev();
+        }
+    }
+
+    // Simulate click on current item (domain or cookie)
+    $current.click();
+    event.preventDefault();
+});
+
 $('input[type=checkbox][name=issession]').change(function() {
     // Hide/Show datetimepicker according to the session checkbox state
     if(!$(this).is(':checked')) {
@@ -334,6 +397,10 @@ function no_cookie_alert(domNode) {
     let parent = domNode.parentNode;
     p.appendChild(content);
     domNode.appendChild(p);
+
+    // Focus on the domain list by default
+    // TODO: sufficient ?
+    $current_selected_list = $('#domain-list');
 }
 
 function getHostUrl() {
@@ -784,6 +851,8 @@ browser.cookies.onChanged.addListener(function(changeInfo) {
 // Global date format
 // PS: "DD-MM-YYYY hh:mm:ss a"), 'a' is for am/pm
 var date_format = "DD-MM-YYYY HH:mm:ss";
+
+var $current_selected_list = $('#domain-list');
 
 // Used by export.js on #clipboard_domain_export click event
 window.getCookiesFromSelectedDomain = getCookiesFromSelectedDomain;
