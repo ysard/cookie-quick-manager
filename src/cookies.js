@@ -733,7 +733,7 @@ function display_cookie_details(event) {
     $that.addClass('active');
 
     // Get the current cookie object
-    var cookie = $(this).data("cookie");
+    var cookie = $that.data("cookie");
     console.log(cookie);
 
     // Reset value modifiers
