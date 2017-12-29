@@ -290,6 +290,7 @@ $(document).keydown(function(event){
             $current = $selected.prev();
         }
     }
+    adjust_scrollbar($current);
 
     // Simulate click on current item (domain or cookie)
     $current.click();
@@ -358,6 +359,62 @@ function firefox57_workaround_for_blank_panel() {
         };
         browser.windows.update(currentWindow.id, updateInfo);
     });
+}
+
+function adjust_scrollbar($current) {
+    // Set the scrollbar position when the user uses up/down keys to scroll from keyboard
+    // => avoid to select an element which is hidden due to overflow
+    /* The magic of JavaScript...
+     * Don't ask me how it works...
+     * magic 7: the height of the current li has to be incremented by padding (3px) and borders (1px)
+     * since there is a bottom margin of -1px => 7px
+     */
+    /*
+     c onsole.log({scroll: $current_selected_list.scro*llTop()});
+    console.log({scroll_height: $current_selected_list.prop('scrollHeight')});
+    console.log({clientHeight: $current_selected_list.prop('clientHeight')});
+    console.log({curr_top: $current.position().top});
+    console.log({curr_height: $current.height()});
+    console.log({hauteur_tot: $current_selected_list.height()});
+    */
+    // Get the current position of scrollbar in pixels
+    let scrollpos = $current_selected_list.scrollTop();
+    // Get the maximum number of pixels by which the contents of the document can be scrolled vertically.
+    // The returned value is the difference between the total (scrollHeight)
+    // and the visible (clientHeight) height of the contents.
+    // scrollHeight: height of an element's content, including content not visible on the screen due to overflow.
+    // http://help.dottoro.com/ljhafjja.php
+    // https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollHeight
+    let max_scrollpos = $current_selected_list.prop('scrollHeight') - $current_selected_list.prop('clientHeight');
+    let new_scrollpos;
+    // Move down
+    if ($current.position().top + $current.height() >= $current_selected_list.height()) {
+        if (scrollpos == 0 && $current.position().top > $current_selected_list.height()) {
+            // The cursor is on the first element and the user presses up another time
+            // Set scrolltop to maximum
+            new_scrollpos = max_scrollpos;
+            console.log({DOWN_another_time: $current.position().top});
+        }
+        else
+            // Increment scrolltop since the previous element is already near to be hidden
+            new_scrollpos = scrollpos + $current.height() + 7;
+
+        // Move up
+    } else if ($current.position().top - $current.height() - 7 <= 0) {
+        // scrolltop is at the maximum and the current element is
+        if ($current.position().top + 7 <= 0 && scrollpos == max_scrollpos) {
+            // The cursor is on the last element and the user presses down another time
+            // Set scrolltop to 0
+            new_scrollpos = 0;
+            console.log({UP_another_time: $current.position().top});
+        } else {
+            // Decrement the scrolltop => go to the value 0,
+            // with the current element near to the top
+            new_scrollpos = scrollpos - ($current.height() + 7);
+            console.log({up_decr: $current.position().top});
+        }
+    }
+    $current_selected_list.scrollTop(new_scrollpos);
 }
 
 function uniqueDomains(cookies) {
