@@ -24,8 +24,22 @@ The export and import of a cookie or cookies from a domain in JSON format is jus
 
 Each parameter and functionality is briefly described when the mouse is over the element.
 
-# Support
+# Privacy
+
+This addon does not store any personal information.
+
+It requires the following rights to operate:
+
+* Host permission for all urls: This allows you to edit the cookies of any visited site,
+* Cookies: Allows access to the browser's cookie manager,
+* ActiveTab: Allows access to the consulted url, and favicon if it exists.
+
+# Support & source code
 
 The extension is in full development with the launch of Firefox Quantum;
 questions, bug reports and feature requests are open on the
 GitHub repository[GitHub repository](https://github.com/ysard/cookie-quick-manager/issues).
+
+# License
+
+[GPLv3](https://github.com/ysard/cookie-quick-manager/blob/master/LICENSE).

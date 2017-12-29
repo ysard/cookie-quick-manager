@@ -24,8 +24,22 @@ L'exportation et l'importation d'un cookie ou des cookies d'un domaine au format
 
 Chaque paramètre et fonctionnalité est brièvement décrit au survol de la souris.
 
-# Support
+# Vie privée & droits
+
+Cet addon ne stocke aucune information personnelle.
+
+Il requiert les droits suivants pour fonctionner:
+
+* Host permission for all urls: Cela permet d'éditer les cookies de n'importe quel site consulté,
+* Cookies: Autorise l'accès au gestionnaire de cookie du navigateur,
+* ActiveTab: Autorise l'accès à l'url consultée ainsi qu'à la favicon si elle existe.
+
+# Support & code source
 
 L'extension est en plein développement avec l'arrivée de Firefox Quantum;
 les questions, rapports de bugs et demandes de fonctionnalités sont ouvertes sur le
 dépôt GitHub [GitHub repository](https://github.com/ysard/cookie-quick-manager/issues).
+
+# Licence
+
+[GPLv3](https://github.com/ysard/cookie-quick-manager/blob/master/LICENSE).
