@@ -240,10 +240,15 @@ $(document).keydown(function(event){
     /*************************************************************************/
     // Change selected list with Ctrl + left or Ctrl + right
     if (event.ctrlKey) {
-        if (key == 37) { // left
+        if (key == 37) // left
             $current_selected_list = $('#domain-list');
-        } else if (key == 39) { // right
+        else if (key == 39) // right
             $current_selected_list = $('#cookie-list');
+
+        else if (key == 70) { // F => search
+            $('#search_domain').select();
+            // Avoid to display the search box of the browser
+            event.preventDefault();
         }
         return;
     }
