@@ -32,8 +32,10 @@
 /*********** Events attached to UI elements ***********/
 // Search box: handle keyboard inputs
 $('#search_domain').on('input', actualizeDomains);
-// Search box : handle button pressed
+// Search box: handle button pressed
 $('#search_domain_submit').click(actualizeDomains);
+// Query subdomains status: handle check
+$('#query-subdomains').click(actualizeDomains);
 // Actualize button pressed
 $("#actualize_button").click(actualizeDomains);
 
@@ -436,6 +438,42 @@ function uniqueDomains(cookies) {
     return domains;
 }
 
+function filter_master_domains(domains) {
+    // Return a dict only with domains that are on top of other subdomains
+
+    let unique_domains = Object.keys(domains);
+    let non_master_domains = [];
+    unique_domains.forEach(function(domain){
+        unique_domains.forEach(function(other_domain){
+            if (domain == other_domain)
+                return;
+            // recherche des domaines ne contenant pas d'autres domaines
+            if (domain.indexOf(other_domain) !== -1) {
+                // other_domain trouvé dans domain => domain n'est pas un master
+                // ex: github.com trouvé dans .github.com => .github.com n'est pas master
+                // On ajoute donc les données de .github.com à github.com
+                //console.log({found: other_domain, in_: domain});
+                non_master_domains.push(domain);
+                domains[other_domain].number += domains[domain].number;
+            }
+        });
+    });
+
+    // Remove non master domains from unique domains
+    unique_domains = unique_domains.filter(function(el) {
+        return !non_master_domains.includes(el);
+    });
+    //console.log({not_master: non_master_domains});
+    //console.log({master: unique_domains});
+
+    // Rebuild filtered domains
+    let full_master_domains = {};
+    for (let domain of unique_domains) {
+        full_master_domains[domain] = domains[domain];
+    }
+    return full_master_domains;
+}
+
 function getStores() {
     /* Return an array of cookie stores and initialize the list of domains in the ui */
     var storeIds = [];
@@ -576,6 +614,9 @@ function showDomains(storeIds) {
 
             // Get dict of domains with number of cookies + cookieStore ids
             var domains = uniqueDomains(cookies);
+            // Remove subdomains & keep only domains on top of subdomains
+            if ($('#query-subdomains').is(':checked'))
+                domains = filter_master_domains(domains);
             // Sort domains names alphabetically
             var domains_names = Object.keys(domains);
             domains_names.sort();
