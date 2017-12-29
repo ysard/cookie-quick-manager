@@ -92,6 +92,19 @@
       .popover {
         max-width: 500px;
       }
+
+      @media only screen and (max-width: 768px) {
+        #domain-list, #cookie-list {
+            height: 100px;
+            overflow-y: auto;
+        }
+        #toggle_url, #toggle_b64 {
+            bottom: 0px;
+        }
+        .col-sm-4 button {
+            margin-top: 3px;
+        }
+      }
     </style>
   </head>
   <body>
