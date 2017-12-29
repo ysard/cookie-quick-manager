@@ -32,15 +32,32 @@ function getActiveTab() {
 }
 
 function createWindow(createData) {
-  let creating = browser.windows.create(createData);
-  creating.then(() => {
-    console.log("The panel has been created");
+  // Get settings
+  let settings = browser.storage.local.get("addonSize");
+  settings.then((items) => {
+    let height = 581;
+    let width = 1200;
+
+    // If addonSize item is in storage and if previous sizes are too small
+    // => force default values
+    // 768 is the smallest width to avoid the break of the ui
+    if (items.addonSize !== undefined && items.addonSize.width >= 768 && items.addonSize.height >= height) {
+      height = items.addonSize.height;
+      width = items.addonSize.width;
+    }
+    //console.log({h:height, w:width});
+    createData.width = width;
+    createData.height = height;
+
+    // Create window
+    let window = browser.windows.create(createData);
+    window.then(() => {
+        console.log("The panel has been created");
+    });
   });
 }
 
 document.addEventListener("click", (e) => {
-  let height = 585;
-  let width = 1200;
 
   if (e.target.id === "search_cookie_manager") {
 
@@ -49,8 +66,6 @@ document.addEventListener("click", (e) => {
       let createData = {
         type: "panel",
         url: "cookies.html?parent_url=" + tabs[0].url,
-        height: height,
-        width: width,
       };
       createWindow(createData);
     });
@@ -61,8 +76,6 @@ document.addEventListener("click", (e) => {
     let createData = {
       type: "panel",
       url: "cookies.html?parent_url=",
-      height: height,
-      width: width,
     };
     createWindow(createData);
   }

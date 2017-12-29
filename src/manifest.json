@@ -5,7 +5,7 @@
   "author": "Ysard",
   "name": "Cookie Quick Manager",
   "version": "0.1beta6",
-  "permissions": ["cookies","<all_urls>","activeTab"],
+  "permissions": ["cookies","<all_urls>","activeTab", "storage"],
   "browser_action": {
     "browser_style": true,
     "default_title": "Cookie Quick Manager",

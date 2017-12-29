@@ -21,10 +21,10 @@
 // IIFE - Immediately Invoked Function Expression
 (function(mycode) {
 
-        // The global jQuery object is passed as a parameter
-        mycode(window.jQuery, window, document);
+    // The global jQuery object is passed as a parameter
+    mycode(window.jQuery, window, document);
 
-    }(function($, window, document) {
+}(function($, window, document) {
 
     // The $ is now locally scoped
     $(function () {
@@ -356,8 +356,8 @@ function firefox57_workaround_for_blank_panel() {
 
     getCurrentWindow().then((currentWindow) => {
         var updateInfo = {
-            width: 1200,
-            height: 586, // 1 pixel more than original size...
+            width: window.innerWidth,
+            height: window.innerHeight + 1, // 1 pixel more than original size...
         };
         browser.windows.update(currentWindow.id, updateInfo);
     });
