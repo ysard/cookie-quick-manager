@@ -1,0 +1,163 @@
+{
+  "extensionDescription": {
+    "message": "An addon to manage (view, search, create, edit, remove, backup, restore) cookies.",
+    "description": "Description of the extension."
+  },
+
+  "domainsListTitle": {
+    "message": "Domains",
+    "description": "Title of the list that displays domains."
+  },
+
+  "cookiesListTitle": {
+    "message": "Cookies",
+    "description": "Title of the list that displays cookies."
+  },
+
+  "detailsPanelTitle": {
+    "message": "Details",
+    "description": "Title of the list that displays details for cookies."
+  },
+
+  "cDomain": {
+    "message": "Domain ",
+    "description": "Attribute of a cookie in the details panel."
+  },
+
+  "cName": {
+    "message": "Name ",
+    "description": "Attribute of a cookie in the details panel."
+  },
+
+  "cValue": {
+    "message": "Value ",
+    "description": "Attribute of a cookie in the details panel."
+  },
+
+  "cPath": {
+    "message": "Path ",
+    "description": "Attribute of a cookie in the details panel."
+  },
+
+  "checkboxQuerySubdomains": {
+    "message": " Sub-domains",
+    "description": "Checkbox for search engine, used to query subdomains."
+  },
+
+  "menuHeaderExport": {
+    "message": "Export:",
+    "description": "Dropdown menu header."
+  },
+
+  "menuC2Clipboard": {
+    "message": "Copy cookie to clipboard",
+    "description": "Dropdown menu option."
+  },
+
+  "menuD2Clipboard": {
+    "message": "Copy domain to clipboard",
+    "description": "Dropdown menu option."
+  },
+
+  "menuC2File": {
+    "message": "Save cookie to file",
+    "description": "Dropdown menu option."
+  },
+
+  "menuD2File": {
+    "message": "Save domain to file",
+    "description": "Dropdown menu option."
+  },
+
+  "menuHeaderImport": {
+    "message": "Import:",
+    "description": "Dropdown menu header."
+  },
+
+  "menuRestore": {
+    "message": "Restore cookies from file",
+    "description": "Dropdown menu option."
+  },
+
+  "buttonClose": {
+    "message": "Close",
+    "description": "Close button on modal popovers."
+  },
+
+
+  "tooltip_cDomain": {
+    "message": "A host-only cookie, applies only to the current domain. Other cookies also apply to subdomains, and their domain has a leading point.",
+    "description": ""
+  },
+
+  "tooltip_buttonUrl": {
+    "message": "URL decode<br>Click to activate/deactivate.",
+    "description": "Button to change url encoding of the current cookie value."
+  },
+
+  "tooltip_buttonB64": {
+    "message": "Base64 decode<br>Click to activate/deactivate.",
+    "description": "Button to change url encoding of the current cookie value."
+  },
+
+  "tooltip_cIsPrivate": {
+    "message": "Browsing context<br>Check to make sure that the cookie is accessible in private browsing.",
+    "description": "Checkbox to modify the context of the current cookie (private/default browsing)."
+  },
+
+  "tooltip_cHttpOnly": {
+    "message": "Theft protection<br>Check to force the cookie to be sent only over HTTP(S),<br> i.e. block JavaScript access like in XSS context.",
+    "description": "Checkbox to change the httpOnly cookie flag."
+  },
+
+  "tooltip_cIsSecure": {
+    "message": "Theft protection<br>Check to force the cookie to be sent only over secure channels like HTTPS.",
+    "description": "Checkbox to change the isSecure cookie flag."
+  },
+
+  "tooltip_cIsSession": {
+    "message": "Validity period<br>Check to force the cookie to expire at the end of the session.",
+    "description": "Checkbox to change the isSession cookie flag."
+  },
+
+  "tooltipQuerySubdomains": {
+    "message": "Display also the cookies of the subdomains concerned by the selected domain",
+    "description": "Checkbox for search engine, used to query subdomains."
+  },
+
+  "tooltipRefresh": {
+    "message": "Refresh the list of domains",
+    "description": "Global button to refresh the interface."
+  },
+
+  "tooltipDDelete": {
+    "message": "Delete cookies from the selected domain",
+    "description": "Button to delete the selected domain."
+  },
+
+  "tooltipcontributeContent": {
+    "message": "How to contribute?",
+    "description": "Button to show the popover about contribution."
+  },
+
+  "tooltipSave": {
+    "message": "Save the current cookie",
+    "description": "Button to save the current cookie."
+  },
+
+  "tooltipEdit": {
+    "message": "Unlock the gray fields<br>Allow to create a new cookie by editing the current one as a template.",
+    "description": "Button to edit current cookie."
+  },
+
+  "tooltipCDelete": {
+    "message": "Remove the current cookie",
+    "description": "Button to delete the current cookie."
+  },
+
+  "contributeContent": {
+    "message": "<div id='contribute-content'>You can contribute to development in several ways:<br><ul><li>If you would like to make a donation to reward the many hours of development, please consider this bitcoin address:<br><span class='btc-color'>15qduxA755YANqGcbd8VvBmm8DmR4rCg1i</span></li><li>You can note the application on <a target='_blank' href='https://addons.mozilla.org/fr/firefox/addon/cookie-quick-manager/'>addons.mozilla.org</a>.</li><li>Participate in the review of the code on the <a target='_blank' href='https://github.com/ysard/cookie-quick-manager'>GitHub repository</a>.</li><li>Talk about it around you!</li></ul></div>",
+    "description": "How to contribute popover."
+  },
+
+}

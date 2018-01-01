@@ -116,46 +116,46 @@
       <div class="row">
 
         <div class="col-sm-4">
-          <h2>Domains</h2>
+          <h2 data-i18n-content="domainsListTitle">Domains</h2>
           <ul id="domain-list" class="list-group"></ul>
         </div>
 
         <div class="col-sm-4">
-          <h2>Cookies</h2>
+          <h2 data-i18n-content="cookiesListTitle">Cookies</h2>
           <ul id="cookie-list" class="list-group"></ul>
         </div>
 
         <div class="col-sm-4">
-          <h2>Details</h2>
+          <h2 data-i18n-content="detailsPanelTitle">Details</h2>
           <form id="cookie-details">
             <div class="form-group row">
               <label for="domain" class="col-sm-3 col-form-label"
               data-toggle="tooltip"
-              title="A host-only cookie, applies only to the current domain. Other cookies also apply to subdomains, and their domain has a leading point.">Domain </label>
+              title="A host-only cookie, applies only to the current domain. Other cookies also apply to subdomains, and their domain has a leading point." data-i18n-title="tooltip_cDomain" data-i18n-content="cDomain">Domain </label>
               <div class="col-sm-9">
                 <input type="text" class="form-control" name="domain" id="domain" readonly>
               </div>
             </div>
             <div class="form-group row">
-              <label for="name" class="col-sm-3 col-form-label">Name </label>
+              <label for="name" class="col-sm-3 col-form-label" data-i18n-content="cName">Name </label>
               <div class="col-sm-9">
                 <input type="text" class="form-control" name="name" id="name" readonly>
               </div>
             </div>
             <div class="form-group row">
-              <label for="value" class="col-sm-3 col-form-label">Value </label>
+              <label for="value" class="col-sm-3 col-form-label" data-i18n-content="cValue">Value </label>
               <div class="col-sm-9">
                 <textarea class="form-control" name="value" id="value"></textarea>
               </div>
               <button type="button" class="btn btn-dark" id="toggle_url"
               data-html="true" data-toggle="tooltip"
-              title="URL decode<br>Click to activate/deactivate.">URL</button>
+              title="URL decode<br>Click to activate/deactivate." data-i18n-title="tooltip_buttonUrl">URL</button>
               <button type="button" class="btn btn-dark" id="toggle_b64"
               data-html="true" data-toggle="tooltip"
-              title="Base64 decode<br>Click to activate/deactivate.">B64</button>
+              title="Base64 decode<br>Click to activate/deactivate." data-i18n-title="tooltip_buttonB64">B64</button>
             </div>
             <div class="form-group row">
-              <label for="path" class="col-sm-3 col-form-label">Path </label>
+              <label for="path" class="col-sm-3 col-form-label" data-i18n-content="cPath">Path </label>
               <div class="col-sm-9">
                 <input type="text" class="form-control" name="path" id="path" readonly>
               </div>
@@ -163,7 +163,7 @@
             <div class="form-group row">
               <label class="col-sm-3 col-form-label" for="isprivate"
               data-html="true" data-toggle="tooltip"
-              title="Browsing context<br>Check to make sure that the cookie is accessible in private browsing.">isPrivate</label>
+              title="Browsing context<br>Check to make sure that the cookie is accessible in private browsing." data-i18n-title="tooltip_cIsPrivate">isPrivate</label>
               <div class="col-sm-9">
                 <div class="form-check form-check-inline">
                   <input class="form-check-input" type="checkbox" name="isprivate" id="isprivate">
@@ -173,7 +173,7 @@
             <div class="form-group row">
               <label class="col-sm-3 col-form-label" for="httponly"
               data-html="true" data-toggle="tooltip"
-              title="Theft protection<br>Check to force the cookie to be sent only over HTTP(S),<br> i.e. block JavaScript access like in XSS context.">httpOnly</label>
+              title="Theft protection<br>Check to force the cookie to be sent only over HTTP(S),<br> i.e. block JavaScript access like in XSS context." data-i18n-title="tooltip_cHttpOnly">httpOnly</label>
               <div class="col-sm-9">
                 <div class="form-check form-check-inline">
                   <input class="form-check-input" type="checkbox" name="httponly" id="httponly">
@@ -183,7 +183,7 @@
             <div class="form-group row">
               <label class="col-sm-3 col-form-label" for="issecure"
               data-html="true" data-toggle="tooltip"
-              title="Theft protection<br>Check to force the cookie to be sent only over secure channels like HTTPS.">isSecure</label>
+              title="Theft protection<br>Check to force the cookie to be sent only over secure channels like HTTPS." data-i18n-title="tooltip_cIsSecure">isSecure</label>
               <div class="col-sm-9">
                 <div class="form-check form-check-inline">
                   <input class="form-check-input" type="checkbox" name="issecure" id="issecure" checked>
@@ -194,7 +194,7 @@
             <div class="form-group row">
               <label class="col-sm-3 col-form-label" for="issession"
               data-html="true" data-toggle="tooltip"
-              title="Validity period<br>Check to force the cookie to expire at the end of the session.">isSession</label>
+              title="Validity period<br>Check to force the cookie to expire at the end of the session." data-i18n-title="tooltip_cIsSession">isSession</label>
               <div class="col-sm-9">
                 <div class="form-check form-check-inline">
                   <input class="form-check-input" type="checkbox" name="issession" id="issession" checked>
@@ -230,8 +230,9 @@
             <div class="col-sm-8 checkbox form-check">
               <label class="form-check-label"
               data-toggle="tooltip"
-              title="Display also the cookies of the subdomains concerned by the selected domain">
-              <input class="form-check-input" type="checkbox" id="query-subdomains"> Sub-domains
+              title="Display also the cookies of the subdomains concerned by the selected domain"
+              data-i18n-title="tooltipQuerySubdomains">
+              <input class="form-check-input" type="checkbox" id="query-subdomains" data-i18n-content="checkboxQuerySubdomains"> Sub-domains
               </label>
             </div>
           </div>
@@ -239,22 +240,22 @@
           <div>
             <button type="button" class="btn btn-dark" id="actualize_button"
             data-toggle="tooltip"
-            title="Refresh the list of domains"><span class="glyphicon glyphicon-refresh"></span></button>
+            title="Refresh the list of domains" data-i18n-title="tooltipRefresh"><span class="glyphicon glyphicon-refresh"></span></button>
             <button type="button" class="btn btn-dark" id="delete_domain_button"
             data-toggle="tooltip"
-            title="Delete cookies from the selected domain"><span class="glyphicon glyphicon-trash"></span></button>
+            title="Delete cookies from the selected domain" data-i18n-title="tooltipDDelete"><span class="glyphicon glyphicon-trash"></span></button>
             <div class="dropup dropup-custom">
               <button type="button" class="btn btn-dark dropdown-toggle" id="export_button" data-toggle="dropdown"><span class="glyphicon glyphicon-folder-open"></span></button>
               <ul class="dropdown-menu">
-                <li class="dropdown-header">Export:</li>
-                <li><a href="#" id="clipboard_cookie_export" data-toggle="modal" data-target="#modal_clipboard">Copy cookie to clipboard</a></li>
-                <li><a href="#" id="clipboard_domain_export" data-toggle="modal" data-target="#modal_clipboard">Copy domain to clipboard</a></li>
-                <li><a href="#" id="file_cookie_export">Save cookie to file</a></li>
-                <li><a href="#" id="file_domain_export">Save domain to file</a></li>
+                <li class="dropdown-header" data-i18n-content="menuHeaderExport">Export:</li>
+                <li><a href="#" id="clipboard_cookie_export" data-toggle="modal" data-target="#modal_clipboard" data-i18n-content="menuC2Clipboard">Copy cookie to clipboard</a></li>
+                <li><a href="#" id="clipboard_domain_export" data-toggle="modal" data-target="#modal_clipboard" data-i18n-content="menuD2Clipboard">Copy domain to clipboard</a></li>
+                <li><a href="#" id="file_cookie_export" data-i18n-content="menuC2File">Save cookie to file</a></li>
+                <li><a href="#" id="file_domain_export" data-i18n-content="menuD2File">Save domain to file</a></li>
                 <li class="divider"></li>
-                <li class="dropdown-header">Import:</li>
+                <li class="dropdown-header" data-i18n-content="menuHeaderImport">Import:</li>
                 <li>
-                  <a href="#" id="import_file">Restore cookies from file</a>
+                  <a href="#" id="import_file" data-i18n-content="menuRestore">Restore cookies from file</a>
                   <!--accept="text/plain"-->
                   <input type="file" id="file_elem" style="display:none">
                 </li>
@@ -262,30 +263,20 @@
             </div>
             <button type="button" class="btn btn-dark" id="donate_button"
             data-toggle="popover" data-placement="top" data-html="true"
-            title="How to contribute?"
-            data-content="<div id='contribute-content'>You can contribute to development in several ways:<br>
-            <ul>
-              <li>If you would like to make a donation to reward the many hours of development, please consider this bitcoin address:<br><span class='btc-color'>15qduxA755YANqGcbd8VvBmm8DmR4rCg1i</span></li>
-
-              <li>You can note the application on <a target='_blank' href='https://addons.mozilla.org/fr/firefox/addon/cookie-quick-manager/'>addons.mozilla.org</a>.</li>
-
-              <li>Participate in the review of the code on the
-              <a target='_blank' href='https://github.com/ysard/cookie-quick-manager'>GitHub repository</a>.</li>
-
-              <li>Talk about it around you!</li></ul></div>"><span class="glyphicon glyphicon-bitcoin"></span></button>
+            data-i18n-popover-content="contributeContent"><span class="glyphicon glyphicon-bitcoin"></span></button>
           </div>
         </div>
         <!-- Specific commands for current cookie -->
         <div class="col-sm-4">
           <button type="button" class="btn btn-dark" id="save_button"
           data-toggle="tooltip"
-          title="Save the current cookie"><span class="glyphicon glyphicon-floppy-disk"></span></button>
+          title="Save the current cookie" data-i18n-title="tooltipSave"><span class="glyphicon glyphicon-floppy-disk"></span></button>
           <button type="button" class="btn btn-dark" id="edit_button"
           data-html="true" data-toggle="tooltip"
-          title="Unlock the gray fields<br>Allow to create a new cookie by editing the current one as a template."><span class="glyphicon glyphicon-pencil"></span></button>
+          title="Unlock the gray fields<br>Allow to create a new cookie by editing the current one as a template." data-i18n-title="tooltipEdit"><span class="glyphicon glyphicon-pencil"></span></button>
           <button type="button" class="btn btn-dark" id="delete_button"
           data-toggle="tooltip"
-          title="Remove the current cookie"><span class="glyphicon glyphicon-trash"></span></button>
+          title="Remove the current cookie" data-i18n-title="tooltipCDelete"><span class="glyphicon glyphicon-trash"></span></button>
         </div>
       </div>
     </div>
@@ -303,13 +294,13 @@
             <textarea class="form-control" id="clipboard_textarea"></textarea>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal" data-i18n-content="buttonClose">Close</button>
           </div>
         </div>
       </div>
     </div>
 
-     <!-- Modal overlay for import results -->
+     <!-- Modal overlay used to display the results of importation -->
     <div id="modal_info" class="modal fade" role="dialog">
       <div class="modal-dialog modal-sm">
         <!-- Modal content-->
@@ -322,7 +313,7 @@
             <p id="info_text"></p>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal" data-i18n-content="buttonClose">Close</button>
           </div>
         </div>
       </div>
