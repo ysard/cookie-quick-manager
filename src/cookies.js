@@ -548,8 +548,7 @@ function actualizeDomains() {
     // Reset details
     // Rebuild domains list with a new query
     // Called when searchbox is modified, and when actualize button is pressed
-    document.getElementById('domain-list').innerHTML = "";
-    document.getElementById('cookie-list').innerHTML = "";
+    $('#domain-list').empty();
     reset_cookie_details();
     getStores();
 }
