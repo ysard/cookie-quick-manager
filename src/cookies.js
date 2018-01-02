@@ -190,8 +190,8 @@ $("#delete_domain_button").click(function() {
             // Remove current cookie
             let params = {
                 url: getHostUrl(cookie),
-                 name: cookie.name,
-                 storeId: cookie.storeId,
+                name: cookie.name,
+                storeId: cookie.storeId,
             };
             let removing = browser.cookies.remove(params);
             removing.then((cookie) => {
@@ -606,6 +606,7 @@ function actualizeDomains() {
     // Rebuild domains list with a new query
     // Called when searchbox is modified, and when actualize button is pressed
     $('#domain-list').empty();
+    $('#cookie-list').empty();
     reset_cookie_details();
     getStores();
 }
@@ -955,7 +956,7 @@ function get_all_cookies() {
     // TODO: handle multiple stores
 
     return new Promise((resolve, reject) => {
-
+        // TODO: fix that :p
         var storeIds = ['firefox-default', 'firefox-private'];
 
         // Get 1 promise for each cookie store for each domain
