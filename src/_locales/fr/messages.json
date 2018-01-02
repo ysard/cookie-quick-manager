@@ -184,5 +184,10 @@
         "content" : "$1"
       }
     }
+  },
+
+  "noCookieAlert": {
+    "message": "Pas de cookie à afficher.",
+    "description": "Alert when there is no cookie in domain and cookie lists."
   }
 }

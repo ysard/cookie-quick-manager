@@ -528,7 +528,7 @@ function no_cookie_alert(domNode) {
     // No cookies to display
     // Add info to the given node (cookie-list or domain-list div)
     let p = document.createElement("p");
-    let content = document.createTextNode("No cookies in this tab.");
+    let content = document.createTextNode(browser.i18n.getMessage("noCookieAlert")); //"No cookies in this tab."
     let parent = domNode.parentNode;
     p.appendChild(content);
     domNode.appendChild(p);
