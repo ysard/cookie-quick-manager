@@ -217,7 +217,7 @@ function build_cookie_dump() {
     for (let key_pattern in params) {
         template_temp = template_temp.replace(key_pattern, params[key_pattern]);
     }
-    return template_temp;
+    return "[" + template_temp + "]";
     //return JSON.stringify(JSON.parse(template_temp), null, 2);
 }
 
