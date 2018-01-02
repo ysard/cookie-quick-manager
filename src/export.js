@@ -139,7 +139,8 @@ function display_json_in_clipboard_area(cookies_promise) {
         // Merge and display templates, update title with the number of cookies
         $('#clipboard_textarea').val(get_concatenated_content(templates));
         // Count cookies displayed (not subdomains filtered)
-        $('#modal_clipboard h4.modal-title').text("Export " + templates.length + " cookie(s)");
+        let content = browser.i18n.getMessage("modalClipboardTitle", templates.length);
+        $('#modal_clipboard h4.modal-title').text(content);
 
     }, (error) => {
         // No cookie

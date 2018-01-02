@@ -170,4 +170,14 @@
     "description": "How to contribute popover."
   },
 
+
+  "modalClipboardTitle": {
+    "message": "Export $cookie_number$ cookie(s)",
+    "description": "Header that tells the user how many cookies are exported in the textarea.",
+    "placeholders": {
+      "cookie_number" : {
+        "content" : "$1"
+      }
+    }
+  }
 }
