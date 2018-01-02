@@ -165,6 +165,11 @@
     "description": "Button to delete the current cookie"
   },
 
+  "tooltipCProtect": {
+    "message": "Protéger/Déprotéger de l'effacement",
+    "description": "Button to protect or unprotect the current cookie from deletion."
+  },
+
   "contributeContent": {
     "message": "<div id='contribute-content'>Vous pouvez contribuer au développement de plusieurs façons :<br><ul><li>Si vous voulez faire une donation pour récompenser les nombreuses heures de travail, veuillez considérer cette adresse bitcoin :<br><span class='btc-color'>15qduxA755YANqGcbd8VvBmm8DmR4rCg1i</span></li><li>Vous pouvez noter l'application pour augmenter sa visibilité sur <a target='_blank' href='https://addons.mozilla.org/fr/firefox/addon/cookie-quick-manager/'>addons.mozilla.org</a>.</li><li>Vous pouvez participer au développement sur le <a target='_blank' href='https://github.com/ysard/cookie-quick-manager'>dépôt GitHub</a>.</li><li>Parlez-en autour de vous !</li></ul></div>",
     "description": "How to contribute popover."

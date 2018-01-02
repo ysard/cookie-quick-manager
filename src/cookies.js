@@ -66,7 +66,7 @@ $( "#save_button" ).click(function() {
      * https://www.mxsasha.eu/blog/2014/03/04/definitive-guide-to-cookie-domains/
      */
     var params = {
-        url: getHostUrl(),
+        url: getHostUrl_from_UI(),
         name: $('#name').val(),
         value: $('#value').val(),
         path: $('#path').val(),
@@ -138,15 +138,47 @@ $("#delete_button").click(function() {
     delete_current_cookie();
 });
 
+$("#protect_button").click(function() {
+    // Update the protect status of the current cookie
+    //browser.storage.local.clear();
+
+    let settings = browser.storage.local.get("protected_cookies");
+    settings.then((items) => {
+
+        // Do nothing if no cookie is selected
+        let domain = $("#domain").val();
+        let name = $('#name').val();
+        if (name == '')
+            return;
+
+        let button_icon = $("#protect_button span");
+
+        if (!(domain in protected_cookies))
+            protected_cookies[domain] = [];
+        if (protected_cookies[domain].indexOf(name) === -1) {
+            // This cookie will be protected
+            protected_cookies[domain].push(name);
+            console.log({'protect: add': name});
+
+            button_icon.removeClass("glyphicon-lock");
+            button_icon.addClass("glyphicon-unlock");
+        } else {
+            // This cookie will not be protected anymore
+            console.log({'protect: rm': name});
+            protected_cookies[domain] = protected_cookies[domain].filter(item => ![name,].includes(item));
+
+            button_icon.removeClass("glyphicon-unlock");
+            button_icon.addClass("glyphicon-lock");
+        }
+
+        // Set new protected_cookies on storage area
+        settings = browser.storage.local.set({"protected_cookies": protected_cookies});
+        settings.then(null, onError);
+    });
+});
+
 $("#delete_domain_button").click(function() {
     // Remove each cookie for the selected domain
-
-    function getHostUrl(cookie) {
-        // If the modified cookie has the flag isSecure, the host protocol must be https:// in order to
-        // modify or delete it.
-        var host_protocol = (cookie.secure) ? 'https://' : 'http://';
-        return host_protocol + cookie.domain + cookie.path;
-    }
 
     // Supress red color, disable & reset text editing for the next cookie
     $("#delete_domain_button span").removeClass("button-error");
@@ -340,6 +372,9 @@ firefox57_workaround_for_blank_panel();
 // Set default domain in search box
 setDefaultDomain();
 
+// Init protected_cookies array in global context
+init_protected_cookies()
+
 // Fill the domains list
 getStores();
 
@@ -503,11 +538,33 @@ function no_cookie_alert(domNode) {
     $current_selected_list = $('#domain-list');
 }
 
-function getHostUrl() {
+function getHostUrl_from_UI() {
     // If the modified cookie has the flag isSecure, the host protocol must be https:// in order to
     // modify or delete it.
     var host_protocol = ($('#issecure').is(':checked')) ? 'https://' : 'http://';
     return host_protocol + $('#domain').val() + $('#path').val();
+}
+
+function getHostUrl(cookie) {
+    // If the modified cookie has the flag isSecure, the host protocol must be https:// in order to
+    // modify or delete it.
+    var host_protocol = (cookie.secure) ? 'https://' : 'http://';
+    return host_protocol + cookie.domain + cookie.path;
+}
+
+function init_protected_cookies() {
+    // Init protected_cookies array in global context
+    let settings = browser.storage.local.get("protected_cookies");
+    settings.then((items) => {
+        // Get data
+        if (items.protected_cookies !== undefined)
+            protected_cookies = items.protected_cookies;
+        else {
+            // Init data structure
+            settings = browser.storage.local.set({"protected_cookies": []});
+            settings.then(null, onError);
+        }
+    });
 }
 
 function disable_cookie_details() {
@@ -818,6 +875,20 @@ function display_cookie_details(event) {
         //$('#myDatepicker').data("DateTimePicker").clear();
         $expiration_date.data("DateTimePicker").date(moment(new Date ).add(1, 'days').format(date_format));
     }
+
+    // If the cookie is not in protected_cookies array: display lock icon
+    // otherwise, display unlock icon
+    let button_icon = $("#protect_button span");
+    if (protected_cookies[cookie.domain] === undefined ||
+        protected_cookies[cookie.domain].indexOf(cookie.name) === -1) {
+        // is not protected
+        button_icon.removeClass("glyphicon-unlock");
+        button_icon.addClass("glyphicon-lock");
+    } else {
+        // is protected
+        button_icon.removeClass("glyphicon-lock");
+        button_icon.addClass("glyphicon-unlock");
+    }
 }
 
 function getCookiesFromSelectedDomain() {
@@ -916,7 +987,7 @@ function delete_current_cookie() {
      * NOTE: Remove inexistant cookie: Removed: null
      */
     var params = {
-        url: getHostUrl(),
+      url: getHostUrl_from_UI(),
       name: $('#name').val(),
       storeId: $('#isprivate').is(':checked') ? 'firefox-private' : 'firefox-default',
     }
@@ -941,45 +1012,6 @@ function delete_current_cookie() {
     }, onError);
 }
 
-browser.cookies.onChanged.addListener(function(changeInfo) {
-    /* Callback when the cookie store is updated
-     * PS: not called when you try to overwrite the exact same cookie.
-     *
-     * Object { removed: true, cookie: Object, cause: "overwrite" }
-     * Object { removed: false, cookie: Object, cause: "explicit" }
-     *
-     * Object {removed: true, cookie: Object, cause: "explicit" }
-     */
-    console.log(changeInfo);
-
-    /*
-     * if (changeInfo.removed && changeInfo.cause == "explicit") {
-     *     // Reset 2 lists
-     *     document.getElementById('domain-list').innerHTML = "";
-     *     document.getElementById('cookie-list').innerHTML = "";
-     *     // Repop first list
-     *     getStores();
-     *     // todo update details
-     *     // ça vaut peut être pas le coup de réinitialiser les 2 listes tant qu'il y a encore
-     *     // des éléments dans la seconde...
-     *     // vérifier depuis changeInfo.cookie, le domaine et vérifier si ce domaine a encore des cookies.
-     *     // si non, tout rafrachir, si oui on reclique dessus
-     * }
-     *
-     *    if (changeInfo.removed && changeInfo.cause == "overwrite") {
-     *        // Simulate click on domain
-     *        $('#domain-list').find('li.active').click();
-     *
-     *    // send directly the id of the cookie overwritten
-     *    // {id: domain, storeIds: domains[domain].storeIds}
-     *    // Impossible de savoir si d'autres cookies font ref à un autre store
-     *    // => obligé de simuler le clic
-     *    //var event = {'data': {'id': changeInfo.cookie.domain}};
-     *    //showCookiesList(event);
-     *    }
-     */
-});
-
 /*********** Global variables ***********/
 
 // Global date format
@@ -987,6 +1019,8 @@ browser.cookies.onChanged.addListener(function(changeInfo) {
 var date_format = "DD-MM-YYYY HH:mm:ss";
 
 var $current_selected_list = $('#domain-list');
+
+var protected_cookies;
 
 // Used by export.js on #clipboard_domain_export click event
 window.getCookiesFromSelectedDomain = getCookiesFromSelectedDomain;
