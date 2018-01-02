@@ -192,12 +192,19 @@ function build_cookie_dump() {
         return (issecure) ? "Encrypted connections only" : "Any type of connection";
     }
 
+    function getHostUrl_from_UI() {
+        // If the modified cookie has the flag isSecure, the host protocol must be https:// in order to
+        // modify or delete it.
+        var host_protocol = ($('#issecure').is(':checked')) ? 'https://' : 'http://';
+        return host_protocol + $('#domain').val() + $('#path').val();
+    }
+
     // Make a local copy of the template
     var template_temp = cookie_clipboard_template;
 
     // Update variables
     var params = {
-        '{HOST_RAW}': $('#domain').val(),
+        '{HOST_RAW}': getHostUrl_from_UI(),
         '{NAME_RAW}': $('#name').val(),
         '{PATH_RAW}': $('#path').val(),
         '{CONTENT}': decodeURIComponent($('#value').val().replace(/"/g, '\\"')),
