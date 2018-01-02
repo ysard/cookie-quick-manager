@@ -46,8 +46,11 @@ function createWindow(createData) {
       width = items.addonSize.width;
     }
     //console.log({h:height, w:width});
+    /*
+     * TODO: why it is not ok on some computers with small resolution ?
     createData.width = width;
     createData.height = height;
+    */
 
     // Create window
     let window = browser.windows.create(createData);

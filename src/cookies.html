@@ -102,6 +102,16 @@
         line-height: 14px;
       }
 
+      .top-buttons {
+        position: absolute;
+        top: 0px;
+        right: 5px;
+        cursor: pointer;
+      }
+      .top-buttons:hover {
+        color: red;
+      }
+
       @media only screen and (max-width: 768px) {
         #domain-list, #cookie-list {
             height: 100px;
@@ -222,6 +232,9 @@
               </div>
             </div>
           </form>
+        </div>
+        <div class="top-buttons">
+          <span class="glyphicon glyphicon-resize-full" id="button_optimal_size"></span>
         </div>
       </div>
       <!-- Commands -->

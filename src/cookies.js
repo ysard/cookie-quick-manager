@@ -351,6 +351,17 @@ $('#expiration_date').on("dp.change", function(event) {
     }
 });
 
+$('#button_optimal_size').click(function() {
+    // Optimal size on click
+    browser.windows.getCurrent().then((currentWindow) => {
+        var updateInfo = {
+            width: 1200,
+            height: 581,
+        };
+        browser.windows.update(currentWindow.id, updateInfo);
+    });
+});
+
 /*********** Initializations ***********/
 
 // Init datetimepicker object
@@ -385,11 +396,7 @@ function firefox57_workaround_for_blank_panel() {
     // browser.windows.create() displays blank windows (panel, popup or detached_panel)
     // The trick to display content is to resize the window...
 
-    function getCurrentWindow() {
-        return browser.windows.getCurrent();
-    }
-
-    getCurrentWindow().then((currentWindow) => {
+    browser.windows.getCurrent().then((currentWindow) => {
         var updateInfo = {
             width: window.innerWidth,
             height: window.innerHeight + 1, // 1 pixel more than original size...
