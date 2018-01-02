@@ -166,7 +166,7 @@
   },
 
   "tooltipCProtect": {
-    "message": "Protect/Unprotect from deletion",
+    "message": "Erasure protection<br>When the padlock is closed you can click on it and prevent the future deletion of this cookie.",
     "description": "Button to protect or unprotect the current cookie from deletion."
   },
 

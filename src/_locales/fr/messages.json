@@ -166,7 +166,7 @@
   },
 
   "tooltipCProtect": {
-    "message": "Protéger/Déprotéger de l'effacement",
+    "message": "Protection contre l'effacement<br>Quand le cadenas est fermé vous pouvez cliquer dessus et empêcher la suppression future de ce cookie.",
     "description": "Button to protect or unprotect the current cookie from deletion."
   },
 
