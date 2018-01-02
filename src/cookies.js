@@ -399,7 +399,7 @@ function firefox57_workaround_for_blank_panel() {
     browser.windows.getCurrent().then((currentWindow) => {
         var updateInfo = {
             width: window.innerWidth,
-            height: window.innerHeight + 1, // 1 pixel more than original size...
+            height: window.innerHeight + 2, // 2 pixel more than original size...
         };
         browser.windows.update(currentWindow.id, updateInfo);
     });
