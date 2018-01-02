@@ -189,5 +189,20 @@
   "noCookieAlert": {
     "message": "No cookies in this tab.",
     "description": "Alert when there is no cookie in domain and cookie lists."
+  },
+
+  "cookieRestoredSuccess": {
+    "message": "Cookie(s) successfully restored !",
+    "description": "Alert when a file is imported with success."
+  },
+
+  "cookieRestoredError": {
+    "message": "Error, no cookie restored.\n$json_error$",
+    "description": "Alert when a file is imported with an error from the json parser.",
+    "placeholders": {
+      "json_error" : {
+        "content" : "$1"
+      }
+    }
   }
 }

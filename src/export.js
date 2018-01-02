@@ -334,20 +334,17 @@ function export_content_to_file(content) {
 function onError(error) {
     // Function called when a save/remove function has failed by throwing an exception.
     console.log({"Error removing/saving cookie:": error});
+    set_info_text(browser.i18n.getMessage("cookieRestoredError", error));
 }
 
 function handleUploadedFile(content) {
     // Take a file content and dispatch it to the good parser
     try {
         parseJSONFile(content);
-        // Display modal info
-        $('#info_text').text("Cookie successfully restored");
-        // Actualize interface
-        $("#actualize_button").click();
     } catch (error) {
         if (error instanceof SyntaxError) {
             console.log(error);
-            $('#info_text').text("Error, no cookie restored.\n" + error);
+            set_info_text(browser.i18n.getMessage("cookieRestoredError", error));
         } else {
             throw error;
         }
@@ -396,8 +393,17 @@ function parseJSONFile(content) {
                 // TODO: handle this error (the exception is not catched)
                 throw new SyntaxError("Cookie " + JSON.stringify(cookie) + "can't be saved");
             }
+
+            // Display modal info
+            set_info_text(browser.i18n.getMessage("cookieRestoredSuccess"));
+            // Actualize interface
+            $("#actualize_button").click();
         }, onError);
     }
+}
+
+function set_info_text(content) {
+    $('#info_text').text(content);
 }
 
 /*********** Global variables ***********/
