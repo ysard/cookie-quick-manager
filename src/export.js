@@ -50,17 +50,20 @@ $("#file_domain_export").click(function() {
     let promise = window.getCookiesFromSelectedDomain();
     promise.then((cookies) => {
         // Make 1 json for each cookie and store it
-        var templates = [];
-        for (let cookie of cookies) {
-            // Build a template for the current cookie
-            templates.push(build_domain_dump(cookie));
-        }
-        // Merge and display templates, update title with the number of cookies
-        export_content_to_file('[' + templates.join(',') + ']');
+        // Merge and display templates
+        export_content_to_file(get_concatenated_content(get_templates(cookies)));
 
     }, (error) => {
         // No cookie
         console.log({"error:": "No domain selected"});
+    });
+});
+
+$("#file_all_export").click(function() {
+    // Build 1 json template for each cookie in all stores
+    let promise = window.get_all_cookies();
+    promise.then((cookies) => {
+        export_content_to_file(get_concatenated_content(get_templates(cookies)));
     });
 });
 
@@ -74,25 +77,14 @@ $("#clipboard_cookie_export").click(function() {
 
 $("#clipboard_domain_export").click(function() {
     // Build 1 json template for each cookie for the selected domain
-
     let promise = window.getCookiesFromSelectedDomain();
-    promise.then((cookies) => {
-        // Make 1 json for each cookie and store it
-        var templates = [];
-        for (let cookie of cookies) {
-            // Build a template for the current cookie
-            templates.push(build_domain_dump(cookie));
-        }
-        // Merge and display templates, update title with the number of cookies
-        $('#clipboard_textarea').val('[' + templates.join(',') + ']');
-        // Count cookies displayed (not subdomains filtered)
-        $('#modal_clipboard h4.modal-title').text("Export " + templates.length + " cookie(s)");
+    display_json_in_clipboard_area(promise);
+});
 
-    }, (error) => {
-        // No cookie
-        $('#clipboard_textarea').val('');
-        $('#modal_clipboard h4.modal-title').text("Export 0 cookie");
-    });
+$("#clipboard_all_export").click(function() {
+    // Build 1 json template for each cookie in all stores
+    let promise = window.get_all_cookies();
+    display_json_in_clipboard_area(promise);
 });
 
 $("#import_file").click(function(event) {
@@ -121,6 +113,41 @@ $("#file_elem").change(function(event) {
 });
 
 /*********** Utils ***********/
+function get_concatenated_content(templates) {
+    // Return JSON string from array of strings
+    // Make 1 json for each cookie and store it
+    return '[' + templates.join(',') + ']';
+}
+
+function get_templates(cookies) {
+    // Return array of templates (strings); 1 for each cookie in the given array
+    // Make 1 template for each cookie and store it
+    var templates = [];
+    for (let cookie of cookies) {
+        // Build a template for the current cookie
+        templates.push(build_domain_dump(cookie));
+    }
+    return templates;
+}
+
+function display_json_in_clipboard_area(cookies_promise) {
+    // Fill the textarea with the cookies in the given promise
+
+    cookies_promise.then((cookies) => {
+        // Make 1 json for each cookie
+        var templates = get_templates(cookies);
+        // Merge and display templates, update title with the number of cookies
+        $('#clipboard_textarea').val(get_concatenated_content(templates));
+        // Count cookies displayed (not subdomains filtered)
+        $('#modal_clipboard h4.modal-title').text("Export " + templates.length + " cookie(s)");
+
+    }, (error) => {
+        // No cookie
+        $('#clipboard_textarea').val('');
+        $('#modal_clipboard h4.modal-title').text("Export 0 cookie");
+    });
+}
+
 function build_cookie_dump() {
     // Return the updated template according to the selected cookie in cookie-list,
     // displayed in details.

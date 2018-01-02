@@ -879,6 +879,38 @@ function getCookiesFromSelectedDomain() {
     });
 }
 
+function get_all_cookies() {
+    // Return a Promise with all cookies in all stores
+    // TODO: handle multiple stores
+
+    return new Promise((resolve, reject) => {
+
+        var storeIds = ['firefox-default', 'firefox-private'];
+
+        // Get 1 promise for each cookie store for each domain
+        // Each promise stores all associated cookies
+        var promises = [];
+        for (let storeId of storeIds) {
+            promises.push(browser.cookies.getAll({storeId: storeId}));
+        }
+
+        // Merge all promises
+        Promise.all(promises).then((cookies_array) => {
+
+            // Merge all results of promises
+            let cookies = [];
+            for (let cookie_subset of cookies_array) {
+                cookies = cookies.concat(cookie_subset);
+            }
+
+            if (cookies.length > 0)
+                resolve(cookies);
+            else
+                reject("NoCookies");
+        });
+    });
+}
+
 function delete_current_cookie() {
     /* Remove a cookie displayed on details zone
      * NOTE: Remove inexistant cookie: Removed: null
@@ -958,4 +990,5 @@ var $current_selected_list = $('#domain-list');
 
 // Used by export.js on #clipboard_domain_export click event
 window.getCookiesFromSelectedDomain = getCookiesFromSelectedDomain;
+window.get_all_cookies = get_all_cookies;
 }));

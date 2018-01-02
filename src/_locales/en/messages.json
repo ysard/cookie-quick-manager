@@ -59,6 +59,11 @@
     "description": "Dropdown menu option."
   },
 
+  "menuA2Clipboard": {
+    "message": "Copy all to clipboard",
+    "description": "Dropdown menu option."
+  },
+
   "menuC2File": {
     "message": "Save cookie to file",
     "description": "Dropdown menu option."
@@ -66,6 +71,11 @@
 
   "menuD2File": {
     "message": "Save domain to file",
+    "description": "Dropdown menu option."
+  },
+
+  "menuA2File": {
+    "message": "Save all to file",
     "description": "Dropdown menu option."
   },
 
