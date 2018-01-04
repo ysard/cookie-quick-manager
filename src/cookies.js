@@ -179,37 +179,14 @@ $("#protect_button").click(function() {
 
 $("#delete_domain_button").click(function() {
     // Remove each cookie for the selected domain
+    var promise = getCookiesFromSelectedDomain();
+    delete_cookies(promise, "#delete_domain_button span");
+});
 
-    // Supress red color, disable & reset text editing for the next cookie
-    $("#delete_domain_button span").removeClass("button-error");
-
-    let promise = getCookiesFromSelectedDomain();
-    promise.then((cookies) => {
-
-        for (let cookie of cookies) {
-            // Remove current cookie
-            let params = {
-                url: getHostUrl(cookie),
-                name: cookie.name,
-                storeId: cookie.storeId,
-            };
-            let removing = browser.cookies.remove(params);
-            removing.then((cookie) => {
-                // Reactivate the interface
-                console.log({"Removed:": cookie});
-
-                // If null: no error but no suppression
-                // => display button content in red
-                if (cookie === null)
-                    // => display button content in red
-                    $("#delete_domain_button span").addClass("button-error");
-            }, onError);
-        }
-
-        disable_cookie_details();
-        reset_cookie_details();
-        actualizeDomains();
-    }, onError);
+$("#delete_all_button").click(function() {
+    // Remove all cookies
+    var promise = get_all_cookies();
+    delete_cookies(promise, "#delete_all_button span");
 });
 
 $("#toggle_b64").click(function() {
@@ -529,6 +506,66 @@ function getStores() {
 
     var gettingStores = browser.cookies.getAllCookieStores();
     gettingStores.then(logStores);
+}
+
+function delete_cookies(promise, delete_button_selector) {
+    // Delete all cookies in the promise
+    // Return a promise
+    let deletion_promise =  new Promise((resolve, reject) => {
+
+        promise.then((cookies) => {
+
+            let promises = [];
+            for (let cookie of cookies) {
+                // Remove current cookie
+                let params = {
+                    url: getHostUrl(cookie),
+                     name: cookie.name,
+                     storeId: cookie.storeId,
+                };
+                promises.push(browser.cookies.remove(params));
+            }
+
+            Promise.all(promises).then((cookies_array) => {
+                // Iter on all results of promises
+                for (let deleted_cookie of cookies_array) {
+
+                    // If null: no error but no suppression
+                    // => display button content in red
+                    if (deleted_cookie === null) {
+                        console.log({"Not removed": deleted_cookie});
+                        // => display button content in red
+                        reject("No error but not removed");
+                    }
+                    console.log({"Removed": deleted_cookie});
+                }
+                // Ok => all cookies are deleted properly
+                // Reactivate the interface
+                resolve();
+            }, onError);
+        }, onError);
+    });
+
+    deletion_promise.then((ret) => {
+        // Supress red color, disable & reset text editing for the next cookie
+        $(delete_button_selector).removeClass("button-error");
+
+        // Reactivate the interface
+        disable_cookie_details();
+        actualizeDomains();
+
+    }, (error) => {
+        console.log({RemovedError: error});
+        // If null: no error but no suppression
+        // => display button content in red
+        $(delete_button_selector).addClass("button-error");
+
+        // Reactivate the interface
+        disable_cookie_details();
+        reset_cookie_details();
+        // Click on the same domaine since there are not deleted cookies
+        $('#domain-list').find('li.active').click();
+    });
 }
 
 function no_cookie_alert(domNode) {
@@ -1010,6 +1047,7 @@ function delete_current_cookie() {
         if (cookie === null) {
             $("#delete_button span").addClass("button-error");
         } else {
+            // OK
             // Supress red color, disable & reset text editing for the next cookie
             // Simulate click on the same domain
             $("#delete_button span").removeClass("button-error");

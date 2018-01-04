@@ -145,6 +145,11 @@
     "description": "Button to delete the selected domain."
   },
 
+  "tooltipADelete": {
+    "message": "Delete all the cookies",
+    "description": "Button to delete all the cookies in the browser."
+  },
+
   "tooltipcontributeContent": {
     "message": "How to contribute?",
     "description": "Button to show the popover about contribution."

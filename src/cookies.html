@@ -240,16 +240,16 @@
       <!-- Commands -->
       <div class="row">
         <!-- Generic commands -->
-        <div class="col-sm-8">
+        <div class="col-sm-4">
           <!-- Search -->
           <div class="form-row">
-            <div class="col-sm-4 input-group" style="float:left">
+            <div class="col-sm-7 input-group" style="float:left">
               <input type="text" class="form-control" name="search_domain" id="search_domain" placeholder="Search">
               <div class="input-group-btn">
                 <button class="btn btn-default" type="submit" id="search_domain_submit"><span class="glyphicon glyphicon-search"></span></button>
               </div>
             </div>
-            <div class="col-sm-8 checkbox form-check">
+            <div class="col-sm-5 checkbox form-check">
               <label class="form-check-label"
               data-toggle="tooltip"
               title="Display also the cookies of the subdomains concerned by the selected domain"
@@ -263,9 +263,9 @@
             <button type="button" class="btn btn-dark" id="actualize_button"
             data-toggle="tooltip"
             title="Refresh the list of domains" data-i18n-title="tooltipRefresh"><span class="glyphicon glyphicon-refresh"></span></button>
-            <button type="button" class="btn btn-dark" id="delete_domain_button"
+            <button type="button" class="btn btn-dark" id="delete_all_button"
             data-toggle="tooltip"
-            title="Delete cookies from the selected domain" data-i18n-title="tooltipDDelete"><span class="glyphicon glyphicon-trash"></span></button>
+            title="Delete all the cookies" data-i18n-title="tooltipADelete"><span class="glyphicon glyphicon-trash"></span></button>
             <div class="dropup dropup-custom">
               <button type="button" class="btn btn-dark dropdown-toggle" id="export_button" data-toggle="dropdown"><span class="glyphicon glyphicon-folder-open"></span></button>
               <ul class="dropdown-menu">
@@ -289,6 +289,11 @@
             data-toggle="popover" data-placement="top" data-html="true"
             data-i18n-popover-content="contributeContent"><span class="glyphicon glyphicon-bitcoin"></span></button>
           </div>
+        </div>
+        <div class="col-sm-4">
+          <button type="button" class="btn btn-dark" id="delete_domain_button"
+          data-toggle="tooltip"
+          title="Delete cookies from the selected domain" data-i18n-title="tooltipDDelete"><span class="glyphicon glyphicon-trash"></span></button>
         </div>
         <!-- Specific commands for current cookie -->
         <div class="col-sm-4">
