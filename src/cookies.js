@@ -601,7 +601,8 @@ function init_protected_cookies() {
     let settings = browser.storage.local.get("protected_cookies");
     settings.then((items) => {
         // Get data
-        if (items.protected_cookies !== undefined)
+        // The array check is a workaround to fix previous bug e4e735f (an array instead of an object)
+        if (items.protected_cookies !== undefined && !Array.isArray(items.protected_cookies))
             protected_cookies = items.protected_cookies;
         else {
             // Init data structure

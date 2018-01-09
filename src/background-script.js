@@ -18,7 +18,8 @@ function init_protected_cookies() {
     let settings = browser.storage.local.get("protected_cookies");
     settings.then((items) => {
         // Get data
-        if (items.protected_cookies !== undefined)
+        // The array check is a workaround to fix previous bug e4e735f (an array instead of an object)
+        if (items.protected_cookies !== undefined && !Array.isArray(items.protected_cookies))
             protected_cookies = items.protected_cookies;
         else {
             // Init data structure
@@ -28,6 +29,7 @@ function init_protected_cookies() {
     });
 }
 
+/*********** Events ***********/
 browser.cookies.onChanged.addListener(function(changeInfo) {
     /* Callback when the cookie store is updated
      * PS: not called when you try to overwrite the exact same cookie.
@@ -99,11 +101,13 @@ browser.storage.onChanged.addListener(function (changes, area) {
     // Here: we handle only 'protected_cookies' key.
 
     //console.log("Change in storage area: " + area);
-    //console.log(changes);
+    console.log(changes);
     if (changes['protected_cookies'] !== undefined)
         protected_cookies = changes.protected_cookies.newValue;
 
 });
+
+/*********** Global variables ***********/
 
 init_protected_cookies();
 // Set default color of the counter of protected cookies on the toolbar icon
