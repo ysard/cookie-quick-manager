@@ -22,7 +22,7 @@ function init_protected_cookies() {
             protected_cookies = items.protected_cookies;
         else {
             // Init data structure
-            settings = browser.storage.local.set({"protected_cookies": []});
+            settings = browser.storage.local.set({"protected_cookies": {}});
             settings.then(null, onError);
         }
     });

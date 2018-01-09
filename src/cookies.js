@@ -142,8 +142,8 @@ $("#protect_button").click(function() {
     // Update the protect status of the current cookie
     //browser.storage.local.clear();
 
-    let settings = browser.storage.local.get("protected_cookies");
-    settings.then((items) => {
+    //let settings = browser.storage.local.get("protected_cookies");
+    //settings.then((items) => {
 
         // Do nothing if no cookie is selected
         let domain = $("#domain").val();
@@ -157,8 +157,8 @@ $("#protect_button").click(function() {
             protected_cookies[domain] = [];
         if (protected_cookies[domain].indexOf(name) === -1) {
             // This cookie will be protected
-            protected_cookies[domain].push(name);
             console.log({'protect: add': name});
+            protected_cookies[domain].push(name);
 
             button_icon.removeClass("glyphicon-lock");
             button_icon.addClass("glyphicon-unlock");
@@ -170,11 +170,11 @@ $("#protect_button").click(function() {
             button_icon.removeClass("glyphicon-unlock");
             button_icon.addClass("glyphicon-lock");
         }
-
+        //console.log(protected_cookies);
         // Set new protected_cookies on storage area
         settings = browser.storage.local.set({"protected_cookies": protected_cookies});
         settings.then(null, onError);
-    });
+    //});
 });
 
 $("#delete_domain_button").click(function() {
@@ -605,7 +605,7 @@ function init_protected_cookies() {
             protected_cookies = items.protected_cookies;
         else {
             // Init data structure
-            settings = browser.storage.local.set({"protected_cookies": []});
+            settings = browser.storage.local.set({"protected_cookies": {}});
             settings.then(null, onError);
         }
     });
