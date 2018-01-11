@@ -339,6 +339,26 @@ $('#button_optimal_size').click(function() {
     });
 });
 
+window.onresize = function(event) {
+    // Set the current size in local storage
+    // This value is compared when the user clicks on the toolbar menu
+
+    addonSize = {
+        width: window.innerWidth,
+        height: window.innerHeight
+    };
+    /*
+     *  // minus the width of the scrollbar:
+     *  width = $(window).width();
+     *  height = $(window).height();
+     */
+    console.log(addonSize);
+    settings = browser.storage.local.set({addonSize});
+    settings.then(null, (error) => {
+        console.log(`Error_resizing: ${error}`);
+    });
+};
+
 /*********** Initializations ***********/
 
 // Init datetimepicker object
