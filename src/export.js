@@ -130,6 +130,11 @@ function get_templates(cookies) {
     return templates;
 }
 
+function secure_json_string(unescaped_string) {
+    // Escape double quotes and backslashs
+    return unescaped_string.replace(/\\/g, "\\\\").replace(/"/g, '\\"');
+}
+
 function display_json_in_clipboard_area(cookies_promise) {
     // Fill the textarea with the cookies in the given promise
 
@@ -205,10 +210,10 @@ function build_cookie_dump() {
     // Update variables
     var params = {
         '{HOST_RAW}': getHostUrl_from_UI(),
-        '{NAME_RAW}': $('#name').val(),
+        '{NAME_RAW}': secure_json_string($('#name').val()),
         '{PATH_RAW}': $('#path').val(),
-        '{CONTENT}': decodeURIComponent($('#value').val()).replace(/"/g, '\\"'),
-        '{CONTENT_RAW}': $('#value').val().replace(/"/g, '\\"'),
+        '{CONTENT}': secure_json_string(decodeURIComponent($('#value').val())),
+        '{CONTENT_RAW}': secure_json_string($('#value').val()),
         '{EXPIRES}': get_timestamp(false),
         '{EXPIRES_RAW}': get_timestamp(true),
         '{ISSECURE}': get_secure_status(false),
@@ -279,10 +284,10 @@ function build_domain_dump(cookie) {
 
     var params = {
         '{HOST_RAW}': getHostUrl(),
-        '{NAME_RAW}': cookie.name,
+        '{NAME_RAW}': secure_json_string(cookie.name),
         '{PATH_RAW}': cookie.path,
-        '{CONTENT}': decodeURIComponent(cookie.value).replace(/"/g, '\\"'),
-        '{CONTENT_RAW}': cookie.value.replace(/"/g, '\\"'),
+        '{CONTENT}': secure_json_string(decodeURIComponent(cookie.value)),
+        '{CONTENT_RAW}': secure_json_string(cookie.value),
         '{EXPIRES}': get_timestamp(false),
         '{EXPIRES_RAW}': get_timestamp(true),
         '{ISSECURE}': get_secure_status(false),
