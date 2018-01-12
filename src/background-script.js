@@ -91,7 +91,8 @@ browser.cookies.onChanged.addListener(function(changeInfo) {
             console.log({"Erasure protection: Cookie NOT deleted!:": cookie});
             // Increment counter of protected cookies on the toolbar icon
             protected_cookies_counter++;
-            browser.browserAction.setBadgeText({text: String(protected_cookies_counter)});
+            // TODO: 1 counter per tab ? or add clearer information.. Is this option useful ?
+            //browser.browserAction.setBadgeText({text: String(protected_cookies_counter)});
         }, onError);
     }
 });
