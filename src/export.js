@@ -349,8 +349,15 @@ function onError(error) {
 
 function handleUploadedFile(content) {
     // Take a file content and dispatch it to the good parser
+    parseJSONFile(content);
+}
+
+function parseJSONFile(content) {
+    // Parse json file and return a cookie object
+
     try {
-        parseJSONFile(content);
+        // Throw SyntaxError if JSON is not correctly formatted
+        var json_content = JSON.parse(content);
     } catch (error) {
         if (error instanceof SyntaxError) {
             console.log(error);
@@ -358,19 +365,12 @@ function handleUploadedFile(content) {
         } else {
             throw error;
         }
-    } finally {
         $('#modal_info').modal('show');
+        return;
     }
-}
-
-function parseJSONFile(content) {
-    // Parse json file and return a cookie object
-    // Throw syntax error if cookies can't be saved
-
-    var json_content = JSON.parse(content);
 
     // Build cookies
-    var cookies = [];
+    let promises = [];
     for (let json_cookie of json_content) {
         let params = {
             url: json_cookie["Host raw"],
@@ -387,29 +387,47 @@ function parseJSONFile(content) {
             params['expirationDate'] = parseInt(json_cookie["Expires raw"], 10);
         }
         console.log(params);
-        cookies.push(params);
+        promises.push(browser.cookies.set(params));
     }
 
-    // Set cookies
-    for (let params of cookies) {
-        var gettingAllCookies = browser.cookies.set(params);
+    add_cookies(promises);
+}
 
-        gettingAllCookies.then((cookie) => {
-            // Reactivate the interface
-            console.log({"Cookie saved: ": cookie});
+function add_cookies(cookies_promises) {
 
-            // If null: no error but no save
-            if (cookie === null) {
-                // TODO: handle this error (the exception is not catched)
-                throw new SyntaxError("Cookie " + JSON.stringify(cookie) + "can't be saved");
+    let add_promise = new Promise((resolve, reject) => {
+
+        Promise.all(cookies_promises).then((cookies_array) => {
+            // Iter on all results of promises
+            for (let added_cookie of cookies_array) {
+
+                // If null: no error but no save
+                if (added_cookie === null) {
+                    console.log({"Not added": added_cookie});
+                    reject("Cookie " + JSON.stringify(added_cookie) + " can't be saved");
+                }
+                console.log({"Added": added_cookie});
             }
-
-            // Display modal info
-            set_info_text(browser.i18n.getMessage("cookieRestoredSuccess"));
-            // Actualize interface
-            $("#actualize_button").click();
+            // Ok => all cookies are added properly
+            // Reactivate the interface
+            resolve();
         }, onError);
-    }
+    });
+
+    add_promise.then((ret) => {
+        // Display modal info
+        set_info_text(browser.i18n.getMessage("cookieRestoredSuccess"));
+        // Actualize interface
+        $("#actualize_button").click();
+        $('#modal_info').modal('show');
+
+    }, (error) => {
+        console.log({AddError: error});
+        set_info_text(browser.i18n.getMessage("cookieRestoredSingleError", error));
+        // If null: no error but no save
+        $("#actualize_button").click();
+        $('#modal_info').modal('show');
+    });
 }
 
 function set_info_text(content) {

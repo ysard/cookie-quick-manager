@@ -209,5 +209,15 @@
         "content" : "$1"
       }
     }
+  },
+
+  "cookieRestoredSingleError": {
+    "message": "Erreur, au moins un cookie n'a pas été sauvegardé.\n$error$",
+    "description": "Alert when a file is imported with an error during the save process.",
+    "placeholders": {
+      "error" : {
+        "content" : "$1"
+      }
+    }
   }
 }
