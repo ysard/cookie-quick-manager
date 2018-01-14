@@ -212,7 +212,6 @@ function build_cookie_dump() {
         '{HOST_RAW}': getHostUrl_from_UI(),
         '{NAME_RAW}': secure_json_string($('#name').val()),
         '{PATH_RAW}': $('#path').val(),
-        '{CONTENT}': secure_json_string(decodeURIComponent($('#value').val())),
         '{CONTENT_RAW}': secure_json_string($('#value').val()),
         '{EXPIRES}': get_timestamp(false),
         '{EXPIRES_RAW}': get_timestamp(true),
@@ -286,7 +285,6 @@ function build_domain_dump(cookie) {
         '{HOST_RAW}': getHostUrl(),
         '{NAME_RAW}': secure_json_string(cookie.name),
         '{PATH_RAW}': cookie.path,
-        '{CONTENT}': secure_json_string(decodeURIComponent(cookie.value)),
         '{CONTENT_RAW}': secure_json_string(cookie.value),
         '{EXPIRES}': get_timestamp(false),
         '{EXPIRES_RAW}': get_timestamp(true),
@@ -428,7 +426,6 @@ var cookie_clipboard_template = '{\n\
 \t"Host raw": "{HOST_RAW}",\n\
 \t"Name raw": "{NAME_RAW}",\n\
 \t"Path raw": "{PATH_RAW}",\n\
-\t"Content": "{CONTENT}",\n\
 \t"Content raw": "{CONTENT_RAW}",\n\
 \t"Expires": "{EXPIRES}",\n\
 \t"Expires raw": "{EXPIRES_RAW}",\n\
