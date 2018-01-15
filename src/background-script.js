@@ -15,17 +15,27 @@ function onError(error) {
 
 function init_protected_cookies() {
     // Init protected_cookies array in global context
-    let settings = browser.storage.local.get("protected_cookies");
+    let settings = browser.storage.local.get(["protected_cookies", "import_protected_cookies"]);
     settings.then((items) => {
-        // Get data
+        console.log({storage_data: items});
+        let storage_data = {};
+
+        // protected_cookies array
         // The array check is a workaround to fix previous bug e4e735f (an array instead of an object)
         if (items.protected_cookies !== undefined && !Array.isArray(items.protected_cookies))
             protected_cookies = items.protected_cookies;
-        else {
-            // Init data structure
-            settings = browser.storage.local.set({"protected_cookies": {}});
-            settings.then(null, onError);
+        else
+            storage_data['protected_cookies'] = {};
+
+        // import_protected_cookies flag
+        if (items.import_protected_cookies === undefined) {
+            console.log({"init_import_protected_cookies": true});
+            storage_data['import_protected_cookies'] = false;
         }
+
+        // Init data structure
+        settings = browser.storage.local.set(storage_data);
+        settings.then(null, onError);
     });
 }
 
@@ -100,6 +110,8 @@ browser.cookies.onChanged.addListener(function(changeInfo) {
 browser.storage.onChanged.addListener(function (changes, area) {
     // Called when the local storage area is modified
     // Here: we handle only 'protected_cookies' key.
+    // We do that here because we have to know if a cookie must be
+    // protected or not from deletion when there is a deletion event.
 
     //console.log("Change in storage area: " + area);
     console.log(changes);

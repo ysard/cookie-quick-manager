@@ -390,10 +390,18 @@ function parseJSONFile(content) {
         promises.push(browser.cookies.set(params));
     }
 
-    add_cookies(promises);
+    // Handle import_protected_cookies global option
+    let settings = browser.storage.local.get("import_protected_cookies");
+    settings.then((items) => {
+        console.log(items);
+        add_cookies(promises, items.import_protected_cookies);
+    });
+
 }
 
-function add_cookies(cookies_promises) {
+function add_cookies(cookies_promises, import_protected_cookies) {
+    // Get promises to set new cookies and import_protected_cookies as a global
+    // flag to protect these new cookies from deletion.
 
     let add_promise = new Promise((resolve, reject) => {
 
@@ -408,6 +416,11 @@ function add_cookies(cookies_promises) {
                 }
                 console.log({"Added": added_cookie});
             }
+
+            // Protect all cookies if asked in global settings
+            if (import_protected_cookies)
+                set_cookie_protection(cookies_array);
+
             // Ok => all cookies are added properly
             // Reactivate the interface
             resolve();
@@ -432,6 +445,33 @@ function add_cookies(cookies_promises) {
 
 function set_info_text(content) {
     $('#info_text').text(content);
+}
+
+function set_cookie_protection(cookies_array) {
+    // Iterate on all new cookies and add their domains and names to the
+    // array of protected_cookies in local storage.
+    // TODO: make a global promise shared with cookies.js (#protect_button.click) to check
+    // the presence of a domain in protected_cookies
+
+    let settings = browser.storage.local.get("protected_cookies");
+    settings.then((items) => {
+        for (let added_cookie of cookies_array) {
+            let domain = added_cookie.domain;
+
+            // Check domain
+            if (!(domain in items.protected_cookies))
+                items.protected_cookies[domain] = [];
+            // Check name
+            if (items.protected_cookies[domain].indexOf(added_cookie.name) === -1) {
+                // This cookie will be protected
+                console.log({'protect: add': added_cookie.name});
+                items.protected_cookies[domain].push(added_cookie.name);
+            }
+        }
+        // Set new protected_cookies on storage area
+        settings = browser.storage.local.set({"protected_cookies": items.protected_cookies});
+        settings.then(null, onError);
+    });
 }
 
 /*********** Global variables ***********/

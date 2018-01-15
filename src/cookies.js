@@ -140,6 +140,9 @@ $("#delete_button").click(function() {
 
 $("#protect_button").click(function() {
     // Update the protect status of the current cookie
+    // TODO: make a global promise shared with export.js (set_cookie_protection) to check
+    // the presence of a domain in protected_cookies
+
     //browser.storage.local.clear();
 
     //let settings = browser.storage.local.get("protected_cookies");
@@ -153,8 +156,10 @@ $("#protect_button").click(function() {
 
         let button_icon = $("#protect_button span");
 
+        // Check domain
         if (!(domain in protected_cookies))
             protected_cookies[domain] = [];
+        // Check name
         if (protected_cookies[domain].indexOf(name) === -1) {
             // This cookie will be protected
             console.log({'protect: add': name});
@@ -358,6 +363,20 @@ window.onresize = function(event) {
         console.log(`Error_resizing: ${error}`);
     });
 };
+
+browser.storage.onChanged.addListener(function (changes, area) {
+    // Called when the local storage area is modified
+    // Here: we handle only 'protected_cookies' key.
+    // We do that here because when a user imports a json file,
+    // if the global option import_protected_cookies is true, modifications
+    // are made in protected_cookies array.
+
+    //console.log("Change in storage area: " + area);
+    console.log(changes);
+    if (changes['protected_cookies'] !== undefined)
+        protected_cookies = changes.protected_cookies.newValue;
+
+});
 
 /*********** Initializations ***********/
 
