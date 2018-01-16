@@ -1,3 +1,14 @@
+/* Reduce height of elements due to the augmentation of the padding
+ * for h2 tags
+ */
+#domain-list, #cookie-list {
+    height: 410px;
+}
+#value {
+    height: 125px;
+}
+
+/* Customization */
 h2 {
     background: #12b36f;
     padding: 10px;
@@ -18,7 +29,8 @@ h2 {
 }
 .list-group-item.active,
 .list-group-item.active:focus,
-.list-group-item.active:hover {
+.list-group-item.active:hover,
+#search_domain_submit{
     background-color: #48d298;
     border-color: #48d298;
 }
