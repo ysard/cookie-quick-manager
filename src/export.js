@@ -391,7 +391,9 @@ function parseJSONFile(content) {
     }
 
     // Handle import_protected_cookies global option
-    let settings = browser.storage.local.get("import_protected_cookies");
+    let settings = browser.storage.local.get({
+        import_protected_cookies: false
+    });
     settings.then((items) => {
         console.log(items);
         add_cookies(promises, items.import_protected_cookies);

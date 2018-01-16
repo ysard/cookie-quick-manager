@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="static/css/bootstrap.min.css">
+    <title>Cookie Quick Manager - Options</title>
+    <style>
+      body {
+        min-height: 400px;
+      }
+      #addon-name {
+        display: inline-block;
+        margin-top: 10px;
+        vertical-align: top;
+        font-weight: bold;
+      }
+      #dynamic-tab {
+        display: inline-block;
+      }
+      h2 {
+        font-size: larger;
+        margin-bottom: 5px;
+        margin-top: 5px;
+        margin-right: 15px;
+      }
+      .form-group {
+        /* Reduce space between input lines in cookie details */
+        margin-bottom: 5px;
+        margin-left: 30px;
+      }
+      form label {
+        font-weight: normal;
+      }
+      form input {
+        vertical-align: bottom;
+      }
+      #select_skin {
+        padding-left: 0;
+      }
+      #your_data {
+        padding-left: 30px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="col-sm-12">
+      <h2 id="addon-name">Cookies Quick Manager</h2>
+      <ul id="dynamic-tab" class="nav nav-tabs">
+        <li class="active"><a data-toggle="tab" href="#parameters">Settings</a></li>
+        <li><a data-toggle="tab" href="#shortcuts">Shortcuts</a></li>
+        <li><a data-toggle="tab" href="#about">About</a></li>
+      </ul>
+      <div class="tab-content">
+        <div id="parameters" class="tab-pane active">
+          <form id="cookie-details">
+            <h2>Privacy</h2>
+            <div class="form-group row">
+              <label for="delete_all_on_restart"
+                data-html="true" data-toggle="tooltip"
+                title="" data-i18n-title="">
+              <input type="checkbox" name="delete_all_on_restart" id="delete_all_on_restart"> Delete all cookies on restart
+              </label>
+            </div>
+            <div class="form-group row">
+              <label for="import_protected_cookies"
+                data-html="true" data-toggle="tooltip"
+                title="" data-i18n-title="">
+              <input type="checkbox" name="import_protected_cookies" id="import_protected_cookies"> Import cookies as protected cookies
+              </label>
+            </div>
+            <h2>Appearance</h2>
+            <div class="form-group row">
+              <label id="select_skin" class="col-sm-12 col-form-label" for="skin">Skin:</label>
+              <div class="col-sm-4">
+                <select class="form-control" id="skin">
+                  <option value="default">Default</option>
+                  <option value="hacker_style">Hacker style</option>
+                </select>
+              </div>
+            </div>
+            <!--
+              <h2>Ergonomy</h2>
+              <div class="form-group row">
+              <label for="global_counter"
+              data-html="true" data-toggle="tooltip"
+              title="" data-i18n-title="">
+                  <input type="checkbox" name="global_counter" id="global_counter"> Display a global counter for protected cookies.
+              </label>
+              </div>-->
+            <h2>Your data</h2>
+            <div id="your_data">
+              <p>
+                <button type="button" id="backupUserDataButton" data-i18n="aboutBackupButton">Enregistrer dans un fichier</button>
+                <button type="button" id="restoreUserDataButton" data-i18n="aboutRestoreButton">Restaurer depuis un fichier</button>
+                <input id="restoreFilePicker" accept="text/plain" style="display:none;" type="file">
+              </p>
+              <p style="margin-left: 2em;" data-i18n="aboutOr">
+                Ou alors, vous pouvez...</p>
+              <p><button type="button" id="resetUserDataButton" data-i18n="aboutResetButton">Revenir aux paramètres par défaut</button></p>
+            </div>
+          </form>
+        </div>
+        <div id="about" class="tab-pane">
+          <ul>
+            <li><a href="https://github.com/ysard/cookie-quick-manager/blob/master/LICENSE">Source code (Under GPLv3 license)</a></li>
+            <li><a href="https://github.com/ysard/cookie-quick-manager/issues">Issues</a></li>
+            <li>Thanks: Killogy, Lejomoz, Machou.</li>
+          </ul>
+        </div>
+        <div id="shortcuts" class="tab-pane">
+          <table class="table">
+            <tbody>
+              <tr>
+                <td><kbd>ctrl+left</kbd></td>
+                <td>Switch to the list of domains</td>
+              </tr>
+              <tr>
+                <td><kbd>ctrl+right</kbd></td>
+                <td>Switch to the list of cookies</td>
+              </tr>
+              <tr>
+                <td><kbd>suppr</kbd></td>
+                <td>Delete the current cookie</td>
+              </tr>
+              <tr>
+                <td><kbd>ctrl+F</kbd></td>
+                <td>Search a domain</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <script src="static/js/jquery.min.js"></script>
+    <script src="static/js/bootstrap.min.js"></script>
+    <script src="options.js"></script>
+  </body>
+</html>

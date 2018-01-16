@@ -373,9 +373,14 @@ browser.storage.onChanged.addListener(function (changes, area) {
 
     //console.log("Change in storage area: " + area);
     console.log(changes);
+    // Reload protected_cookies
     if (changes['protected_cookies'] !== undefined)
         protected_cookies = changes.protected_cookies.newValue;
 
+    // Load/remove css skin
+    if (changes['skin'] !== undefined) {
+        update_skin(changes.skin.newValue);
+    }
 });
 
 /*********** Initializations ***********/
@@ -399,8 +404,8 @@ firefox57_workaround_for_blank_panel();
 // Set default domain in search box
 setDefaultDomain();
 
-// Init protected_cookies array in global context
-init_protected_cookies()
+// Init protected_cookies array in global context and load options from storage
+get_options();
 
 // Fill the domains list
 getStores();
@@ -635,19 +640,30 @@ function getHostUrl(cookie) {
     return host_protocol + cookie.domain + cookie.path;
 }
 
-function init_protected_cookies() {
+function get_options() {
+    // Get options from storage
     // Init protected_cookies array in global context
-    let settings = browser.storage.local.get("protected_cookies");
+    // Load css stylesheet
+
+    let settings = browser.storage.local.get({
+        protected_cookies: {},
+        skin: 'default',
+    });
     settings.then((items) => {
-        // Get data
+        console.log({storage_data: items});
+
+        // protected_cookies array
         // The array check is a workaround to fix previous bug e4e735f (an array instead of an object)
-        if (items.protected_cookies !== undefined && !Array.isArray(items.protected_cookies))
+        if (!Array.isArray(items.protected_cookies))
             protected_cookies = items.protected_cookies;
         else {
             // Init data structure
             settings = browser.storage.local.set({"protected_cookies": {}});
             settings.then(null, onError);
         }
+
+        if (items.skin != 'default')
+            update_skin(items.skin);
     });
 }
 
@@ -1096,6 +1112,23 @@ function delete_current_cookie() {
             $('#domain-list').find('li.active').click();
         }
     }, onError);
+}
+
+function update_skin(skin) {
+    // Update skin if skin != 'default'
+    // if skin == 'default' => remove the css stylesheet
+
+    if (skin == 'default')
+        $('#custom_theme').remove();
+    else
+        $('<link>')
+        .appendTo('head')
+        .attr({
+            id: 'custom_theme',
+            type: 'text/css',
+            rel: 'stylesheet',
+            href: skin + '.css'
+        });
 }
 
 /*********** Global variables ***********/

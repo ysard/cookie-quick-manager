@@ -14,8 +14,9 @@ function onError(error) {
 }
 
 function init_protected_cookies() {
+    // Get & set options from storage
     // Init protected_cookies array in global context
-    let settings = browser.storage.local.get(["protected_cookies", "import_protected_cookies"]);
+    let settings = browser.storage.local.get("protected_cookies");
     settings.then((items) => {
         console.log({storage_data: items});
         let storage_data = {};
@@ -26,12 +27,6 @@ function init_protected_cookies() {
             protected_cookies = items.protected_cookies;
         else
             storage_data['protected_cookies'] = {};
-
-        // import_protected_cookies flag
-        if (items.import_protected_cookies === undefined) {
-            console.log({"init_import_protected_cookies": true});
-            storage_data['import_protected_cookies'] = false;
-        }
 
         // Init data structure
         settings = browser.storage.local.set(storage_data);
