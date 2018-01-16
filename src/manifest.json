@@ -24,6 +24,7 @@
     "scripts": ["api.js", "background-script.js"]
   },
   "options_ui": {
-    "page": "options.html"
+    "page": "options.html",
+    "open_in_tab": true
   }
 }
