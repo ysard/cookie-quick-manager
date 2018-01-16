@@ -13,24 +13,96 @@ function onError(error) {
     console.log({"Error removing/saving cookie:": error});
 }
 
-function init_protected_cookies() {
+function init_options() {
     // Get & set options from storage
     // Init protected_cookies array in global context
-    let settings = browser.storage.local.get("protected_cookies");
+    // Delete cookies (on restart) if the user has selected the option
+    let settings = browser.storage.local.get({
+        protected_cookies: {},
+        delete_all_on_restart: false,
+    });
     settings.then((items) => {
         console.log({storage_data: items});
         let storage_data = {};
 
         // protected_cookies array
         // The array check is a workaround to fix previous bug e4e735f (an array instead of an object)
-        if (items.protected_cookies !== undefined && !Array.isArray(items.protected_cookies))
+        if (!Array.isArray(items.protected_cookies))
             protected_cookies = items.protected_cookies;
         else
             storage_data['protected_cookies'] = {};
 
+        if (items.delete_all_on_restart)
+            delete_cookies();
+
         // Init data structure
         settings = browser.storage.local.set(storage_data);
         settings.then(null, onError);
+    });
+}
+
+function delete_cookies() {
+    // TODO: same func than in cookies.js : delete_cookies() (without the gestion of the UI)
+    let promise = get_all_cookies();
+    promise.then((cookies) => {
+
+        let promises = [];
+        for (let cookie of cookies) {
+            // Remove current cookie
+            let params = {
+                url: getHostUrl(cookie),
+                name: cookie.name,
+                storeId: cookie.storeId,
+            };
+            promises.push(browser.cookies.remove(params));
+        }
+
+        Promise.all(promises).then((cookies_array) => {
+            // Iter on all results of promises
+            for (let deleted_cookie of cookies_array) {
+
+                // If null: no error but no suppression
+                // => display button content in red
+                if (deleted_cookie === null) {
+                    console.log({"Not removed": deleted_cookie});
+                }
+                console.log({"Removed": deleted_cookie});
+            }
+            // Ok => all cookies are deleted properly
+        }, onError);
+    }, onError);
+}
+
+function get_all_cookies() {
+    // Return a Promise with all cookies in all stores
+    // TODO: handle multiple stores
+    // TODO: same func than in cookies.js
+
+    return new Promise((resolve, reject) => {
+        // TODO: fix that :p
+        var storeIds = ['firefox-default', 'firefox-private'];
+
+        // Get 1 promise for each cookie store for each domain
+        // Each promise stores all associated cookies
+        var promises = [];
+        for (let storeId of storeIds) {
+            promises.push(browser.cookies.getAll({storeId: storeId}));
+        }
+
+        // Merge all promises
+        Promise.all(promises).then((cookies_array) => {
+
+            // Merge all results of promises
+            let cookies = [];
+            for (let cookie_subset of cookies_array) {
+                cookies = cookies.concat(cookie_subset);
+            }
+
+            if (cookies.length > 0)
+                resolve(cookies);
+            else
+                reject("NoCookies");
+        });
     });
 }
 
@@ -117,6 +189,6 @@ browser.storage.onChanged.addListener(function (changes, area) {
 
 /*********** Global variables ***********/
 
-init_protected_cookies();
+init_options();
 // Set default color of the counter of protected cookies on the toolbar icon
 browser.browserAction.setBadgeBackgroundColor({color: 'black'});
