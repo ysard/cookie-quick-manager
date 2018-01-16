@@ -22,9 +22,9 @@
 (function(mycode) {
 
     // The global jQuery object is passed as a parameter
-    mycode(window.jQuery, window, document);
+    mycode(window.jQuery, window.vAPI, window, document);
 
-}(function($, window, document) {
+}(function($, vAPI, window, document) {
 
     // The $ is now locally scoped
     $(function () {
@@ -47,7 +47,7 @@ $("#file_cookie_export").click(function() {
 
 $("#file_domain_export").click(function() {
     // Build 1 json template for each cookie for the selected domain
-    let promise = window.getCookiesFromSelectedDomain();
+    let promise = vAPI.getCookiesFromSelectedDomain();
     promise.then((cookies) => {
         // Make 1 json for each cookie and store it
         // Merge and display templates
@@ -61,7 +61,7 @@ $("#file_domain_export").click(function() {
 
 $("#file_all_export").click(function() {
     // Build 1 json template for each cookie in all stores
-    let promise = window.get_all_cookies();
+    let promise = vAPI.get_all_cookies();
     promise.then((cookies) => {
         export_content_to_file(get_concatenated_content(get_templates(cookies)));
     });
@@ -77,13 +77,13 @@ $("#clipboard_cookie_export").click(function() {
 
 $("#clipboard_domain_export").click(function() {
     // Build 1 json template for each cookie for the selected domain
-    let promise = window.getCookiesFromSelectedDomain();
+    let promise = vAPI.getCookiesFromSelectedDomain();
     display_json_in_clipboard_area(promise);
 });
 
 $("#clipboard_all_export").click(function() {
     // Build 1 json template for each cookie in all stores
-    let promise = window.get_all_cookies();
+    let promise = vAPI.get_all_cookies();
     display_json_in_clipboard_area(promise);
 });
 
@@ -197,19 +197,12 @@ function build_cookie_dump() {
         return (issecure) ? "Encrypted connections only" : "Any type of connection";
     }
 
-    function getHostUrl_from_UI() {
-        // If the modified cookie has the flag isSecure, the host protocol must be https:// in order to
-        // modify or delete it.
-        var host_protocol = ($('#issecure').is(':checked')) ? 'https://' : 'http://';
-        return host_protocol + $('#domain').val() + $('#path').val();
-    }
-
     // Make a local copy of the template
     var template_temp = cookie_clipboard_template;
 
     // Update variables
     var params = {
-        '{HOST_RAW}': getHostUrl_from_UI(),
+        '{HOST_RAW}': vAPI.getHostUrl_from_UI(),
         '{NAME_RAW}': secure_json_string($('#name').val()),
         '{PATH_RAW}': $('#path').val(),
         '{CONTENT_RAW}': secure_json_string($('#value').val()),
@@ -271,18 +264,11 @@ function build_domain_dump(cookie) {
         return (cookie.secure) ? "Encrypted connections only" : "Any type of connection";
     }
 
-    function getHostUrl() {
-        // If the modified cookie has the flag isSecure, the host protocol must be https:// in order to
-        // modify or delete it.
-        var host_protocol = (cookie.secure) ? 'https://' : 'http://';
-        return host_protocol + cookie.domain + cookie.path;
-    }
-
     // Make a local copy of the template
     var template_temp = cookie_clipboard_template;
 
     var params = {
-        '{HOST_RAW}': getHostUrl(),
+        '{HOST_RAW}': vAPI.getHostUrl(cookie),
         '{NAME_RAW}': secure_json_string(cookie.name),
         '{PATH_RAW}': cookie.path,
         '{CONTENT_RAW}': secure_json_string(cookie.value),

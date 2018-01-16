@@ -49,76 +49,14 @@ function init_options() {
         // Program the deletion of all cookies (except for those which are protected)
         // BUG ?: We must set a delay on this function. Otherwise the API returns 0 cookie...
         if (items.delete_all_on_restart)
-            setTimeout(function(){ delete_cookies(); }, 2000);
+            setTimeout(function() {
+                let deletion_promise = vAPI.delete_cookies(vAPI.get_all_cookies());
+                deletion_promise.then(null, vAPI.onError);
+            }, 2000);
 
         // Init data structure
         settings = browser.storage.local.set(storage_data);
         settings.then(null, onError);
-    });
-}
-
-function delete_cookies() {
-    // TODO: same func than in cookies.js : delete_cookies() (without the gestion of the UI)
-    let promise = get_all_cookies();
-    promise.then((cookies) => {
-
-        let promises = [];
-        for (let cookie of cookies) {
-            // Remove current cookie
-            let params = {
-                url: getHostUrl(cookie),
-                name: cookie.name,
-                storeId: cookie.storeId,
-            };
-            promises.push(browser.cookies.remove(params));
-        }
-
-        Promise.all(promises).then((cookies_array) => {
-            // Iter on all results of promises
-            for (let deleted_cookie of cookies_array) {
-
-                // If null: no error but no suppression
-                // => display button content in red
-                if (deleted_cookie === null) {
-                    console.log({"Not removed": deleted_cookie});
-                }
-                console.log({"Removed": deleted_cookie});
-            }
-            // Ok => all cookies are deleted properly
-        }, onError);
-    }, onError);
-}
-
-function get_all_cookies() {
-    // Return a Promise with all cookies in all stores
-    // TODO: handle multiple stores
-    // TODO: same func than in cookies.js
-
-    return new Promise((resolve, reject) => {
-        // TODO: fix that :p
-        var storeIds = ['firefox-default', 'firefox-private'];
-
-        // Get 1 promise for each cookie store for each domain
-        // Each promise stores all associated cookies
-        var promises = [];
-        for (let storeId of storeIds) {
-            promises.push(browser.cookies.getAll({storeId: storeId}));
-        }
-
-        // Merge all promises
-        Promise.all(promises).then((cookies_array) => {
-
-            // Merge all results of promises
-            let cookies = [];
-            for (let cookie_subset of cookies_array) {
-                cookies = cookies.concat(cookie_subset);
-            }
-
-            if (cookies.length > 0)
-                resolve(cookies);
-            else
-                reject("NoCookies");
-        });
     });
 }
 

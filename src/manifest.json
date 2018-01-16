@@ -21,7 +21,7 @@
     "96": "icons/icon96.png"
   },
   "background": {
-    "scripts": ["background-script.js"]
+    "scripts": ["api.js", "background-script.js"]
   },
   "options_ui": {
     "page": "options.html"
