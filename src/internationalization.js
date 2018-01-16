@@ -49,7 +49,7 @@
         i18nElements.forEach(function (i18nElement) {
 
             let i18nMessageName = i18nElement.getAttribute('data-i18n-content');
-            i18nElement.innerText = browser.i18n.getMessage(i18nMessageName);
+            i18nElement.textContent = browser.i18n.getMessage(i18nMessageName);
         });
     };
 
