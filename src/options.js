@@ -30,14 +30,57 @@
     $(function () {
         /*********** Events attached to UI elements ***********/
         $('#import_protected_cookies').change(function() {
+            // Import cookies as protected cookies
             set_option({'import_protected_cookies': $(this).is(':checked')});
         });
         $('#delete_all_on_restart').change(function() {
+            // Delete all cookies when the browser restarts
             set_option({'delete_all_on_restart': $(this).is(':checked')});
         });
         $('#skin').change(function() {
-            console.log($(this).val());
+            // Change skin
             set_option({'skin': $(this).val()});
+        });
+        $('#resetUserDataButton').click(function() {
+            // Reset all data
+            browser.storage.local.clear();
+            // Update the interface
+            get_options();
+        });
+        $('#backupUserDataButton').click(function() {
+            // Get all storage data
+            let settings = browser.storage.local.get();
+            settings.then((items) => {
+                // Download the json file
+                download({
+                    'url': 'data:text/plain,' + encodeURIComponent(JSON.stringify(items, null, 2)),
+                    'filename': 'userdata_cookie_quick_manager.json'
+                });
+            });
+        });
+        $("#restoreUserDataButton").click(function(event) {
+            // Overlay for <input type=file>
+            var restoreFilePicker = document.getElementById("restoreFilePicker");
+            if (restoreFilePicker) {
+                restoreFilePicker.click();
+            }
+            event.preventDefault(); // prevent navigation to "#"
+        });
+        $('#restoreFilePicker').change(function(event) {
+            // File load onto the browser
+            var file = event.target.files[0];
+            if (!file)
+                return;
+
+            var reader = new FileReader();
+            reader.onload = function(event) {
+                // Restore content
+                //console.log(JSON.parse(event.target.result));
+                set_option(JSON.parse(event.target.result));
+                // Update the interface
+                get_options();
+            };
+            reader.readAsText(file);
         });
 
         // Load options from storage and update the interface
@@ -63,12 +106,25 @@
         settings.then((items) => {
             console.log({storage_data: items});
 
+            // Update the interface
             $('#skin').val(items.skin);
             $('#delete_all_on_restart').prop('checked', items.delete_all_on_restart);
             $('#import_protected_cookies').prop('checked', items.import_protected_cookies);
 
         });
     }
+
+    function download(details) {
+        // Download a file that contains the given details
+        if ( !details.url ) {
+            return;
+        }
+
+        var a = document.createElement('a');
+        a.href = details.url;
+        a.setAttribute('download', details.filename || '');
+        a.dispatchEvent(new MouseEvent('click'));
+    };
 
     /*********** Global variables ***********/
 
