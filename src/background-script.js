@@ -1,4 +1,17 @@
-var protected_cookies_counter = 0;
+/*********** Update patchs ***********/
+
+function update_listener(details) {
+    /* Fired when the extension is first installed, when the extension is updated
+     * to a new version, and when the browser is updated to a new version.
+     */
+    console.log({update_addon: details});
+}
+
+browser.runtime.onInstalled.addListener(update_listener);
+
+
+/*********** Utils ***********/
+//var protected_cookies_counter = 0;
 var protected_cookies;
 
 function getHostUrl(cookie) {
@@ -170,8 +183,8 @@ browser.cookies.onChanged.addListener(function(changeInfo) {
         promise.then((cookie) => {
             console.log({"Erasure protection: Cookie NOT deleted!:": cookie});
             // Increment counter of protected cookies on the toolbar icon
-            protected_cookies_counter++;
             // TODO: 1 counter per tab ? or add clearer information.. Is this option useful ?
+            //protected_cookies_counter++;
             //browser.browserAction.setBadgeText({text: String(protected_cookies_counter)});
         }, onError);
     }
@@ -190,8 +203,10 @@ browser.storage.onChanged.addListener(function (changes, area) {
 
 });
 
+//browser.runtime.onStartup.addListener(init_options);
+
 /*********** Global variables ***********/
 
 init_options();
 // Set default color of the counter of protected cookies on the toolbar icon
-browser.browserAction.setBadgeBackgroundColor({color: 'black'});
+//browser.browserAction.setBadgeBackgroundColor({color: 'black'});

@@ -755,7 +755,7 @@ function showDomains(storeIds) {
         var params = {
             storeId: store_id,
         };
-        /*
+        /* Strict domain search => too rigid
         if (searched_domain != "") {
             params['domain'] = searched_domain;
         }*/
