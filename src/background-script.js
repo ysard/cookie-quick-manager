@@ -17,6 +17,7 @@ function init_options() {
     // Get & set options from storage
     // Init protected_cookies array in global context
     // Delete cookies (on restart) if the user has selected the option
+    // This function is called on each startup and when the addon is installed to the browser
     let settings = browser.storage.local.get({
         protected_cookies: {},
         delete_all_on_restart: false,
@@ -32,8 +33,10 @@ function init_options() {
         else
             storage_data['protected_cookies'] = {};
 
+        // Program the deletion of all cookies (except for those which are protected)
+        // BUG ?: We must set a delay on this function. Otherwise the API returns 0 cookie...
         if (items.delete_all_on_restart)
-            delete_cookies();
+            setTimeout(function(){ delete_cookies(); }, 2000);
 
         // Init data structure
         settings = browser.storage.local.set(storage_data);
