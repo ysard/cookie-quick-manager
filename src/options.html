@@ -44,6 +44,23 @@
       input[type="checkbox"] {
         vertical-align: text-bottom;
       }
+      .ask_info {
+        padding-left: 15px;
+        cursor: pointer;
+        opacity: 0.4;
+      }
+      .ask_info:hover {
+        opacity: 1;
+      }
+      .info {
+        margin-left: 15px;
+        padding: 5px;
+        max-width: 450px;
+        font-size: 0.85em;
+        font-style: italic;
+        background-color: #F8F8F8;
+        display: none;
+      }
     </style>
   </head>
   <body>
@@ -61,6 +78,21 @@
             <div class="form-group row">
               <input type="checkbox" name="delete_all_on_restart" id="delete_all_on_restart">
               <label for="delete_all_on_restart" data-i18n-content="oDelete_all_on_restart"> Delete all cookies on restart</label>
+              <span id="show_delete_all_on_restart" class="glyphicon glyphicon-info-sign ask_info"></span>
+              <div id="delete_all_on_restart_info" class="info">
+                <p>Due to limitations (the deletion occurs 2 seconds after restarting the browser),
+                you will probably want to use the official option of Firefox:
+                <strong>Preferences/Privacy &amp; security</strong>, section <strong>History</strong>.
+                Set Firefox will to <strong>Use custom settings for history</strong>,
+                then select the checkbox for <strong>Clear history when Firefox closes</strong>.
+                Beside <strong>Clear history when Firefox closes</strong>, click the <strong>Settings…</strong> button.
+                The Settings for Clearing History window will open.
+                Finally put a check mark next to <strong>cookies</strong>.
+                </p><p>
+                To block and manage deletions and authorizations in a precise and efficient way,
+                it is <strong>strongly recommended</strong> to use the matrix-based firewall: <a href="https://addons.mozilla.org/fr/firefox/addon/umatrix/">uMatrix</a>.
+                </p>
+              </div>
             </div>
             <div class="form-group row">
               <input type="checkbox" name="import_protected_cookies" id="import_protected_cookies">
@@ -69,7 +101,7 @@
             <h2 data-i18n-content="oAppearance">Appearance</h2>
             <div class="form-group row">
               <label id="select_skin" class="col-sm-12 col-form-label" for="skin" data-i18n-content="oSkin">Skin:</label>
-              <div class="col-sm-4">
+              <div class="col-sm-1">
                 <select class="form-control" id="skin">
                   <option value="default" data-i18n-content="oDefault">Default</option>
                   <option value="hacker_style">Hacker style</option>

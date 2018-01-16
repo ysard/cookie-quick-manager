@@ -82,6 +82,9 @@
             };
             reader.readAsText(file);
         });
+        $("#show_delete_all_on_restart").click(function(event) {
+            $('#delete_all_on_restart_info').toggle();
+        });
 
         // Load options from storage and update the interface
         get_options();
