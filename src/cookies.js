@@ -340,8 +340,14 @@ $('#button_optimal_size').click(function() {
             width: 1200,
             height: 581,
         };
+        console.log(updateInfo);
         browser.windows.update(currentWindow.id, updateInfo);
     });
+});
+
+$('#button_options_page').click(function() {
+    // Open Options Page
+    browser.runtime.openOptionsPage();
 });
 
 window.onresize = function(event) {
