@@ -216,7 +216,7 @@
   },
 
   "cookieRestoredSingleError": {
-    "message": "Erreur, au moins un cookie n'a pas été sauvegardé.\n$error$",
+    "message": "Erreur, au moins un cookie n'a pas été sauvegardé.\n$error$\nNe vous inquiétez pas; en temps normal il s'agit de cookies de session qui ont expiré.",
     "description": "Alert when a file is imported with an error during the save process.",
     "placeholders": {
       "error" : {

@@ -216,7 +216,7 @@
   },
 
   "cookieRestoredSingleError": {
-    "message": "Error, at least one cookie was not restored.\n$error$",
+    "message": "Error, at least one cookie was not restored.\n$error$\nDon't worry; normally these are session cookies that have expired.",
     "description": "Alert when a file is imported with an error during the save process.",
     "placeholders": {
       "error" : {
