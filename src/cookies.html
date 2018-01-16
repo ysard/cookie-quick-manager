@@ -148,22 +148,22 @@
           <h2 data-i18n-content="detailsPanelTitle">Details</h2>
           <form id="cookie-details">
             <div class="form-group row">
-              <label for="domain" class="col-sm-3 col-form-label"
+              <label for="domain" class="col-sm-2 col-form-label"
               data-toggle="tooltip"
               title="A host-only cookie, applies only to the current domain. Other cookies also apply to subdomains, and their domain has a leading point." data-i18n-title="tooltip_cDomain" data-i18n-content="cDomain">Domain </label>
-              <div class="col-sm-9">
+              <div class="col-sm-10">
                 <input type="text" class="form-control" name="domain" id="domain" readonly>
               </div>
             </div>
             <div class="form-group row">
-              <label for="name" class="col-sm-3 col-form-label" data-i18n-content="cName">Name </label>
-              <div class="col-sm-9">
+              <label for="name" class="col-sm-2 col-form-label" data-i18n-content="cName">Name </label>
+              <div class="col-sm-10">
                 <input type="text" class="form-control" name="name" id="name" readonly>
               </div>
             </div>
             <div class="form-group row">
-              <label for="value" class="col-sm-3 col-form-label" data-i18n-content="cValue">Value </label>
-              <div class="col-sm-9">
+              <label for="value" class="col-sm-2 col-form-label" data-i18n-content="cValue">Value </label>
+              <div class="col-sm-10">
                 <textarea class="form-control" name="value" id="value"></textarea>
               </div>
               <button type="button" class="btn btn-dark" id="toggle_url"
@@ -174,36 +174,36 @@
               title="Base64 decode<br>Click to activate/deactivate." data-i18n-title="tooltip_buttonB64">B64</button>
             </div>
             <div class="form-group row">
-              <label for="path" class="col-sm-3 col-form-label" data-i18n-content="cPath">Path </label>
-              <div class="col-sm-9">
+              <label for="path" class="col-sm-2 col-form-label" data-i18n-content="cPath">Path </label>
+              <div class="col-sm-10">
                 <input type="text" class="form-control" name="path" id="path" readonly>
               </div>
             </div>
             <div class="form-group row">
-              <label class="col-sm-3 col-form-label" for="isprivate"
+              <label class="col-sm-2 col-form-label" for="isprivate"
               data-html="true" data-toggle="tooltip"
               title="Browsing context<br>Check to make sure that the cookie is accessible in private browsing." data-i18n-title="tooltip_cIsPrivate">isPrivate</label>
-              <div class="col-sm-9">
+              <div class="col-sm-10">
                 <div class="form-check form-check-inline">
                   <input class="form-check-input" type="checkbox" name="isprivate" id="isprivate">
                 </div>
               </div>
             </div>
             <div class="form-group row">
-              <label class="col-sm-3 col-form-label" for="httponly"
+              <label class="col-sm-2 col-form-label" for="httponly"
               data-html="true" data-toggle="tooltip"
               title="Theft protection<br>Check to force the cookie to be sent only over HTTP(S),<br> i.e. block JavaScript access like in XSS context." data-i18n-title="tooltip_cHttpOnly">httpOnly</label>
-              <div class="col-sm-9">
+              <div class="col-sm-10">
                 <div class="form-check form-check-inline">
                   <input class="form-check-input" type="checkbox" name="httponly" id="httponly">
                 </div>
               </div>
             </div>
             <div class="form-group row">
-              <label class="col-sm-3 col-form-label" for="issecure"
+              <label class="col-sm-2 col-form-label" for="issecure"
               data-html="true" data-toggle="tooltip"
               title="Theft protection<br>Check to force the cookie to be sent only over secure channels like HTTPS." data-i18n-title="tooltip_cIsSecure">isSecure</label>
-              <div class="col-sm-9">
+              <div class="col-sm-10">
                 <div class="form-check form-check-inline">
                   <input class="form-check-input" type="checkbox" name="issecure" id="issecure" checked>
                 </div>
@@ -211,18 +211,18 @@
             </div>
             <!-- Session related block: checkbox + datetimepicker -->
             <div class="form-group row">
-              <label class="col-sm-3 col-form-label" for="issession"
+              <label class="col-sm-2 col-form-label" for="issession"
               data-html="true" data-toggle="tooltip"
               title="Validity period<br>Check to force the cookie to expire at the end of the session." data-i18n-title="tooltip_cIsSession">isSession</label>
-              <div class="col-sm-9">
+              <div class="col-sm-10">
                 <div class="form-check form-check-inline">
                   <input class="form-check-input" type="checkbox" name="issession" id="issession" checked>
                 </div>
               </div>
             </div>
             <div class="form-group row" style="display:none;">
-              <label for="expiration_date" class="col-sm-3 col-form-label">Expire </label>
-              <div class="col-sm-9">
+              <label for="expiration_date" class="col-sm-2 col-form-label">Expire </label>
+              <div class="col-sm-10">
                 <div class='input-group date' id='expiration_date'>
                   <input type='text' class="form-control">
                   <span class="input-group-addon">
