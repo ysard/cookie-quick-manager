@@ -95,6 +95,8 @@
   },
 
 
+
+
   "tooltip_cDomain": {
     "message": "A host-only cookie, applies only to the current domain. Other cookies also apply to subdomains, and their domain has a leading point.",
     "description": ""
@@ -181,6 +183,8 @@
   },
 
 
+
+
   "modalClipboardTitle": {
     "message": "Export $cookie_number$ cookie(s)",
     "description": "Header that tells the user how many cookies are exported in the textarea.",
@@ -219,5 +223,109 @@
         "content" : "$1"
       }
     }
+  },
+
+
+
+
+  "oSettings": {
+    "message": "Settings",
+    "description": "Tab title"
+  },
+
+  "oShortcuts": {
+    "message": "Shortcuts",
+    "description": "Tab title"
+  },
+
+  "oAbout": {
+    "message": "About",
+    "description": "Tab title"
+  },
+
+  "oPrivacy": {
+    "message": "Privacy",
+    "description": "Settings page: Section title"
+  },
+
+  "oDelete_all_on_restart": {
+    "message": " Delete all cookies on restart",
+    "description": "Settings page: Checkbox"
+  },
+
+  "oImport_protected_cookies": {
+    "message": " Import cookies as protected cookies",
+    "description": "Settings page: Checkbox"
+  },
+
+  "oAppearance": {
+    "message": "Appearance",
+    "description": "Settings page: Section title"
+  },
+
+  "oSkin": {
+    "message": "Skin:",
+    "description": "Settings page: Skin selector"
+  },
+
+  "oDefault": {
+    "message": "Default",
+    "description": "Settings page: default skin"
+  },
+
+  "oYourData": {
+    "message": "Your data",
+    "description": "Settings page: Section title"
+  },
+
+  "aboutBackupButton": {
+    "message": "Backup user data to a file",
+    "description": "Settings page: Backup user data"
+  },
+
+  "aboutRestoreButton": {
+    "message": "Restore user data from a file",
+    "description": "Settings page: Restore user data from file"
+  },
+
+  "aboutOr": {
+    "message": "Or, you can...",
+    "description": "Settings page: Sentence between backup/restore buttons and the button to clear user data"
+  },
+
+  "aboutResetButton": {
+    "message": "Go back to default settings",
+    "description": "Settings page: Reset settings"
+  },
+
+  "oLicense": {
+    "message": "Source code (Under GPLv3 license)",
+    "description": "About page: Link for GitHub sources"
+  },
+
+  "oIssues": {
+    "message": "Issues",
+    "description": "About page: Link for GitHub issues"
+  },
+
+  "oSwitchDomains": {
+    "message": "Switch to the list of domains",
+    "description": "Keyboard shortcut description: ctrl+left"
+  },
+
+  "oSwitchCookies": {
+    "message": "Switch to the list of cookies",
+    "description": "Keyboard shortcut description: ctrl+right"
+  },
+
+  "oSearchDomain": {
+    "message": "Search a domain",
+    "description": "Keyboard shortcut description: ctrl+F"
+  },
+
+  "oDelCurrentCookie": {
+    "message": "Delete the current cookie",
+    "description": "Keyboard shortcut description: suppr"
   }
+
 }

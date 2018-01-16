@@ -95,6 +95,8 @@
   },
 
 
+
+
   "tooltip_cDomain": {
     "message": "Un cookie host-only ne s'applique qu'au domaine courant. Les autres cookies s'appliquent également aux sous-domaines, et leur attribut 'domaine' possède un '.' en en-tête.",
     "description": ""
@@ -181,6 +183,8 @@
   },
 
 
+
+
   "modalClipboardTitle": {
     "message": "Export de $cookie_number$ cookie(s)",
     "description": "Header that tells the user how many cookies are exported in the textarea.",
@@ -219,5 +223,108 @@
         "content" : "$1"
       }
     }
+  },
+
+
+
+
+  "oSettings": {
+    "message": "Paramètres",
+    "description": "Tab title"
+  },
+
+  "oShortcuts": {
+    "message": "Raccourcis",
+    "description": "Tab title"
+  },
+
+  "oAbout": {
+    "message": "À propos",
+    "description": "Tab title"
+  },
+
+  "oPrivacy": {
+    "message": "Vie privée et sécurité",
+    "description": "Settings page: Section title"
+  },
+
+  "oDelete_all_on_restart": {
+    "message": " Effacer les cookies au redémarrage du navigateur",
+    "description": "Settings page: Checkbox"
+  },
+
+  "oImport_protected_cookies": {
+    "message": " Protéger les cookies lors de l'importation",
+    "description": "Settings page: Checkbox"
+  },
+
+  "oAppearance": {
+    "message": "Apparence",
+    "description": "Settings page: Section title"
+  },
+
+  "oSkin": {
+    "message": "Thème:",
+    "description": "Settings page: Skin selector"
+  },
+
+  "oDefault": {
+    "message": "Défaut",
+    "description": "Settings page: default skin"
+  },
+
+  "oYourData": {
+    "message": "Vos données",
+    "description": "Settings page: Section title"
+  },
+
+  "aboutBackupButton": {
+    "message": "Enregistrer dans un fichier",
+    "description": "Settings page: Backup user data"
+  },
+
+  "aboutRestoreButton": {
+    "message": "Restaurer depuis un fichier",
+    "description": "Settings page: Restore user data from file"
+  },
+
+  "aboutOr": {
+    "message": "Ou alors, vous pouvez...",
+    "description": "Settings page: Sentence between backup/restore buttons and the button to clear user data"
+  },
+
+  "aboutResetButton": {
+    "message": "Revenir aux paramètres par défaut",
+    "description": "Settings page: Reset settings"
+  },
+
+  "oLicense": {
+    "message": "Code source (Licence GPLv3, en Anglais)",
+    "description": "About page: Link for GitHub sources"
+  },
+
+  "oIssues": {
+    "message": "Problèmes",
+    "description": "About page: Link for GitHub issues"
+  },
+
+  "oSwitchDomains": {
+    "message": "Passer à la liste des domaines",
+    "description": "Keyboard shortcut description: ctrl+left"
+  },
+
+  "oSwitchCookies": {
+    "message": "Passer à la liste des cookies",
+    "description": "Keyboard shortcut description: ctrl+right"
+  },
+
+  "oSearchDomain": {
+    "message": "Rechercher un domaine",
+    "description": "Keyboard shortcut description: ctrl+F"
+  },
+
+  "oDelCurrentCookie": {
+    "message": "Supprimer le cookie courant",
+    "description": "Keyboard shortcut description: suppr"
   }
 }
