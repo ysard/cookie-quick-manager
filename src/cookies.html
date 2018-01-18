@@ -293,7 +293,16 @@
             data-toggle="tooltip"
             title="Delete all the cookies" data-i18n-title="tooltipADelete"><span class="glyphicon glyphicon-trash"></span></button>
             <div class="dropup dropup-custom">
-              <button type="button" class="btn btn-dark dropdown-toggle" id="export_button" data-toggle="dropdown"><span class="glyphicon glyphicon-folder-open"></span></button>
+              <button type="button" class="btn btn-dark dropdown-toggle"
+              data-toggle="dropdown"><span class="glyphicon glyphicon-lock"></span></button>
+              <ul class="dropdown-menu">
+                <li><a href="#" id="protect_all_button" data-toggle="modal" data-i18n-content="menu_protect_all">Protect all cookies</a></li>
+                <li><a href="#" id="unprotect_all_button" data-toggle="modal" data-i18n-content="menu_unprotect_all">Unprotect all cookies</a></li>
+              </ul>
+            </div>
+            <div class="dropup dropup-custom">
+              <button type="button" class="btn btn-dark dropdown-toggle"
+              data-toggle="dropdown"><span class="glyphicon glyphicon-folder-open"></span></button>
               <ul class="dropdown-menu">
                 <li class="dropdown-header" data-i18n-content="menuHeaderExport">Export:</li>
                 <li><a href="#" id="clipboard_cookie_export" data-toggle="modal" data-target="#modal_clipboard" data-i18n-content="menuC2Clipboard">Copy cookie to clipboard</a></li>

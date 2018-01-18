@@ -177,5 +177,53 @@ vAPI.getCookiesFromSelectedDomain = function() {
     });
 }
 
+vAPI.set_cookie_protection = function(cookies, protect_flag) {
+    // Iterate on all new cookies and add their domains and names to the
+    // array of protected_cookies in local storage.
+    // protect_flag: false: unprotect the cookies; true: protect the cookies
+    // TODO: make a global promise shared with cookies.js (#protect_button.click) to check
+    // the presence of a domain in protected_cookies
+
+    let settings = browser.storage.local.get({
+        protected_cookies: {},
+    });
+    settings.then((items) => {
+        for (let cookie of cookies) {
+            //console.log(cookie);
+
+            // Check domain
+            let domain = cookie.domain;
+            if (!(domain in items.protected_cookies)) {
+                if (protect_flag)
+                    // Absent: we want to protect it: init domain
+                    items.protected_cookies[domain] = [];
+                else
+                    // Absent we want to unprotect: do nothing
+                    continue;
+            }
+
+            // Check name
+            let name = cookie.name;
+            if (protect_flag && items.protected_cookies[domain].indexOf(name) === -1) {
+                // This cookie will be protected
+                console.log({'protect: add': name});
+                items.protected_cookies[domain].push(name);
+                continue;
+            }
+
+            if ((!protect_flag) && (items.protected_cookies[domain].indexOf(name) !== -1)) {
+                // This cookie will not be protected anymore
+                console.log({'protect: rm': name});
+                items.protected_cookies[domain] = items.protected_cookies[domain].filter(item => ![name,].includes(item));
+            }
+        }
+        // Set new protected_cookies on storage area
+        settings = browser.storage.local.set({"protected_cookies": items.protected_cookies});
+        settings.then(null, (error) => {
+            console.log({"Error during all protect:": error});
+        });
+    });
+}
+
 
 })(this);

@@ -44,6 +44,16 @@
     "description": "Checkbox for search engine used to query subdomains."
   },
 
+  "menu_protect_all": {
+    "message": "Protéger tous les cookies",
+    "description": "Dropdown menu option."
+  },
+
+  "menu_unprotect_all": {
+    "message": "Déprotéger tous les cookies",
+    "description": "Dropdown menu option."
+  },
+
   "menuHeaderExport": {
     "message": "Exporter:",
     "description": "Dropdown menu header."

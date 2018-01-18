@@ -349,6 +349,26 @@ $('#button_optimal_size').click(function() {
     });
 });
 
+$("#protect_all_button").click(function() {
+    // Build 1 json template for each cookie in all stores
+    let promise = vAPI.get_all_cookies();
+    promise.then((cookies) => {
+        vAPI.set_cookie_protection(cookies, true);
+        // Update the UI
+        $('#domain-list').find('li.active').click();
+    });
+});
+
+$("#unprotect_all_button").click(function() {
+    // Build 1 json template for each cookie in all stores
+    let promise = vAPI.get_all_cookies();
+    promise.then((cookies) => {
+        vAPI.set_cookie_protection(cookies, false);
+        // Update the UI
+        $('#domain-list').find('li.active').click();
+    });
+});
+
 $('#button_options_page').click(function() {
     // Open Options Page
     browser.runtime.openOptionsPage();
