@@ -116,6 +116,9 @@ browser.cookies.onChanged.addListener(function(changeInfo) {
             secure: changeInfo.cookie.secure,
             storeId: changeInfo.cookie.storeId,
         };
+        // Handle session cookies (if session there is no expirationDate)
+        if (changeInfo.cookie.expirationDate !== undefined)
+            params.expirationDate = changeInfo.cookie.expirationDate;
 
         let promise = browser.cookies.set(params);
         promise.then((cookie) => {
