@@ -370,7 +370,10 @@ function parseJSONFile(content) {
 
         // Session cookie has no expiration date
         if (json_cookie["Expires raw"] != "0") {
-            params['expirationDate'] = parseInt(json_cookie["Expires raw"], 10);
+            let expirationDate = parseInt(json_cookie["Expires raw"], 10);
+            if (expirationDate <= ((Date.now() / 1000|0) + 1))
+                continue;
+            params['expirationDate'] = expirationDate;
         }
         console.log(params);
         promises.push(browser.cookies.set(params));
