@@ -5,9 +5,9 @@
     height: 410px;
 }
 #value {
+    /* -41px */
     height: 125px;
 }
-
 /* Customization */
 h2 {
     background: #12b36f;

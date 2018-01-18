@@ -31,7 +31,10 @@
         height: 450px;
         overflow-y: auto;
       }
-      #value {height: 166px;}
+      #value {
+        height: 166px;
+        width: 100%;
+      }
       .private-badge {
         background-image: url("icons/private-browsing.svg");
         background-repeat: no-repeat;
@@ -73,13 +76,19 @@
       .dropup-custom {
         display: inline-block;
       }
+      #toggle_buttons {
+        float: left;
+        margin-bottom: -40px;
+        margin-top: 15px;
+        margin-left: 15px;
+      }
       #toggle_url, #toggle_b64 {
         font-size: 0.7em;
         padding: 0px;
-        /* Position under "Value" text, with the same padding */
+        /* Position under "Value" text, with the same padding
         position: relative;
         left: 15px;
-        bottom: 145px;
+        bottom: 145px; */
       }
       .down {
         border-color: #00ff00;
@@ -125,8 +134,10 @@
             height: 100px;
             overflow-y: auto;
         }
-        #toggle_url, #toggle_b64 {
-            bottom: 0px;
+        #toggle_buttons {
+            float: right;
+            margin: 0;
+            margin-right: 15px;
         }
         .col-sm-4 button {
             margin-top: 3px;
@@ -170,16 +181,18 @@
               </div>
             </div>
             <div class="form-group row">
+              <div id="toggle_buttons">
+                <button type="button" class="btn btn-dark" id="toggle_url"
+                data-html="true" data-toggle="tooltip"
+                title="URL decode<br>Click to activate/deactivate." data-i18n-title="tooltip_buttonUrl">URL</button>
+                <button type="button" class="btn btn-dark" id="toggle_b64"
+                data-html="true" data-toggle="tooltip"
+                title="Base64 decode<br>Click to activate/deactivate." data-i18n-title="tooltip_buttonB64">B64</button>
+              </div>
               <label for="value" class="col-sm-2 col-form-label" data-i18n-content="cValue">Value </label>
               <div class="col-sm-10">
                 <textarea class="form-control" name="value" id="value"></textarea>
               </div>
-              <button type="button" class="btn btn-dark" id="toggle_url"
-              data-html="true" data-toggle="tooltip"
-              title="URL decode<br>Click to activate/deactivate." data-i18n-title="tooltip_buttonUrl">URL</button>
-              <button type="button" class="btn btn-dark" id="toggle_b64"
-              data-html="true" data-toggle="tooltip"
-              title="Base64 decode<br>Click to activate/deactivate." data-i18n-title="tooltip_buttonB64">B64</button>
             </div>
             <div class="form-group row">
               <label for="path" class="col-sm-2 col-form-label" data-i18n-content="cPath">Path </label>
