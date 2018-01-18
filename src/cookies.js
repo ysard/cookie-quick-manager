@@ -32,6 +32,10 @@
 /*********** Events attached to UI elements ***********/
 // Search box: handle keyboard inputs
 $('#search_domain').on('input', actualizeDomains);
+$('#search_domain').keypress(function(e) {
+    if(e.which == 13)
+        actualizeDomains();
+});
 // Search box: handle button pressed
 $('#search_domain_submit').click(actualizeDomains);
 // Query subdomains status: handle check
