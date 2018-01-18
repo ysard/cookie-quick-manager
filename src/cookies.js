@@ -567,7 +567,19 @@ function delete_cookies(promise, delete_button_selector) {
 
         // Reactivate the interface
         disable_cookie_details();
-        actualizeDomains();
+
+        if (delete_button_selector == "#delete_all_button span")
+            actualizeDomains();
+        else {
+            // Deletion of a single domain is ok:
+            // Get the current domain:
+            // - click on the previous element
+            // - remove it from the list
+            let $selected = $('#domain-list').find('li.active');
+            $selected.prev().click();
+            $selected.remove();
+        }
+
 
     }, (error) => {
         console.log({RemovedError: error});
@@ -577,9 +589,15 @@ function delete_cookies(promise, delete_button_selector) {
 
         // Reactivate the interface
         disable_cookie_details();
-        reset_cookie_details();
-        // Click on the same domaine since there are not deleted cookies
-        $('#domain-list').find('li.active').click();
+        // On error: reload all the domains if multiple domains were concerned;
+        // reload only the current domain if a single domain is concerned
+        if (delete_button_selector == "#delete_all_button span")
+            actualizeDomains();
+        else {
+            reset_cookie_details();
+            // Click on the same domain since there are not deleted cookies
+            $('#domain-list').find('li.active').click();
+        }
     });
 }
 
