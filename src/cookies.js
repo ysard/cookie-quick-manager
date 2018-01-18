@@ -342,7 +342,7 @@ $('#button_optimal_size').click(function() {
     browser.windows.getCurrent().then((currentWindow) => {
         var updateInfo = {
             width: 1200,
-            height: 581,
+            height: 531,
         };
         console.log(updateInfo);
         browser.windows.update(currentWindow.id, updateInfo);
