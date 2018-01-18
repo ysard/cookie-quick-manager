@@ -36,7 +36,7 @@ function createWindow(createData) {
   let settings = browser.storage.local.get("addonSize");
   settings.then((items) => {
     let height = 531;
-    let width = 1200;
+    let width = 1095;
 
     // If addonSize item is in storage and if previous sizes are too small
     // => force default values
