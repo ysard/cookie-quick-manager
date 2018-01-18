@@ -355,7 +355,12 @@ $("#protect_all_button").click(function() {
     promise.then((cookies) => {
         vAPI.set_cookie_protection(cookies, true);
         // Update the UI
-        $('#domain-list').find('li.active').click();
+        // why we don't just click on the current domain ?
+        // Because Firefox 57 is too fast for the asynchronous api
+        // to update the list of protected cookies before clicking.
+        let button_icon = $("#protect_button span");
+        button_icon.removeClass("glyphicon-lock");
+        button_icon.addClass("glyphicon-unlock");
     });
 });
 
@@ -365,7 +370,12 @@ $("#unprotect_all_button").click(function() {
     promise.then((cookies) => {
         vAPI.set_cookie_protection(cookies, false);
         // Update the UI
-        $('#domain-list').find('li.active').click();
+        // why we don't just click on the current domain ?
+        // Because Firefox 57 is too fast for the asynchronous api
+        // to update the list of protected cookies before clicking.
+        let button_icon = $("#protect_button span");
+        button_icon.removeClass("glyphicon-unlock");
+        button_icon.addClass("glyphicon-lock");
     });
 });
 
