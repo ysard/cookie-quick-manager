@@ -441,7 +441,9 @@ function set_cookie_protection(cookies_array) {
     // TODO: make a global promise shared with cookies.js (#protect_button.click) to check
     // the presence of a domain in protected_cookies
 
-    let settings = browser.storage.local.get("protected_cookies");
+    let settings = browser.storage.local.get({
+        protected_cookies: {},
+    });
     settings.then((items) => {
         for (let added_cookie of cookies_array) {
             let domain = added_cookie.domain;

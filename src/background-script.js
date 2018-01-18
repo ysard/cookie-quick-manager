@@ -37,14 +37,11 @@ function init_options() {
     });
     settings.then((items) => {
         console.log({storage_data: items});
-        let storage_data = {};
 
         // protected_cookies array
         // The array check is a workaround to fix previous bug e4e735f (an array instead of an object)
-        if (!Array.isArray(items.protected_cookies))
-            protected_cookies = items.protected_cookies;
-        else
-            storage_data['protected_cookies'] = {};
+        if (Array.isArray(items.protected_cookies))
+            items.protected_cookies = {};
 
         // Program the deletion of all cookies (except for those which are protected)
         // BUG ?: We must set a delay on this function. Otherwise the API returns 0 cookie...
@@ -55,7 +52,7 @@ function init_options() {
             }, 2000);
 
         // Init data structure
-        settings = browser.storage.local.set(storage_data);
+        settings = browser.storage.local.set(items);
         settings.then(null, onError);
     });
 }
