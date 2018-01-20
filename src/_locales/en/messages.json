@@ -283,6 +283,16 @@
     "description": "Settings page: default skin"
   },
 
+  "oExport": {
+    "message": "Export",
+    "description": "Settings page: Section title"
+  },
+
+  "oTemplate": {
+    "message": "Template:",
+    "description": "Settings page: Template selector"
+  },
+
   "oYourData": {
     "message": "Your data",
     "description": "Settings page: Section title"

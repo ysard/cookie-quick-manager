@@ -42,7 +42,7 @@ $("#modal_clipboard").on('shown.bs.modal', function () {
 });
 */
 $("#file_cookie_export").click(function() {
-    export_content_to_file(build_cookie_dump());
+    export_content_to_file(get_concatenated_content(build_cookie_dump()));
 });
 
 $("#file_domain_export").click(function() {
@@ -70,7 +70,7 @@ $("#file_all_export").click(function() {
 $("#clipboard_cookie_export").click(function() {
     // Handle the copy of the current cookie displayed in details zone
     // Build text according to template
-    $('#clipboard_textarea').val(build_cookie_dump());
+    $('#clipboard_textarea').val(get_concatenated_content(build_cookie_dump()));
     // Update title of the dialog box (1 only cookie at the time here)
     $('#modal_clipboard h4.modal-title').text("Export 1 cookie");
 });
@@ -110,13 +110,33 @@ $("#file_elem").change(function(event) {
     reader.readAsText(file);
 });
 
+browser.storage.onChanged.addListener(function (changes, area) {
+    // Called when the local storage area is modified
+    // Here: we handle only 'template' key.
+
+    //console.log("Change in storage area: " + area);
+    console.log(changes);
+    // Reload template
+    if (changes.template !== undefined) {
+        cookie_clipboard_template = vAPI.templates[changes.template.newValue];
+    }
+});
+
+/*********** Initializations ***********/
+
+get_options();
+
 });
 
 /*********** Utils ***********/
 function get_concatenated_content(templates) {
-    // Return JSON string from array of strings
-    // Make 1 json for each cookie and store it
-    return '[' + templates.join(',') + ']';
+    // Return string from array of strings
+    // According to the current template,
+    // make 1 json for each cookie and store it or,
+    // return 1 text content with 1 cookie per line.
+    return cookie_clipboard_template.left_tag +
+        templates.join(cookie_clipboard_template.separator) +
+        cookie_clipboard_template.right_tag;
 }
 
 function get_templates(cookies) {
@@ -130,9 +150,13 @@ function get_templates(cookies) {
     return templates;
 }
 
-function secure_json_string(unescaped_string) {
-    // Escape double quotes and backslashs
-    return unescaped_string.replace(/\\/g, "\\\\").replace(/"/g, '\\"');
+function secure_string(unescaped_string) {
+    // Escape double quotes and backslashs only for JSON template
+    if (cookie_clipboard_template.name == 'JSON')
+        return unescaped_string.replace(/\\/g, "\\\\").replace(/"/g, '\\"');
+    else if (cookie_clipboard_template.name == 'NETSCAPE')
+        return unescaped_string;
+    return unescaped_string;
 }
 
 function display_json_in_clipboard_area(cookies_promise) {
@@ -168,7 +192,7 @@ function build_cookie_dump() {
         if (raw) {
             return (!issession) ? $('#expiration_date').data("DateTimePicker").date().unix() : 0;
         }
-        return (!issession) ? $('#expiration_date').data("DateTimePicker").date().format(date_format) : "At the end of the session";
+        return (!issession) ? $('#expiration_date').data("DateTimePicker").date().format(vAPI.date_format) : "At the end of the session";
     }
 
     function get_domain_status(raw) {
@@ -198,14 +222,15 @@ function build_cookie_dump() {
     }
 
     // Make a local copy of the template
-    var template_temp = cookie_clipboard_template;
+    var template_temp = cookie_clipboard_template.template;
 
     // Update variables
     var params = {
         '{HOST_RAW}': vAPI.getHostUrl_from_UI(),
-        '{NAME_RAW}': secure_json_string($('#name').val()),
+        '{DOMAIN_RAW}': $('#domain').val(),
+        '{NAME_RAW}': secure_string($('#name').val()),
         '{PATH_RAW}': $('#path').val(),
-        '{CONTENT_RAW}': secure_json_string($('#value').val()),
+        '{CONTENT_RAW}': secure_string($('#value').val()),
         '{EXPIRES}': get_timestamp(false),
         '{EXPIRES_RAW}': get_timestamp(true),
         '{ISSECURE}': get_secure_status(false),
@@ -221,7 +246,7 @@ function build_cookie_dump() {
     for (let key_pattern in params) {
         template_temp = template_temp.replace(key_pattern, params[key_pattern]);
     }
-    return "[" + template_temp + "]";
+    return new Array(template_temp);
     //return JSON.stringify(JSON.parse(template_temp), null, 2);
 }
 
@@ -237,7 +262,7 @@ function build_domain_dump(cookie) {
         if (raw) {
             return (!cookie.session) ? cookie.expirationDate : 0;
         }
-        return (!cookie.session) ? moment(new Date(cookie.expirationDate * 1000)).format(date_format) : "At the end of the session";
+        return (!cookie.session) ? moment(new Date(cookie.expirationDate * 1000)).format(vAPI.date_format) : "At the end of the session";
     }
 
     function get_domain_status(raw) {
@@ -265,13 +290,14 @@ function build_domain_dump(cookie) {
     }
 
     // Make a local copy of the template
-    var template_temp = cookie_clipboard_template;
+    var template_temp = cookie_clipboard_template.template;
 
     var params = {
         '{HOST_RAW}': vAPI.getHostUrl(cookie),
-        '{NAME_RAW}': secure_json_string(cookie.name),
+        '{DOMAIN_RAW}': cookie.domain,
+        '{NAME_RAW}': secure_string(cookie.name),
         '{PATH_RAW}': cookie.path,
-        '{CONTENT_RAW}': secure_json_string(cookie.value),
+        '{CONTENT_RAW}': secure_string(cookie.value),
         '{EXPIRES}': get_timestamp(false),
         '{EXPIRES_RAW}': get_timestamp(true),
         '{ISSECURE}': get_secure_status(false),
@@ -438,26 +464,20 @@ function set_info_text(content) {
     $('#info_text').text(content);
 }
 
-/*********** Global variables ***********/
+function get_options() {
+    // Get options from storage
+    // Init cookie_clipboard_template array in global context
 
-// Global date format
-// PS: "DD-MM-YYYY hh:mm:ss a"), 'a' is for am/pm
-var date_format = "DD-MM-YYYY HH:mm:ss";
+    let settings = browser.storage.local.get({
+        template: 'JSON',
+    });
+    settings.then((items) => {
+        //console.log({storage_data: items});
+        cookie_clipboard_template = vAPI.templates[items.template];
+    });
+}
 
-var cookie_clipboard_template = '{\n\
-\t"Host raw": "{HOST_RAW}",\n\
-\t"Name raw": "{NAME_RAW}",\n\
-\t"Path raw": "{PATH_RAW}",\n\
-\t"Content raw": "{CONTENT_RAW}",\n\
-\t"Expires": "{EXPIRES}",\n\
-\t"Expires raw": "{EXPIRES_RAW}",\n\
-\t"Send for": "{ISSECURE}",\n\
-\t"Send for raw": "{ISSECURE_RAW}",\n\
-\t"HTTP only raw": "{ISHTTPONLY_RAW}",\n\
-\t"This domain only": "{ISDOMAIN}",\n\
-\t"This domain only raw": "{ISDOMAIN_RAW}",\n\
-\t"Private": "{ISPRIVATE}",\n\
-\t"Private raw": "{ISPRIVATE_RAW}"\n\
-}';
+
+var cookie_clipboard_template;
 
 }));

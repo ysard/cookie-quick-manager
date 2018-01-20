@@ -225,5 +225,45 @@ vAPI.set_cookie_protection = function(cookies, protect_flag) {
     });
 }
 
+/*********** Global variables ***********/
+
+vAPI.template_JSON = {
+    name: 'JSON',
+    template: '{\n\
+\t"Host raw": "{HOST_RAW}",\n\
+\t"Name raw": "{NAME_RAW}",\n\
+\t"Path raw": "{PATH_RAW}",\n\
+\t"Content raw": "{CONTENT_RAW}",\n\
+\t"Expires": "{EXPIRES}",\n\
+\t"Expires raw": "{EXPIRES_RAW}",\n\
+\t"Send for": "{ISSECURE}",\n\
+\t"Send for raw": "{ISSECURE_RAW}",\n\
+\t"HTTP only raw": "{ISHTTPONLY_RAW}",\n\
+\t"This domain only": "{ISDOMAIN}",\n\
+\t"This domain only raw": "{ISDOMAIN_RAW}",\n\
+\t"Private": "{ISPRIVATE}",\n\
+\t"Private raw": "{ISPRIVATE_RAW}"\n\
+}',
+    left_tag: '[',
+    right_tag: ']',
+    separator: ',\n',
+};
+
+vAPI.template_Netscape = {
+    name: 'NETSCAPE',
+    template: '{DOMAIN_RAW}\t{ISDOMAIN_RAW}\t{PATH_RAW}\t{ISSECURE_RAW}\t{EXPIRES_RAW}\t{NAME_RAW}\t{CONTENT_RAW}',
+    left_tag: '',
+    right_tag: '',
+    separator: '\n',
+};
+
+vAPI.templates = {
+    JSON: vAPI.template_JSON,
+    NETSCAPE: vAPI.template_Netscape,
+};
+
+// Global date format
+// PS: "DD-MM-YYYY hh:mm:ss a"), 'a' is for am/pm
+vAPI.date_format = "DD-MM-YYYY HH:mm:ss";
 
 })(this);

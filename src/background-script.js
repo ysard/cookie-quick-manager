@@ -51,6 +51,7 @@ function init_options() {
     // Init protected_cookies array in global context
     // Delete cookies (on restart) if the user has selected the option
     // This function is called on each startup and when the addon is installed to the browser
+
     let settings = browser.storage.local.get({
         protected_cookies: {},
         delete_all_on_restart: false,
@@ -72,6 +73,7 @@ function init_options() {
             }, 2000);
 
         // Init data structure
+        // TODO: write only if necessary
         settings = browser.storage.local.set(items);
         settings.then(null, onError);
     });

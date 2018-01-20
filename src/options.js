@@ -41,6 +41,10 @@
             // Change skin
             set_option({'skin': $(this).val()});
         });
+        $('#template').change(function() {
+            // Change template
+            set_option({'template': $(this).val()});
+        });
         $('#resetUserDataButton').click(function() {
             // Reset all data
             browser.storage.local.clear();
@@ -103,6 +107,7 @@
         // Load options from storage and update the interface
         let settings = browser.storage.local.get({
             skin: 'default',
+            template: 'JSON',
             delete_all_on_restart: false,
             import_protected_cookies: false,
         });
@@ -111,6 +116,7 @@
 
             // Update the interface
             $('#skin').val(items.skin);
+            $('#template').val(items.template);
             $('#delete_all_on_restart').prop('checked', items.delete_all_on_restart);
             $('#import_protected_cookies').prop('checked', items.import_protected_cookies);
 

@@ -34,7 +34,7 @@
       form input {
         vertical-align: bottom;
       }
-      #select_skin {
+      #select_skin, #select_template {
         padding-left: 0;
       }
       #your_data {
@@ -117,6 +117,16 @@
                   <input type="checkbox" name="global_counter" id="global_counter"> Display a global counter for protected cookies.
               </label>
               </div>-->
+            <h2 data-i18n-content="oExport">Export</h2>
+            <div class="form-group row">
+              <label id="select_template" class="col-sm-12 col-form-label" for="template" data-i18n-content="oTemplate">Template:</label>
+              <div class="col-sm-3">
+                <select class="form-control" id="template">
+                  <option value="JSON">JSON</option>
+                  <option value="NETSCAPE">Netscape</option>
+                </select>
+              </div>
+            </div>
             <h2 data-i18n-content="oYourData">Your data</h2>
             <div id="your_data">
               <p>

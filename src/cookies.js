@@ -427,8 +427,8 @@ browser.storage.onChanged.addListener(function (changes, area) {
 
 // Init datetimepicker object
 $('#expiration_date').datetimepicker({
-    format: date_format,
-    defaultDate: moment(new Date(), date_format),
+    format: vAPI.date_format,
+    defaultDate: moment(new Date(), vAPI.date_format),
     useCurrent: false, // Set to current date
     showClear: true // Trash button
 });
@@ -970,7 +970,7 @@ function display_cookie_details(event) {
 
         // Timestamp is in Unix format: seconds and not milliseconds (so we use moment.unix() method)
         // We can multiply by 1000...
-        $expiration_date.data("DateTimePicker").date(moment.unix(cookie.expirationDate).format(date_format));
+        $expiration_date.data("DateTimePicker").date(moment.unix(cookie.expirationDate).format(vAPI.date_format));
 
         // not ok
         //$('#myDatepicker').data("DateTimePicker").date(moment(new Date(), 'DD-MM-YYYY HH:mm:ss'));
@@ -983,7 +983,7 @@ function display_cookie_details(event) {
         $expiration_date.closest('.form-group').hide();
         // Put current timestamp + 24h if user decides to set an expiration date later
         //$('#myDatepicker').data("DateTimePicker").clear();
-        $expiration_date.data("DateTimePicker").date(moment(new Date ).add(1, 'days').format(date_format));
+        $expiration_date.data("DateTimePicker").date(moment(new Date ).add(1, 'days').format(vAPI.date_format));
     }
 
     // If the cookie is not in protected_cookies array: display lock icon
@@ -1050,10 +1050,6 @@ function update_skin(skin) {
 }
 
 /*********** Global variables ***********/
-
-// Global date format
-// PS: "DD-MM-YYYY hh:mm:ss a"), 'a' is for am/pm
-var date_format = "DD-MM-YYYY HH:mm:ss";
 
 var $current_selected_list = $('#domain-list');
 
