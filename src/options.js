@@ -41,6 +41,10 @@
             // Change skin
             set_option({'skin': $(this).val()});
         });
+        $('#open_in_new_tab').change(function() {
+            // Delete all cookies when the browser restarts
+            set_option({'open_in_new_tab': $(this).is(':checked')});
+        });
         $('#template').change(function() {
             // Change template
             set_option({'template': $(this).val()});

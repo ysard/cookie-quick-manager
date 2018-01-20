@@ -8,6 +8,9 @@
       body {
         min-height: 400px;
       }
+      #shortcuts {
+        max-width: 510px;
+      }
       #addon-name {
         display: inline-block;
         margin-top: 10px;
@@ -37,6 +40,9 @@
       #select_skin, #select_template {
         padding-left: 0;
       }
+      #skin, #template {
+        width: 200px;
+      }
       #your_data {
         padding-left: 30px;
       }
@@ -64,7 +70,7 @@
     </style>
   </head>
   <body>
-    <div class="col-sm-5">
+    <div class="content">
       <h2 id="addon-name">Cookies Quick Manager</h2>
       <ul id="dynamic-tab" class="nav nav-tabs">
         <li class="active"><a data-toggle="tab" href="#parameters" data-i18n-content="oSettings">Settings</a></li>
@@ -103,12 +109,14 @@
             <h2 data-i18n-content="oAppearance">Appearance</h2>
             <div class="form-group row">
               <label id="select_skin" class="col-sm-12 col-form-label" for="skin" data-i18n-content="oSkin">Skin:</label>
-              <div class="col-sm-3">
-                <select class="form-control" id="skin">
-                  <option value="default" data-i18n-content="oDefault">Default</option>
-                  <option value="hacker_style">Hacker style</option>
-                </select>
-              </div>
+              <select class="form-control" id="skin">
+                <option value="default" data-i18n-content="oDefault">Default</option>
+                <option value="hacker_style">Hacker style</option>
+              </select>
+            </div>
+            <div class="form-group row">
+              <input type="checkbox" name="open_in_new_tab" id="open_in_new_tab">
+              <label for="open_in_new_tab" data-i18n-content="oOpen_in_new_tab"> Open Cookie Quick Manager in new tab</label>
             </div>
             <!--
               <h2>Ergonomy</h2>
@@ -122,12 +130,12 @@
             <h2 data-i18n-content="oExport">Export</h2>
             <div class="form-group row">
               <label id="select_template" class="col-sm-12 col-form-label" for="template" data-i18n-content="oTemplate">Template:</label>
-              <div class="col-sm-3">
-                <select class="form-control" id="template">
-                  <option value="JSON">JSON</option>
-                  <option value="NETSCAPE">Netscape</option>
-                </select>
-              </div>
+
+              <select class="form-control" id="template">
+                <option value="JSON">JSON</option>
+                <option value="NETSCAPE">Netscape</option>
+              </select>
+
             </div>
             <h2 data-i18n-content="oYourData">Your data</h2>
             <div id="your_data">

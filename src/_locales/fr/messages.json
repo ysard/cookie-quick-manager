@@ -283,6 +283,11 @@
     "description": "Settings page: default skin"
   },
 
+  "oOpen_in_new_tab": {
+    "message": " Ouvrir Cookie Quick Manager dans un nouvel onglet",
+    "description": "Settings page: Checkbox"
+  },
+
   "oExport": {
     "message": "Export",
     "description": "Settings page: Section title"
