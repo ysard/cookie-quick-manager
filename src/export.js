@@ -339,7 +339,7 @@ function export_content_to_file(content) {
     // We have to create an iframe to propose a file to the user
     var f = document.createElement('iframe');
     f.style.position = 'fixed';
-    //f.style.left = f.style.top = '-999px';
+    f.style.left = f.style.top = '-99px';
     //f.style.width = f.style.height = '99px';
     f.srcdoc = '<a download="cookies.json" target="_blank">cookies.json</a>';
     f.onload = function() {
