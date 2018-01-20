@@ -53,8 +53,8 @@
         });
         $('#backupUserDataButton').click(function() {
             // Get all storage data
-            let settings = browser.storage.local.get();
-            settings.then((items) => {
+            let get_settings = browser.storage.local.get();
+            get_settings.then((items) => {
                 // Download the json file
                 download({
                     'url': 'data:text/plain,' + encodeURIComponent(JSON.stringify(items, null, 2)),
@@ -97,25 +97,27 @@
     /*********** Utils ***********/
     function set_option(option_object) {
         console.log({set_option: option_object});
-        settings = browser.storage.local.set(option_object);
-        settings.then(null, (error) => {
+        let set_settings = browser.storage.local.set(option_object);
+        set_settings.then(null, (error) => {
             console.log(`set_option_error: ${error}`);
         });
     }
 
     function get_options() {
         // Load options from storage and update the interface
-        let settings = browser.storage.local.get({
+        let get_settings = browser.storage.local.get({
             skin: 'default',
+            open_in_new_tab: false,
             template: 'JSON',
             delete_all_on_restart: false,
             import_protected_cookies: false,
         });
-        settings.then((items) => {
+        get_settings.then((items) => {
             console.log({storage_data: items});
 
             // Update the interface
             $('#skin').val(items.skin);
+            $('#open_in_new_tab').val(items.open_in_new_tab);
             $('#template').val(items.template);
             $('#delete_all_on_restart').prop('checked', items.delete_all_on_restart);
             $('#import_protected_cookies').prop('checked', items.import_protected_cookies);

@@ -181,8 +181,8 @@ $("#protect_button").click(function() {
         }
         //console.log(protected_cookies);
         // Set new protected_cookies on storage area
-        settings = browser.storage.local.set({"protected_cookies": protected_cookies});
-        settings.then(null, onError);
+        let set_settings = browser.storage.local.set({"protected_cookies": protected_cookies});
+        set_settings.then(null, onError);
     //});
 });
 
@@ -388,6 +388,10 @@ window.onresize = function(event) {
     // Set the current size in local storage
     // This value is compared when the user clicks on the toolbar menu
 
+    // If opened in tab: do nothing
+    if (addon_window_type != 'window')
+        return;
+
     addonSize = {
         width: window.innerWidth,
         height: window.innerHeight
@@ -397,9 +401,9 @@ window.onresize = function(event) {
      *  width = $(window).width();
      *  height = $(window).height();
      */
-    console.log(addonSize);
-    settings = browser.storage.local.set({addonSize});
-    settings.then(null, (error) => {
+    //console.log(addonSize);
+    let set_settings = browser.storage.local.set({addonSize});
+    set_settings.then(null, (error) => {
         console.log(`Error_resizing: ${error}`);
     });
 };
@@ -456,6 +460,15 @@ getStores();
 function firefox57_workaround_for_blank_panel() {
     // browser.windows.create() displays blank windows (panel, popup or detached_panel)
     // The trick to display content is to resize the window...
+
+    // Get parameter from full url
+    // If addon is opened in a new tab, there is no issue on FF57+
+    var current_addon_url = new URL(window.location.href);
+    addon_window_type = current_addon_url.searchParams.get('type');
+    if (addon_window_type != 'window') {
+        $('#button_optimal_size').toggle();
+        return;
+    }
 
     browser.windows.getCurrent().then((currentWindow) => {
         var updateInfo = {
@@ -659,11 +672,11 @@ function get_options() {
     // Init protected_cookies array in global context
     // Load css stylesheet
 
-    let settings = browser.storage.local.get({
+    let get_settings = browser.storage.local.get({
         protected_cookies: {},
         skin: 'default',
     });
-    settings.then((items) => {
+    get_settings.then((items) => {
         console.log({storage_data: items});
 
         // protected_cookies array
@@ -672,8 +685,8 @@ function get_options() {
             protected_cookies = items.protected_cookies;
         else {
             // Init data structure
-            settings = browser.storage.local.set({"protected_cookies": {}});
-            settings.then(null, onError);
+            set_settings = browser.storage.local.set({"protected_cookies": {}});
+            set_settings.then(null, onError);
         }
 
         if (items.skin != 'default')
@@ -1059,4 +1072,5 @@ function update_skin(skin) {
 var $current_selected_list = $('#domain-list');
 
 var protected_cookies;
+var addon_window_type;
 }));

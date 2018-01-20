@@ -406,10 +406,10 @@ function parseJSONFile(content) {
     }
 
     // Handle import_protected_cookies global option
-    let settings = browser.storage.local.get({
+    let get_settings = browser.storage.local.get({
         import_protected_cookies: false
     });
-    settings.then((items) => {
+    get_settings.then((items) => {
         console.log(items);
         add_cookies(promises, items.import_protected_cookies);
     });
@@ -468,10 +468,10 @@ function get_options() {
     // Get options from storage
     // Init cookie_clipboard_template array in global context
 
-    let settings = browser.storage.local.get({
+    let get_settings = browser.storage.local.get({
         template: 'JSON',
     });
-    settings.then((items) => {
+    get_settings.then((items) => {
         //console.log({storage_data: items});
         cookie_clipboard_template = vAPI.templates[items.template];
     });

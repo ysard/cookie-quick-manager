@@ -33,8 +33,20 @@ function getActiveTab() {
 
 function createWindow(createData) {
   // Get settings
-  let settings = browser.storage.local.get("addonSize");
-  settings.then((items) => {
+  let get_settings = browser.storage.local.get(["addonSize", "open_in_new_tab"]);
+  get_settings.then((items) => {
+
+    // Open new tab
+    if (items.open_in_new_tab !== undefined && items.open_in_new_tab === true) {
+        let new_tab = browser.tabs.create({url: createData.url});
+        new_tab.then(() => {
+            console.log("The tab has been created");
+        });
+        window.close();
+        return;
+    }
+
+    // Open new window
     let height = 531;
     let width = 1095;
 
@@ -53,8 +65,9 @@ function createWindow(createData) {
     */
 
     // Create window
-    let window = browser.windows.create(createData);
-    window.then(() => {
+    createData.url += "&type=window";
+    let new_window = browser.windows.create(createData);
+    new_window.then(() => {
         console.log("The panel has been created");
     });
   });
