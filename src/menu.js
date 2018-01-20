@@ -74,8 +74,9 @@ function createWindow(createData) {
 }
 
 document.addEventListener("click", (e) => {
+  let id = e.target.id;
 
-  if (e.target.id === "search_cookie_manager") {
+  if (id === "search_cookie_manager") {
 
     getActiveTab().then((tabs) => {
       // Send current url
@@ -87,13 +88,19 @@ document.addEventListener("click", (e) => {
     });
   }
 
-  else if (e.target.id === "simple_cookie_manager") {
+  else if (id === "simple_cookie_manager") {
     // Send empty url
     let createData = {
       type: "panel",
       url: "cookies.html?parent_url=",
     };
     createWindow(createData);
+  }
+
+  else if (id === "options") {
+      // Open Options Page
+      browser.runtime.openOptionsPage();
+      window.close();
   }
 
   e.preventDefault();
