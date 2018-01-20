@@ -34,13 +34,6 @@ browser.runtime.onInstalled.addListener(update_listener);
 //var protected_cookies_counter = 0;
 var protected_cookies;
 
-function getHostUrl(cookie) {
-    // If the modified cookie has the flag isSecure, the host protocol must be https:// in order to
-    // modify or delete it.
-    var host_protocol = (cookie.secure) ? 'https://' : 'http://';
-    return host_protocol + cookie.domain + cookie.path;
-}
-
 function onError(error) {
     // Function called when a save/remove function has failed by throwing an exception.
     console.log({"Error removing/saving cookie:": error});
@@ -127,7 +120,7 @@ browser.cookies.onChanged.addListener(function(changeInfo) {
 
         // Rebuild the cookie given by the event
         let params = {
-            url: getHostUrl(changeInfo.cookie),
+            url: vAPI.getHostUrl(changeInfo.cookie),
             name: changeInfo.cookie.name,
             value: changeInfo.cookie.value,
             path: changeInfo.cookie.path,
