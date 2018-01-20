@@ -610,8 +610,13 @@ function delete_cookies(promise, delete_button_selector) {
             // - click on the previous element
             // - remove it from the list
             let $selected = $('#domain-list').find('li.active');
-            $selected.prev().click();
-            $selected.remove();
+            let $prev = $selected.prev();
+            if ($prev.length == 1) {
+                $prev.click();
+                $selected.remove();
+            } else {
+                actualizeDomains();
+            }
         }
 
 
