@@ -110,22 +110,21 @@
     function get_options() {
         // Load options from storage and update the interface
         let get_settings = browser.storage.local.get({
+            delete_all_on_restart: false,
+            import_protected_cookies: false,
             skin: 'default',
             open_in_new_tab: false,
             template: 'JSON',
-            delete_all_on_restart: false,
-            import_protected_cookies: false,
         });
         get_settings.then((items) => {
             console.log({storage_data: items});
 
             // Update the interface
-            $('#skin').val(items.skin);
-            $('#open_in_new_tab').val(items.open_in_new_tab);
-            $('#template').val(items.template);
             $('#delete_all_on_restart').prop('checked', items.delete_all_on_restart);
             $('#import_protected_cookies').prop('checked', items.import_protected_cookies);
-
+            $('#skin').val(items.skin);
+            $('#open_in_new_tab').prop('checked', items.open_in_new_tab);
+            $('#template').val(items.template);
         });
     }
 
