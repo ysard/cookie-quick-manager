@@ -751,13 +751,20 @@ function setDefaultDomain() {
     // The url is given by the popup for the current consulted page.
 
     // Get parameter from full url
-    var current_addon_url = new URL(window.location.href);
-    var parent_url = current_addon_url.searchParams.get("parent_url");
+    let current_addon_url = new URL(window.location.href);
+    let parent_url = current_addon_url.searchParams.get("parent_url");
     if (parent_url == "")
         return;
-    // Get domain from hostname
-    var splitted_domain = (new URL(parent_url)).hostname.split('.');
-    var parent_domain = splitted_domain[splitted_domain.length - 2] + '.' + splitted_domain[splitted_domain.length - 1];
+    // Get domain from hostname without subdomain
+    // https://stackoverflow.com/questions/9752963/get-domain-name-without-subdomains-using-javascript
+    var splitted_domain = (new URL(parent_url)).hostname.replace(/^www\./, '').split('.');
+    while (splitted_domain.length > 3) {
+        splitted_domain.shift();
+    }
+    if (splitted_domain.length === 3 && ((splitted_domain[1].length > 2 && splitted_domain[2].length > 2))) {
+        splitted_domain.shift();
+    }
+    var parent_domain = splitted_domain.join('.');
     // Set searched domain to searchbox
     $('#search_domain').val(parent_domain);
 }
