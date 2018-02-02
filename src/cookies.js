@@ -590,19 +590,45 @@ function filter_master_domains(domains) {
     return full_master_domains;
 }
 
-function getStores() {
-    /* Return an array of cookie stores and initialize the list of domains in the ui */
-    var storeIds = [];
-    function logStores(cookieStores) {
-        for (let store of cookieStores) {
-            storeIds.push(store.id);
-        }
-        // Fill the list of domains
-        showDomains(storeIds);
-    }
+function showStores(stores) {
+    // Display stores with their icon on the select menu
+    // Reset previous data
+    $('#store').html('');
+    $.each(stores, function (index, store) {
+        // Build text & icon for each store
+        //console.log(store);
+        let $elem = $('<span/>', {
+            css: {
+                'background-color': store.colorCode,
+                'mask': 'url(' + store.iconUrl + ') no-repeat 50% 50%',
+                'mask-size': 'cover',
+            },
+        });
+        $elem.addClass("glyphicon glyphicon-store");
+        $('#store').append($('<option/>', {
+            value: store.cookieStoreId,
+            html : $elem,
+        }).append(store.name));
+    });
+}
 
-    var gettingStores = browser.cookies.getAllCookieStores();
-    gettingStores.then(logStores);
+function getStores() {
+    /* Initialize the list of domains in the ui & the list of containers/stores in section "details" */
+
+    vAPI.get_stores().then((stores) => {
+
+        // Init dict of storeIds with iconURl and color as values
+        for (let store of vAPI.stores) {
+            storeIcons[store.cookieStoreId] = [store.iconUrl, store.colorCode];
+        }
+
+        // Display stores with their icon on the select menu
+        showStores(stores);
+
+        // Fill the list of domains
+        // vAPI.storeIds is set during the call of get_stores() promise
+        showDomains(vAPI.storeIds);
+    });
 }
 
 function delete_cookies(promise, delete_button_selector) {
@@ -1080,4 +1106,6 @@ var $current_selected_list = $('#domain-list');
 
 var protected_cookies;
 var addon_window_type;
+// Init dict of storeIds with iconURl and color as values
+var storeIcons = {};
 }));
