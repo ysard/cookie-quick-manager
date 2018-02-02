@@ -122,9 +122,9 @@
     "description": "Button to change url encoding of the current cookie value."
   },
 
-  "tooltip_cIsPrivate": {
-    "message": "Browsing context<br>Check to make sure that the cookie is accessible in private browsing.",
-    "description": "Checkbox to modify the context of the current cookie (private/default browsing)."
+  "tooltip_cStore": {
+    "message": "Browsing context<br>Select a context to make sure that the cookie is accessible in it.",
+    "description": "Select menu to modify the context of the current cookie (private/default/etc.)."
   },
 
   "tooltip_cHttpOnly": {
