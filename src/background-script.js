@@ -61,8 +61,10 @@ function init_options() {
         // BUG ?: We must set a delay on this function. Otherwise the API returns 0 cookie...
         if (items.delete_all_on_restart)
             setTimeout(function() {
-                let deletion_promise = vAPI.delete_cookies(vAPI.get_all_cookies());
-                deletion_promise.then(null, vAPI.onError);
+                vAPI.get_stores().then((stores) => {
+                    let deletion_promise = vAPI.delete_cookies(vAPI.get_all_cookies());
+                    deletion_promise.then(null, vAPI.onError);
+                });
             }, 2000);
 
         // Init data structure

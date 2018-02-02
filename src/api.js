@@ -45,14 +45,17 @@ vAPI.getHostUrl_from_UI = function() {
     return host_protocol + $('#domain').val() + $('#path').val();
 }
 
-vAPI.get_all_cookies = function() {
+vAPI.get_all_cookies = function(storeIds) {
     // Return a Promise with all cookies in all stores
-    // TODO: handle multiple stores
+    // Handle multiple stores:
+    // - by default ALL previously queried stores are used,
+    // (if no store has been queried use only default & private stores);
+    // - otherwise uses storeIds argument.
     // Used by export.js on #clipboard_domain_export click event
 
     return new Promise((resolve, reject) => {
-        // TODO: fix that :p
-        var storeIds = ['firefox-default', 'firefox-private'];
+        if (storeIds === undefined)
+            storeIds = vAPI.storeIds;
 
         // Get 1 promise for each cookie store for each domain
         // Each promise stores all associated cookies
@@ -74,6 +77,38 @@ vAPI.get_all_cookies = function() {
                 resolve(cookies);
             else
                 reject("NoCookies");
+        });
+    });
+}
+
+vAPI.get_stores = function() {
+    // Set vAPI.stores & vAPI.storeIds
+    // Return a promise with vAPI.stores
+
+    return new Promise((resolve, reject) => {
+
+        browser.contextualIdentities.query({}).then((contexts) => {
+            // contexts === false on Firefox < 57
+            // on FF+=57 contexts doesn't contain default stores: firefox-private or firefox-default
+            //console.log({CONTEXTS: contexts});
+
+            // Init stores with default stores
+            vAPI.stores = vAPI.default_stores;
+
+            // On FF+=57 add containers
+            if (contexts !== false)
+                vAPI.stores = vAPI.stores.concat(contexts);
+
+            // Get only storeIds
+            vAPI.storeIds = vAPI.stores.map(function(store){
+                return store.cookieStoreId;
+            });
+            console.log({Stores: vAPI.stores});
+
+            resolve(vAPI.stores);
+
+        }, (error) => {
+            console.error(e);
         });
     });
 }
@@ -226,6 +261,29 @@ vAPI.set_cookie_protection = function(cookies, protect_flag) {
 }
 
 /*********** Global variables ***********/
+
+vAPI.default_stores = [
+    {
+        name: "Default",
+        icon: "circle",
+        iconUrl: "",
+        color: "black",
+        colorCode: "#555555",
+        cookieStoreId: "firefox-default",
+    },
+    {
+        name: "Private",
+        icon: "private-browsing",
+        iconUrl: "icons/private-browsing.svg",
+        color: "purple",
+        colorCode: "#af51f5",
+        cookieStoreId: "firefox-private",
+    },
+];
+
+vAPI.stores = [];
+
+vAPI.storeIds = ['firefox-default', 'firefox-private'];
 
 vAPI.template_JSON = {
     name: 'JSON',
