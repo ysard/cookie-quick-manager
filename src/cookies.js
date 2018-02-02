@@ -33,6 +33,7 @@
 // Search box: handle keyboard inputs
 $('#search_domain').on('input', actualizeDomains);
 $('#search_domain').keypress(function(e) {
+    // Enter key pressed
     if(e.which == 13)
         actualizeDomains();
 });
@@ -41,7 +42,14 @@ $('#search_domain_submit').click(actualizeDomains);
 // Query subdomains status: handle check
 $('#query-subdomains').click(actualizeDomains);
 // Actualize button pressed
-$("#actualize_button").click(actualizeDomains);
+$("#actualize_button").click(function() {
+    // Copy of actualizeDomains() but call getStores() instead of showDomains()
+    // It is the unique function that actualize stores
+    $('#domain-list').empty();
+    $('#cookie-list').empty();
+    reset_cookie_details();
+    getStores();
+});
 
 $( "#save_button" ).click(function() {
     /* Save a cookie displayed on details zone
@@ -328,6 +336,11 @@ $('input[type=checkbox][name=issession]').change(function() {
     }
 });
 
+$('#search_store').change(function() {
+    // Filter domains on selected store
+    actualizeDomains();
+});
+
 $('#expiration_date').on("dp.change", function(event) {
     // Emited by DateTimePicker when date(newDate) is called, and when input field is edited
     if (isExpired(event.date.unix())) {
@@ -593,23 +606,42 @@ function filter_master_domains(domains) {
 function showStores(stores) {
     // Display stores with their icon on the select menu
     // Reset previous data
-    $('#store').html('');
-    $.each(stores, function (index, store) {
-        // Build text & icon for each store
-        //console.log(store);
-        let $elem = $('<span/>', {
-            css: {
-                'background-color': store.colorCode,
-                'mask': 'url(' + store.iconUrl + ') no-repeat 50% 50%',
-                'mask-size': 'cover',
-            },
+
+    function update_select_form(element_id) {
+        let $obj = $(element_id);
+        $obj.html('');
+
+        if (element_id === '#search_store') {
+            // Prepend stores with 'all' option
+            stores.unshift({
+                name: "All",
+                icon: "circle",
+                iconUrl: "",
+                color: "black",
+                colorCode: "#555555",
+                cookieStoreId: "all",
+            });
+        }
+
+        $.each(stores, function (index, store) {
+            // Build text & icon for each store
+            //console.log(store);
+            let $elem = $('<span/>', {
+                css: {
+                    'background-color': store.colorCode,
+                    'mask': 'url(' + store.iconUrl + ') no-repeat 50% 50%',
+                    'mask-size': 'cover',
+                },
+            });
+            $elem.addClass("glyphicon glyphicon-store");
+            $obj.append($('<option/>', {
+                value: store.cookieStoreId,
+                html : $elem,
+            }).append(store.name));
         });
-        $elem.addClass("glyphicon glyphicon-store");
-        $('#store').append($('<option/>', {
-            value: store.cookieStoreId,
-            html : $elem,
-        }).append(store.name));
-    });
+    }
+    update_select_form('#store');
+    update_select_form('#search_store');
 }
 
 function getStores() {
@@ -761,7 +793,8 @@ function actualizeDomains() {
     $('#domain-list').empty();
     $('#cookie-list').empty();
     reset_cookie_details();
-    getStores();
+    showDomains(vAPI.storeIds);
+    //getStores();
 }
 
 function isExpired(expirationDate) {
@@ -800,102 +833,87 @@ function showDomains(storeIds) {
      * Domains with private cookies have a private badge.
      * When user click on an element, an event is sent to query/display related cookies.
      */
-    var searched_domain = $('#search_domain').val();
+    let searched_domain = $('#search_domain').val();
+    let searched_store = $('#search_store').val();
+    var domainList = document.getElementById('domain-list');
 
-    // Get 1 promise for each cookie store
-    // Each promise stores all associated cookies
-    var promises = [];
-    for (let store_id of storeIds) {
-        var params = {
-            storeId: store_id,
-        };
-        /* Strict domain search => too rigid
-        if (searched_domain != "") {
-            params['domain'] = searched_domain;
-        }*/
-        promises.push(browser.cookies.getAll(params));
-    }
+    // Filter on selected store
+    if (searched_store != 'all')
+        storeIds = [searched_store];
 
-    // Merge all promises
-    Promise.all(promises).then((cookies_array) => {
+    /* Strict domain search => too rigid
+    if (searched_domain != "") {
+        params['domain'] = searched_domain;
+    }*/
 
-        // Merge all results of promises (array of arrays of cookies)
-        var cookies = [];
-        for (let cookie_subset of cookies_array) {
-            cookies = cookies.concat(cookie_subset);
-        }
+    vAPI.get_all_cookies(storeIds).then((cookies) => {
 
-        var domainList = document.getElementById('domain-list');
+        // Get dict of domains with number of cookies + cookieStore ids
+        var domains = uniqueDomains(cookies);
+        // Remove subdomains & keep only domains on top of subdomains
+        if ($('#query-subdomains').is(':checked'))
+            domains = filter_master_domains(domains);
+        // Sort domains names alphabetically
+        var domains_names = Object.keys(domains);
+        domains_names.sort();
+        var display_count = 0;
+        //add an <li> item with the name and value of the cookie to the list
+        domains_names.forEach(function(domain){
 
-        if (cookies.length > 0) {
-
-            // Get dict of domains with number of cookies + cookieStore ids
-            var domains = uniqueDomains(cookies);
-            // Remove subdomains & keep only domains on top of subdomains
-            if ($('#query-subdomains').is(':checked'))
-                domains = filter_master_domains(domains);
-            // Sort domains names alphabetically
-            var domains_names = Object.keys(domains);
-            domains_names.sort();
-            var display_count = 0;
-            //add an <li> item with the name and value of the cookie to the list
-            domains_names.forEach(function(domain){
-
-                // Do not display domains different than the searched one
-                if (searched_domain != "" && domain.indexOf(searched_domain) === -1) {
-                    return;
-                }
-                // Count displayed domains
-                display_count++;
-
-                let li = document.createElement("li");
-                li.className = "list-group-item";
-                let b_content = document.createTextNode(domains[domain].number);
-                let content = document.createTextNode(domain);
-                // Add a badge with the number of cookies for that domain
-                let badge = document.createElement("span");
-                badge.className = "badge";
-                badge.appendChild(b_content);
-                li.appendChild(content);
-                li.appendChild(badge);
-
-                // Display badge if cookie comes from a special store
-                for (let storeId of domains[domain].storeIds) {
-                    if (storeId == 'firefox-default')
-                        continue;
-                    let private_badge = document.createElement("span");
-                    private_badge.className = "store-badge";
-                    private_badge.style['background-color'] = storeIcons[storeId][1];
-                    private_badge.style['mask'] = 'url(' + storeIcons[storeId][0] + ') no-repeat 50% 50%';
-                    private_badge.style['mask-size'] = 'cover';
-
-                    li.appendChild(private_badge);
-                }
-
-                domainList.appendChild(li);
-
-                // When a user click on the domain, we build a new query to get/display domain cookies
-                // TODO: workaround: attach all storeIds in case of someone creates a private cookie
-                // in a domain with only default cookies => without these 2 ids, the private
-                // cookie will be not displayed until user reloads the domains list.
-                $(li).bind('click', {id: domain, storeIds: /*domains[domain].*/storeIds}, showCookiesList);
-            });
-
-            // Print no cookie alert if we filtered domains, and there are no more domains to display.
-            if (display_count == 0) {
-                // No domain to display
-                no_cookie_alert(domainList);
+            // Do not display domains different than the searched one
+            if (searched_domain != "" && domain.indexOf(searched_domain) === -1) {
                 return;
             }
+            // Count displayed domains
+            display_count++;
 
-            // Simulate click on the first domain in the list when the list is built
-            $("#domain-list li").first().click();
-        } else {
+            let li = document.createElement("li");
+            li.className = "list-group-item";
+            let b_content = document.createTextNode(domains[domain].number);
+            let content = document.createTextNode(domain);
+            // Add a badge with the number of cookies for that domain
+            let badge = document.createElement("span");
+            badge.className = "badge";
+            badge.appendChild(b_content);
+            li.appendChild(content);
+            li.appendChild(badge);
+
+            // Display badge if cookie comes from a special store
+            for (let storeId of domains[domain].storeIds) {
+                if (storeId == 'firefox-default')
+                    continue;
+                let private_badge = document.createElement("span");
+                private_badge.className = "store-badge";
+                private_badge.style['background-color'] = storeIcons[storeId][1];
+                private_badge.style['mask'] = 'url(' + storeIcons[storeId][0] + ') no-repeat 50% 50%';
+                private_badge.style['mask-size'] = 'cover';
+
+                li.appendChild(private_badge);
+            }
+
+            domainList.appendChild(li);
+
+            // When a user click on the domain, we build a new query to get/display domain cookies
+            // TODO: workaround: attach all storeIds in case of someone creates a private cookie
+            // in a domain with only default cookies => without these 2 ids, the private
+            // cookie will be not displayed until user reloads the domains list.
+            $(li).bind('click', {id: domain, storeIds: /*domains[domain].*/storeIds}, showCookiesList);
+        });
+
+        // Print no cookie alert if we filtered domains, and there are no more domains to display.
+        if (display_count == 0) {
             // No domain to display
             no_cookie_alert(domainList);
+            return;
         }
-    }).catch(reason => {
-        console.log(reason)
+
+        // Simulate click on the first domain in the list when the list is built
+        $("#domain-list li").first().click();
+
+    }, (error) => {
+        // No domain to display
+        console.log(error);
+        no_cookie_alert(domainList);
     });
 }
 
