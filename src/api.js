@@ -299,8 +299,7 @@ vAPI.template_JSON = {
 \t"HTTP only raw": "{ISHTTPONLY_RAW}",\n\
 \t"This domain only": "{ISDOMAIN}",\n\
 \t"This domain only raw": "{ISDOMAIN_RAW}",\n\
-\t"Private": "{ISPRIVATE}",\n\
-\t"Private raw": "{ISPRIVATE_RAW}"\n\
+\t"Store raw": "{STORE_RAW}"\n\
 }',
     left_tag: '[',
     right_tag: ']',

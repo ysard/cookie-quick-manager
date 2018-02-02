@@ -238,8 +238,7 @@ function build_cookie_dump() {
         '{ISHTTPONLY_RAW}': $('#httponly').is(':checked'),
         '{ISDOMAIN}': get_domain_status(false),
         '{ISDOMAIN_RAW}': get_domain_status(true),
-        '{ISPRIVATE}': $('#isprivate').is(':checked') ? 'firefox-private' : 'firefox-default',
-        '{ISPRIVATE_RAW}': $('#isprivate').is(':checked'),
+        '{STORE_RAW}': $('#store').val(),
     };
 
     // Replace variables in template
@@ -305,8 +304,7 @@ function build_domain_dump(cookie) {
         '{ISHTTPONLY_RAW}': cookie.httpOnly,
         '{ISDOMAIN}': get_domain_status(false),
         '{ISDOMAIN_RAW}': cookie.hostOnly,
-        '{ISPRIVATE}': cookie.storeId,
-        '{ISPRIVATE_RAW}': (cookie.storeId == 'firefox-private') ? true: false,
+        '{STORE_RAW}': cookie.storeId,
     };
 
     // Replace variables in template
@@ -393,6 +391,10 @@ function parseJSONFile(content) {
             secure: (json_cookie["Send for raw"] === 'true'),
             storeId: (json_cookie["Private raw"]  === 'true') ? 'firefox-private' : 'firefox-default',
         };
+
+        if (json_cookie["Store raw"] !== undefined) {
+            params['storeId'] = json_cookie["Store raw"];
+        }
 
         // Session cookie has no expiration date
         if (json_cookie["Expires raw"] != "0") {
