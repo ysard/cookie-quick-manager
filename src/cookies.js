@@ -76,7 +76,7 @@ $( "#save_button" ).click(function() {
         path: $('#path').val(),
         httpOnly: $('#httponly').is(':checked'),
         secure: $('#issecure').is(':checked'),
-        storeId: $('#isprivate').is(':checked') ? 'firefox-private' : 'firefox-default',
+        storeId: $('#store').val(),
     };
     // If there is no leading dot => the cookie becomes a host-only cookie.
     // To make a host-only cookie, we must omit the domain
@@ -857,14 +857,21 @@ function showDomains(storeIds) {
                 badge.className = "badge";
                 badge.appendChild(b_content);
                 li.appendChild(content);
+                li.appendChild(badge);
 
-                // Display private badge if cookie comes from private store
-                if (domains[domain].storeIds.indexOf("firefox-private") !== -1) {
+                // Display badge if cookie comes from a special store
+                for (let storeId of domains[domain].storeIds) {
+                    if (storeId == 'firefox-default')
+                        continue;
                     let private_badge = document.createElement("span");
-                    private_badge.className = "private-badge";
+                    private_badge.className = "store-badge";
+                    private_badge.style['background-color'] = storeIcons[storeId][1];
+                    private_badge.style['mask'] = 'url(' + storeIcons[storeId][0] + ') no-repeat 50% 50%';
+                    private_badge.style['mask-size'] = 'cover';
+
                     li.appendChild(private_badge);
                 }
-                li.appendChild(badge);
+
                 domainList.appendChild(li);
 
                 // When a user click on the domain, we build a new query to get/display domain cookies
@@ -945,10 +952,14 @@ function showCookiesList(event) {
 
                 let content = document.createTextNode(cookie.name + "=" + cookie.value);
 
-                // Display private badge if cookie comes from private store
-                if (cookie.storeId == "firefox-private") {
+                // Display badge if cookie comes from a special store
+                if (cookie.storeId != 'firefox-default') {
                     let private_badge = document.createElement("span");
-                    private_badge.className = "private-cookie"; // Different class than for the domain list
+                    private_badge.className = "cookie-badge";
+                    private_badge.style['background-color'] = storeIcons[cookie.storeId][1];
+                    private_badge.style['mask'] = 'url(' + storeIcons[cookie.storeId][0] + ') no-repeat 50% 50%';
+                    private_badge.style['mask-size'] = 'cover';
+
                     li.appendChild(private_badge);
                 }
 
@@ -1003,12 +1014,7 @@ function display_cookie_details(event) {
     $('#name').val(cookie.name);
     $('#value').val(cookie.value);
     $('#path').val(cookie.path);
-
-    if (cookie.storeId == "firefox-private") {
-        $('#isprivate').prop("checked", true);
-    } else {
-        $('#isprivate').prop("checked", false);
-    }
+    $('#store').val(cookie.storeId);
 
     $('#httponly').prop("checked", cookie.httpOnly);
     $('#issecure').prop("checked", cookie.secure);
@@ -1059,7 +1065,7 @@ function delete_current_cookie() {
     var params = {
       url: vAPI.getHostUrl_from_UI(),
       name: $('#name').val(),
-      storeId: $('#isprivate').is(':checked') ? 'firefox-private' : 'firefox-default',
+      storeId: $('#store').val(),
     }
 
     var removing = browser.cookies.remove(params);

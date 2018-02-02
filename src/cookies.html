@@ -28,35 +28,27 @@
         /*word-wrap: break-word; */
       }
       #domain-list, #cookie-list {
-        height: 400px;
+        height: 405px;
         overflow-y: auto;
       }
       #value {
         height: 166px;
         width: 100%;
       }
-      .private-badge {
-        background-image: url("icons/private-browsing.svg");
-        background-repeat: no-repeat;
-        background-size: 18px;
+      .store-badge {
         width: 18px;
         height: 18px;
         vertical-align: middle;
-        /*padding: 3px 7px;*/
-        display: inline-block;
-        position: absolute;
-        right: 40px;
+        float:right;
+        margin-right: 3px;
       }
-      .private-cookie {
-        background-image: url("icons/private-browsing.svg");
-        background-repeat: no-repeat;
-        background-size: 18px;
-        width: 18px;
-        height: 18px;
+      .cookie-badge {
+        width: 15px;
+        height: 15px;
         display: inline-block;
         position: absolute;
         left: 0px;
-        top: 0px;
+        top: 6px;
       }
       .cookie-expired, .cookie-expired.active, .cookie-expired.active:hover, .button-error {
         color: red;
