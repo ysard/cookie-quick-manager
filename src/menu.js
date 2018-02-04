@@ -25,10 +25,67 @@
 
 }(function(window, document) {
 
-//get active tab to run an callback function.
-//it sends to our callback an array of tab objects
+function onError(error) {
+    // Function called when a save/remove function has failed by throwing an exception.
+    console.log({"Error removing cookies:": error});
+}
+
 function getActiveTab() {
+  //get active tab to run an callback function.
+  //it sends to our callback an array of tab objects
   return browser.tabs.query({currentWindow: true, active: true});
+}
+
+function getHostUrl(cookie) {
+    // If the modified cookie has the flag isSecure, the host protocol must be https:// in order to
+    // modify or delete it.
+    var host_protocol = (cookie.secure) ? 'https://' : 'http://';
+    return host_protocol + cookie.domain + cookie.path;
+}
+
+function delete_cookies(promise) {
+    // PS: copy of vAPI function
+    // Delete all cookies in the promise
+    // Return a promise
+    return new Promise((resolve, reject) => {
+
+        promise.then((cookies) => {
+
+            let promises = [];
+            for (let cookie of cookies) {
+                // Remove current cookie
+                let params = {
+                    url: getHostUrl(cookie),
+                    name: cookie.name,
+                    storeId: cookie.storeId,
+                };
+                promises.push(browser.cookies.remove(params));
+            }
+
+            Promise.all(promises).then((cookies_array) => {
+                // Iter on all results of promises
+                for (let deleted_cookie of cookies_array) {
+
+                    // If null: no error but no suppression
+                    // => display button content in red
+                    if (deleted_cookie === null) {
+                        console.log({"Not removed": deleted_cookie});
+                        // => display button content in red
+                        reject("No error but not removed");
+                    }
+                    console.log({"Removed": deleted_cookie});
+                }
+
+                let a = document.querySelector('#delete_current_cookies');
+                // Since we add a text content as a child node, we can just replace it (3rd pos)
+                a.childNodes[2].replaceWith(" (0)");
+
+                // Ok => all cookies are deleted properly
+                // Reactivate the interface
+                resolve();
+            }, onError);
+        }, onError);
+    });
 }
 
 function createWindow(createData) {
@@ -73,19 +130,18 @@ function createWindow(createData) {
   });
 }
 
+/************************************/
+
 document.addEventListener("click", (e) => {
   let id = e.target.id;
 
   if (id === "search_cookie_manager") {
-
-    getActiveTab().then((tabs) => {
       // Send current url
       let createData = {
         type: "panel",
-        url: "cookies.html?parent_url=" + tabs[0].url,
+        url: "cookies.html?parent_url=" + current_tab.url,
       };
       createWindow(createData);
-    });
   }
 
   else if (id === "simple_cookie_manager") {
@@ -97,6 +153,22 @@ document.addEventListener("click", (e) => {
     createWindow(createData);
   }
 
+  else if (id === "delete_current_cookies") {
+    // Delete all cookies for the current domain/store
+    var params = {
+      url: current_tab.url,
+      storeId: current_tab.cookieStoreId,
+    }
+    delete_cookies(browser.cookies.getAll(params));
+  }
+
+  else if (id === "delete_current_localstorage") {
+      // Purge LocalStore for the current domain
+      // NOTE: subdomains will not be taken into account
+      let prom = browser.browsingData.removeLocalStorage({hostnames: [(new URL(current_tab.url)).hostname, ]});
+      prom.then(null);
+  }
+
   else if (id === "options") {
       // Open Options Page
       browser.runtime.openOptionsPage();
@@ -106,9 +178,16 @@ document.addEventListener("click", (e) => {
   e.preventDefault();
 });
 
+/************************************/
+
+var current_tab;
+
 // Set the searched domain
 getActiveTab().then((tabs) => {
-  let current_tab = tabs[0];
+  // Set the global var with current tab
+  current_tab = tabs[0];
+
+  // Display a shortcut to search cookies for the current domain
   let a = document.querySelector('#search_cookie_manager');
   // Workaround for domains without favicon
   // no alt text to avoid the break of the ui
@@ -119,6 +198,25 @@ getActiveTab().then((tabs) => {
   let content = document.createTextNode('Search cookie for: ' + (new URL(current_tab.url)).hostname);
   a.appendChild(img);
   a.appendChild(content);
+
+  // Display a shortcut to delete all cookies for the current domain/store
+  // Print the number of cookies
+  browser.cookies.getAll({
+      url: current_tab.url,
+      storeId: current_tab.cookieStoreId,
+  }).then((cookies) => {
+      let a = document.querySelector('#delete_current_cookies');
+      let content = document.createTextNode(" (" + cookies.length + ")");
+      a.appendChild(content);
+  });
+
+  // Detect Firefox version:
+  // - LocalStorage is not available on Firefox 56
+  browser.runtime.getBrowserInfo().then((info) => {
+    let version = info.version.split('.')[0];
+    if (parseInt(version) >= 57)
+        document.querySelector('#delete_current_localstorage').style['display'] = 'inline-block';
+  });
 });
 
 }));
