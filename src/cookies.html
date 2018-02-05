@@ -51,9 +51,10 @@
         top: 6px;
       }
       .lock-badge {
+        font-size: 13px;
         position: absolute;
         right: 0px;
-        top: 7px;
+        top: 8px;
       }
       .cookie-expired, .cookie-expired.active, .cookie-expired.active:hover, .button-error {
         color: red;
@@ -62,6 +63,14 @@
         /* bootstrap: padding: 10px 15px; */
         padding: 3px 17px;
       }
+      .search_store_form {
+        padding-left: 0px;
+        padding-right: 3px;
+      }
+      #search_store {
+        padding-left: 7px;
+      }
+
       .form-group {
         /* Reduce space between input lines in cookie details */
         margin-bottom: 1px;
@@ -278,14 +287,6 @@
                 <button class="btn btn-default" type="submit" id="search_domain_submit"><span class="glyphicon glyphicon-search"></span></button>
               </div>
             </div>
-
-            <div class="form-group row">
-              <div class="col-sm-4">
-                <select class="form-control" id="search_store">
-                </select>
-              </div>
-            </div>
-
             <div class="col-sm-5 checkbox form-check">
               <label class="form-check-label"
               data-toggle="tooltip"
@@ -293,6 +294,9 @@
               data-i18n-title="tooltipQuerySubdomains">
               <input class="form-check-input" type="checkbox" id="query-subdomains" data-i18n-content="checkboxQuerySubdomains"> Sub-domains
               </label>
+            </div>
+            <div class="col-sm-4 search_store_form">
+              <select class="form-control" id="search_store"></select>
             </div>
           </div>
           <!-- Buttons -->
