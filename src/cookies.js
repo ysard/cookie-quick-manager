@@ -152,11 +152,6 @@ $("#delete_button").click(function() {
 
 $("#protect_button").click(function() {
     // Update the protect status of the current cookie
-    // TODO: make a global promise shared with export.js (set_cookie_protection) to check
-    // the presence of a domain in protected_cookies
-
-    //browser.storage.local.clear();
-
     //let settings = browser.storage.local.get("protected_cookies");
     //settings.then((items) => {
 
@@ -190,7 +185,10 @@ $("#protect_button").click(function() {
         //console.log(protected_cookies);
         // Set new protected_cookies on storage area
         let set_settings = browser.storage.local.set({"protected_cookies": protected_cookies});
-        set_settings.then(null, onError);
+        set_settings.then((ret) => {
+            // Simulate click on domain
+            $('#domain-list').find('li.active').click();
+        }, onError);
     //});
 });
 
@@ -981,7 +979,18 @@ function showCookiesList(event) {
                     li.appendChild(private_badge);
                 }
 
+                // Add text content
                 li.appendChild(content);
+
+                // Display a lock badge if cookie is protected
+                try {
+                    if (protected_cookies[cookie.domain].indexOf(cookie.name) !== -1) {
+                        let lock_badge = document.createElement("span");
+                        lock_badge.className = "lock-badge glyphicon glyphicon-lock";
+                        li.appendChild(lock_badge);
+                    }
+                } catch (e) {}
+
                 cookieList.appendChild(li);
 
                 // When a user click on the cookie, we build a new query to display the details
@@ -1008,7 +1017,7 @@ function showCookiesList(event) {
             no_cookie_alert(cookieList);
         }
     }).catch(reason => {
-        console.log(reason)
+        console.log({"Error showCookiesList":reason});
     });
 }
 
