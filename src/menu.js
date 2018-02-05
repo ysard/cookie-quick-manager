@@ -116,10 +116,9 @@ function createWindow(createData) {
     }
     //console.log({h:height, w:width});
     /*
-     * TODO: why it is not ok on some computers with small resolution ?
+     * TODO: why it is not ok on some computers with small resolution ?*/
     createData.width = width;
     createData.height = height;
-    */
 
     // Create window
     createData.url += "&type=window";
