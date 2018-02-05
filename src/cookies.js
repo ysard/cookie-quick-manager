@@ -200,7 +200,7 @@ $("#delete_domain_button").click(function() {
 
 $("#delete_all_button").click(function() {
     // Remove all cookies
-    var promise = vAPI.get_all_cookies();
+    var promise = vAPI.get_all_cookies([$('#search_store').val()]);
     delete_cookies(promise, "#delete_all_button span");
 });
 
@@ -362,7 +362,7 @@ $('#button_optimal_size').click(function() {
 
 $("#protect_all_button").click(function() {
     // Build 1 json template for each cookie in all stores
-    let promise = vAPI.get_all_cookies();
+    let promise = vAPI.get_all_cookies([$('#search_store').val()]);
     promise.then((cookies) => {
         vAPI.set_cookie_protection(cookies, true);
         // Update the UI
@@ -377,7 +377,7 @@ $("#protect_all_button").click(function() {
 
 $("#unprotect_all_button").click(function() {
     // Build 1 json template for each cookie in all stores
-    let promise = vAPI.get_all_cookies();
+    let promise = vAPI.get_all_cookies([$('#search_store').val()]);
     promise.then((cookies) => {
         vAPI.set_cookie_protection(cookies, false);
         // Update the UI
@@ -610,7 +610,7 @@ function showStores(stores) {
         $obj.html('');
 
         if (element_id === '#search_store') {
-            // Prepend stores with 'all' option
+            // Prepend stores with 'all' option for the search filter
             stores.unshift({
                 name: "All",
                 icon: "circle",
@@ -621,7 +621,7 @@ function showStores(stores) {
             });
         }
 
-        $.each(stores, function (index, store) {
+        for (let store of stores) {
             // Build text & icon for each store
             //console.log(store);
             let $elem = $('<span/>', {
@@ -636,8 +636,9 @@ function showStores(stores) {
                 value: store.cookieStoreId,
                 html : $elem,
             }).append(store.name));
-        });
+        }
     }
+
     update_select_form('#store');
     update_select_form('#search_store');
 }

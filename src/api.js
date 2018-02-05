@@ -54,7 +54,7 @@ vAPI.get_all_cookies = function(storeIds) {
     // Used by export.js on #clipboard_domain_export click event
 
     return new Promise((resolve, reject) => {
-        if (storeIds === undefined)
+        if ((storeIds === undefined) || (storeIds[0] === 'all'))
             storeIds = vAPI.storeIds;
 
         // Get 1 promise for each cookie store for each domain

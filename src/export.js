@@ -61,7 +61,7 @@ $("#file_domain_export").click(function() {
 
 $("#file_all_export").click(function() {
     // Build 1 json template for each cookie in all stores
-    let promise = vAPI.get_all_cookies();
+    let promise = vAPI.get_all_cookies([$('#search_store').val()]);
     promise.then((cookies) => {
         export_content_to_file(get_concatenated_content(get_templates(cookies)));
     });
@@ -83,7 +83,7 @@ $("#clipboard_domain_export").click(function() {
 
 $("#clipboard_all_export").click(function() {
     // Build 1 json template for each cookie in all stores
-    let promise = vAPI.get_all_cookies();
+    let promise = vAPI.get_all_cookies([$('#search_store').val()]);
     display_json_in_clipboard_area(promise);
 });
 
