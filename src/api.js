@@ -82,8 +82,9 @@ vAPI.get_all_cookies = function(storeIds) {
 }
 
 vAPI.get_stores = function() {
-    // Set vAPI.stores & vAPI.storeIds
-    // Return a promise with vAPI.stores
+    // Set stores & vAPI.storeIds
+    // Return a promise with stores
+    // TODO make a function to acess to vAPI.storeIds as private attribute
 
     return new Promise((resolve, reject) => {
 
@@ -93,19 +94,21 @@ vAPI.get_stores = function() {
             //console.log({CONTEXTS: contexts});
 
             // Init stores with default stores
-            vAPI.stores = vAPI.default_stores;
+            let stores = vAPI.default_stores;
+            console.log({default_stores: vAPI.default_stores});
 
             // On FF+=57 add containers
             if (contexts !== false)
-                vAPI.stores = vAPI.stores.concat(contexts);
+                stores = stores.concat(contexts);
 
             // Get only storeIds
-            vAPI.storeIds = vAPI.stores.map(function(store){
+            // TODO make a function to acess to this private attribute
+            vAPI.storeIds = stores.map(function(store){
                 return store.cookieStoreId;
             });
-            console.log({Stores: vAPI.stores});
+            console.log({Stores: stores});
 
-            resolve(vAPI.stores);
+            resolve(stores);
 
         }, (error) => {
             console.error(e);
@@ -280,8 +283,6 @@ vAPI.default_stores = [
         cookieStoreId: "firefox-private",
     },
 ];
-
-vAPI.stores = [];
 
 vAPI.storeIds = ['firefox-default', 'firefox-private'];
 

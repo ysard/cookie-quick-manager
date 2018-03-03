@@ -611,14 +611,16 @@ function showStores(stores) {
 
         if (element_id === '#search_store') {
             // Prepend stores with 'all' option for the search filter
-            stores.unshift({
+            // WARNING: do not call unshift method here. stores is not readonly
+            // and is repercuted to vAPI.default_stores (when contexts == false)...
+            stores = [{
                 name: "All",
                 icon: "circle",
                 iconUrl: "",
                 color: "black",
                 colorCode: "#555555",
                 cookieStoreId: "all",
-            });
+            }].concat(stores);
         }
 
         for (let store of stores) {
@@ -649,7 +651,7 @@ function getStores() {
     vAPI.get_stores().then((stores) => {
 
         // Init dict of storeIds with iconURl and color as values
-        for (let store of vAPI.stores) {
+        for (let store of stores) {
             storeIcons[store.cookieStoreId] = [store.iconUrl, store.colorCode];
         }
 
