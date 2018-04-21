@@ -1,6 +1,6 @@
 {
   "extensionDescription": {
-    "message": "An addon to manage (view, search, create, edit, remove, backup, restore) cookies.",
+    "message": "An addon to manage (view, search, create, edit, delete, backup, restore) cookies.",
     "description": "Description of the extension."
   },
 
@@ -178,7 +178,7 @@
   },
 
   "tooltipCDelete": {
-    "message": "Remove the current cookie",
+    "message": "Delete the current cookie",
     "description": "Button to delete the current cookie."
   },
 
@@ -188,7 +188,7 @@
   },
 
   "contributeContent": {
-    "message": "<div id='contribute-content'>You can contribute to development in several ways:<br><ul><li>If you would like to make a donation to reward the many hours of development, please consider this bitcoin address:<br><span class='btc-color'>15qduxA755YANqGcbd8VvBmm8DmR4rCg1i</span></li><li>You can note the application on <a target='_blank' href='https://addons.mozilla.org/fr/firefox/addon/cookie-quick-manager/'>addons.mozilla.org</a>.</li><li>Participate in the review of the code on the <a target='_blank' href='https://github.com/ysard/cookie-quick-manager'>GitHub repository</a>.</li><li>Talk about it around you!</li></ul></div>",
+    "message": "<div id='contribute-content'>You can contribute to development in several ways:<br><ul><li>If you would like to make a donation to reward the many hours of development, please consider this bitcoin address:<br><span class='btc-color'>15qduxA755YANqGcbd8VvBmm8DmR4rCg1i</span></li><li>You can rate the application on <a target='_blank' href='https://addons.mozilla.org/firefox/addon/cookie-quick-manager/'>addons.mozilla.org</a>.</li><li>Participate in the review of the code on the <a target='_blank' href='https://github.com/ysard/cookie-quick-manager'>GitHub repository</a>.</li><li>Talk about it around you!</li></ul></div>",
     "description": "How to contribute popover."
   },
 
@@ -211,7 +211,7 @@
   },
 
   "cookieRestoredSuccess": {
-    "message": "Cookie(s) successfully restored !",
+    "message": "Cookie(s) successfully restored!",
     "description": "Alert when a file is imported with success."
   },
 

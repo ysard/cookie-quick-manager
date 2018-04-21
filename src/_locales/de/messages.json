@@ -1,11 +1,11 @@
 {
   "extensionDescription": {
-    "message": "Un gestionnaire de cookies pour les visualiser, les rechercher, les éditer, les ajouter, les supprimer, les sauvegarder ou les restaurer.",
+    "message": "Ein Add-on zur Cookieverwaltung (ansehen, durchsuchen, erstellen, editieren, löschen, sichern, wiederherstellen).",
     "description": "Description of the extension."
   },
 
   "domainsListTitle": {
-    "message": "Domaines",
+    "message": "Domains",
     "description": "Title of the list that displays domains."
   },
 
@@ -15,92 +15,92 @@
   },
 
   "detailsPanelTitle": {
-    "message": "Détails",
+    "message": "Details",
     "description": "Title of the list that displays details for cookies."
   },
 
   "cDomain": {
-    "message": "Domaine ",
+    "message": "Domain ",
     "description": "Attribute of a cookie in the details panel."
   },
 
   "cName": {
-    "message": "Nom ",
+    "message": "Name ",
     "description": "Attribute of a cookie in the details panel."
   },
 
   "cValue": {
-    "message": "Valeur ",
+    "message": "Wert ",
     "description": "Attribute of a cookie in the details panel."
   },
 
   "cPath": {
-    "message": "Chemin ",
+    "message": "Pfad ",
     "description": "Attribute of a cookie in the details panel."
   },
 
   "checkboxQuerySubdomains": {
-    "message": " Sous-domaines",
+    "message": " Sub-domains",
     "description": "Checkbox for search engine used to query subdomains."
   },
 
   "menu_protect_all": {
-    "message": "Protéger tous les cookies",
+    "message": "Sperre alle Cookies",
     "description": "Dropdown menu option."
   },
 
   "menu_unprotect_all": {
-    "message": "Déprotéger tous les cookies",
+    "message": "Entsperre alle Cookies",
     "description": "Dropdown menu option."
   },
 
   "menuHeaderExport": {
-    "message": "Exporter:",
+    "message": "Exportieren:",
     "description": "Dropdown menu header."
   },
 
   "menuC2Clipboard": {
-    "message": "Copier le cookie vers le presse-papier",
+    "message": "Kopiere Cookie in Zwischenablage",
     "description": "Dropdown menu option."
   },
 
   "menuD2Clipboard": {
-    "message": "Copier le domaine vers le presse-papier",
+    "message": "Kopiere Domain in Zwischenablage",
     "description": "Dropdown menu option."
   },
 
   "menuA2Clipboard": {
-    "message": "Tout copier vers le presse-papier",
+    "message": "Kopiere alles in Zwischenablage",
     "description": "Dropdown menu option."
   },
 
   "menuC2File": {
-    "message": "Enregistrer le cookie dans un fichier",
+    "message": "Speichere Cookie in Datei",
     "description": "Dropdown menu option."
   },
 
   "menuD2File": {
-    "message": "Enregistrer le domaine dans un fichier",
+    "message": "Speichere Domain in Datei",
     "description": "Dropdown menu option."
   },
 
   "menuA2File": {
-    "message": "Tout enregistrer dans un fichier",
+    "message": "Speichere alles in Datei",
     "description": "Dropdown menu option."
   },
 
   "menuHeaderImport": {
-    "message": "Importer:",
+    "message": "Importieren:",
     "description": "Dropdown menu header."
   },
 
   "menuRestore": {
-    "message": "Restaurer les cookies depuis un fichier",
+    "message": "Cookies von Datei wiederherestellen",
     "description": "Dropdown menu option."
   },
 
   "buttonClose": {
-    "message": "Fermer",
+    "message": "Schließen",
     "description": "Close button on modal popovers."
   },
 
@@ -108,87 +108,88 @@
 
 
   "tooltip_cDomain": {
-    "message": "Un cookie host-only ne s'applique qu'au domaine courant. Les autres cookies s'appliquent également aux sous-domaines, et leur attribut 'domaine' possède un '.' en en-tête.",
+    "message": "Ein Cookie mit dem Wert 'host-only' gilt nur für diese Domain. Andere Cookies gelten darüberhinaus für Subdomains, und deren Domain wird ein Punkt '.' vorangestellt.",
     "description": ""
   },
 
   "tooltip_buttonUrl": {
-    "message": "Décodage URL<br>Cliquer pour activer/désactiver.",
+    "message": "URL-Decodierung<br>Klicken zum Aktivieren/Deaktivieren.",
     "description": "Button to change url encoding of the current cookie value."
   },
 
   "tooltip_buttonB64": {
-    "message": "Décodage Base64<br>Cliquer pour activer/désactiver.",
+    "message": "Base64-Decodierung<br>Klicken zum Aktivieren/Deaktivieren.",
     "description": "Button to change url encoding of the current cookie value."
   },
 
   "tooltip_cStore": {
-    "message": "Mode de navigation<br>Sélectionner pour modifier le contexte de navigation du cookie.",
+    "message": "Browsing-Kontext<br>Wähle einen Kontext, um sicher zu stellen, dass der Cookie darin erreichbar ist.",
     "description": "Select menu to modify the context of the current cookie (private/default/etc.)."
   },
 
   "tooltip_cHttpOnly": {
-    "message": "Protection contre le vol<br>Cocher pour forcer l'envoi du cookie sur HTTP ou HTTPS,<br> c.-à-d. que les accès JavaScript seront bloqués dans un contexte de faille XSS.",
+    "message": "Diebstahlsicherung<br>Aktivieren, um den Cookie aussschließlich über HTTP/HTTPS zu versenden,<br> das heißt Zugriff mittels JavaScript wie in einem XSS Kontext unterbinden.",
     "description": "Checkbox to change the httpOnly cookie flag."
   },
 
   "tooltip_cIsSecure": {
-    "message": "Protection contre le vol<br>Cocher pour forcer l'envoi du cookie uniquement sur des canaux sécurisés comme HTTPS.",
+    "message": "Diebstahlsicherung<br>Aktivieren, um den Cookie aussschließlich über eine sichere Verbindung wie beispielsweise HTTPS zu senden.",
     "description": "Checkbox to change the isSecure cookie flag."
   },
 
   "tooltip_cIsSession": {
-    "message": "Période de validité<br>Cocher pour que ce cookie expire à la fin de la session.",
+    "message": "Gültigkeitsdauer<br>Aktivieren, um die Gültigkeitsdauer des Cookie auf die Sitzen zu beschränken.",
     "description": "Checkbox to change the isSession cookie flag."
   },
 
   "tooltipQuerySubdomains": {
-    "message": "Affiche également les sous-domaines régis par chaque domaine sélectionné",
+    "message": "Auch die Cookies der zur ausgewählten Domain zugehörigen Subdomains anzeigen",
     "description": "Checkbox for search engine, used to query subdomains."
   },
 
   "tooltipRefresh": {
-    "message": "Rafraîchir la liste des domaines",
+    "message": "Domainliste aktualisieren",
     "description": "Global button to refresh the interface."
   },
 
   "tooltipDDelete": {
-    "message": "Supprimer les cookies du domaine sélectionné",
+    "message": "Cookies der ausgewählten Domain löschen",
     "description": "Button to delete the selected domain."
   },
 
   "tooltipADelete": {
-    "message": "Supprimer tous les cookies du navigateur",
+    "message": "All Cookies löschen",
     "description": "Button to delete all the cookies in the browser."
   },
 
   "tooltipcontributeContent": {
-    "message": "Comment contribuer ?",
+    "message": "Wie du mithelfen kannst",
     "description": "Button to show the popover about contribution."
   },
 
   "tooltipSave": {
-    "message": "Enregistrer le cookie",
+    "message": "Diesen Cookie speichern",
     "description": "Button to save the current cookie."
   },
 
   "tooltipEdit": {
-    "message": "Débloquer les champs grisés<br>Autorise la création d'un nouveau cookie en se servant du cookie courant en tant que modèle.",
+    "message": "Grau hinterlegte Felder freischalten<br>Erstellung eines neuen Cookies, indem der aktuelle als Vorlage geändert wird.",
+    "message": "Grau hinterlegte Felder freischalten<br>Allow to create a new cookie by editing the current one as a template.",
     "description": "Button to edit current cookie."
   },
 
   "tooltipCDelete": {
-    "message": "Supprimer le cookie",
-    "description": "Button to delete the current cookie"
+    "message": "Diesen Cookie löschen",
+    "description": "Button to delete the current cookie."
   },
 
   "tooltipCProtect": {
-    "message": "Protection contre l'effacement<br>Quand le cadenas est fermé vous pouvez cliquer dessus et empêcher la suppression future de ce cookie.",
+    "message": "Löschschutz<br>Wenn das Schloss geschlossen ist, kannst du durch einen Klick die künftige Löschung diese Cookies verhindern.",
     "description": "Button to protect or unprotect the current cookie from deletion."
   },
 
   "contributeContent": {
-    "message": "<div id='contribute-content'>Vous pouvez contribuer au développement de plusieurs façons :<br><ul><li>Si vous voulez faire une donation pour récompenser les nombreuses heures de travail, veuillez considérer cette adresse bitcoin :<br><span class='btc-color'>15qduxA755YANqGcbd8VvBmm8DmR4rCg1i</span></li><li>Vous pouvez noter l'application pour augmenter sa visibilité sur <a target='_blank' href='https://addons.mozilla.org/firefox/addon/cookie-quick-manager/'>addons.mozilla.org</a>.</li><li>Vous pouvez participer au développement sur le <a target='_blank' href='https://github.com/ysard/cookie-quick-manager'>dépôt GitHub</a>.</li><li>Parlez-en autour de vous !</li></ul></div>",
+    "message": "<div id='contribute-content'>Es gibt verschiedene Möglichkeiten, wie du zur Entwicklung beitragen kannst:<br><ul><li>Falls du spende willst, um die vielen Programmierstunden zu belohnen, benutze bitte dies Bitcoin-Addresse:<br><span class='btc-color'>15qduxA755YANqGcbd8VvBmm8DmR4rCg1i</span></li><li>Du kannst eine Bewertung auf <a target='_blank' href='https://addons.mozilla.org/firefox/addon/cookie-quick-manager/'>addons.mozilla.org</a> abgeben, um ihre Sichtbarkeit des Add-ons zu erhöhen.</li><li>Du kannst beim Überprüfen des Quellcodes im <a target='_blank' href='https://github.com/ysard/cookie-quick-manager'>GitHub-Verzeihnis</a> helfen.</li><li>Zeig es deinen Freunden!</li></ul></div>",
     "description": "How to contribute popover."
   },
 
@@ -196,7 +197,7 @@
 
 
   "modalClipboardTitle": {
-    "message": "Export de $cookie_number$ cookie(s)",
+    "message": "Exportiere $cookie_number$ Cookie(s)",
     "description": "Header that tells the user how many cookies are exported in the textarea.",
     "placeholders": {
       "cookie_number" : {
@@ -206,17 +207,17 @@
   },
 
   "noCookieAlert": {
-    "message": "Pas de cookie à afficher.",
+    "message": "Keine Cookies in diesem Tab.",
     "description": "Alert when there is no cookie in domain and cookie lists."
   },
 
   "cookieRestoredSuccess": {
-    "message": "Restauration effectuée !",
+    "message": "Cookie(s) erfolgreich wiederhergestellt!",
     "description": "Alert when a file is imported with success."
   },
 
   "cookieRestoredError": {
-    "message": "Erreur, aucun cookie n'a été restauré.\n$json_error$",
+    "message": "Fehler, kein Cookie wiederhergestellt.\n$json_error$",
     "description": "Alert when a file is imported with an error from the json parser.",
     "placeholders": {
       "json_error" : {
@@ -226,7 +227,7 @@
   },
 
   "cookieRestoredSingleError": {
-    "message": "Erreur, au moins un cookie n'a pas été sauvegardé.\n$error$\nNe vous inquiétez pas; en temps normal il s'agit de cookies de session qui ont expiré.",
+    "message": "Fehler, mindestens ein Cookie konnte nicht wiederhergestellt werden.\n$error$\nKeine Sorge, meist handelt es sich dabie um Session-Cookies, die bereits abgelaufen sind.",
     "description": "Alert when a file is imported with an error during the save process.",
     "placeholders": {
       "error" : {
@@ -239,117 +240,117 @@
 
 
   "oSettings": {
-    "message": "Paramètres",
+    "message": "Einstellungen",
     "description": "Tab title"
   },
 
   "oShortcuts": {
-    "message": "Raccourcis",
+    "message": "Tastaturkürzel",
     "description": "Tab title"
   },
 
   "oAbout": {
-    "message": "À propos",
+    "message": "Über",
     "description": "Tab title"
   },
 
   "oPrivacy": {
-    "message": "Vie privée et sécurité",
+    "message": "Privatsphäre",
     "description": "Settings page: Section title"
   },
 
   "oDelete_all_on_restart": {
-    "message": " Effacer les cookies au redémarrage du navigateur",
+    "message": " All Cookies beim Neustart löschen",
     "description": "Settings page: Checkbox"
   },
 
   "oImport_protected_cookies": {
-    "message": " Protéger les cookies lors de l'importation",
+    "message": " Cookies als geschützt importieren",
     "description": "Settings page: Checkbox"
   },
 
   "oAppearance": {
-    "message": "Apparence",
+    "message": "Design",
     "description": "Settings page: Section title"
   },
 
   "oSkin": {
-    "message": "Thème:",
+    "message": "Oberfläche:",
     "description": "Settings page: Skin selector"
   },
 
   "oDefault": {
-    "message": "Défaut",
+    "message": "Standardoberfläche",
     "description": "Settings page: default skin"
   },
 
   "oOpen_in_new_tab": {
-    "message": " Ouvrir Cookie Quick Manager dans un nouvel onglet",
+    "message": " Cookie Schnell Manager in neuem Tab öffnen",
     "description": "Settings page: Checkbox"
   },
 
   "oExport": {
-    "message": "Export",
+    "message": "Exportieren",
     "description": "Settings page: Section title"
   },
 
   "oTemplate": {
-    "message": "Modèle:",
+    "message": "Vorlage:",
     "description": "Settings page: Template selector"
   },
 
   "oYourData": {
-    "message": "Vos données",
+    "message": "Deine Daten",
     "description": "Settings page: Section title"
   },
 
   "aboutBackupButton": {
-    "message": "Enregistrer dans un fichier",
+    "message": "Benutzerdaten als Datei sichern",
     "description": "Settings page: Backup user data"
   },
 
   "aboutRestoreButton": {
-    "message": "Restaurer depuis un fichier",
+    "message": "Benutzerdaten von Datei wiederherstellen",
     "description": "Settings page: Restore user data from file"
   },
 
   "aboutOr": {
-    "message": "Ou alors, vous pouvez...",
+    "message": "oder du kannst ...",
     "description": "Settings page: Sentence between backup/restore buttons and the button to clear user data"
   },
 
   "aboutResetButton": {
-    "message": "Revenir aux paramètres par défaut",
+    "message": "Standardeinstellung wiederherstellen",
     "description": "Settings page: Reset settings"
   },
 
   "oLicense": {
-    "message": "Code source (Licence GPLv3, en Anglais)",
+    "message": "Quellcode (unter GPLv3 Lizens)",
     "description": "About page: Link for GitHub sources"
   },
 
   "oIssues": {
-    "message": "Problèmes",
+    "message": "Probleme",
     "description": "About page: Link for GitHub issues"
   },
 
   "oSwitchDomains": {
-    "message": "Passer à la liste des domaines",
+    "message": "Zur Domainliste wechseln",
     "description": "Keyboard shortcut description: ctrl+left"
   },
 
   "oSwitchCookies": {
-    "message": "Passer à la liste des cookies",
+    "message": "Zur Cookieliste wechseln",
     "description": "Keyboard shortcut description: ctrl+right"
   },
 
   "oSearchDomain": {
-    "message": "Rechercher un domaine",
+    "message": "Domain suchen",
     "description": "Keyboard shortcut description: ctrl+F"
   },
 
   "oDelCurrentCookie": {
-    "message": "Supprimer le cookie courant",
+    "message": "Diesen Cookie löschen",
     "description": "Keyboard shortcut description: suppr"
   }
 }
