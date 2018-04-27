@@ -1,6 +1,7 @@
 # Overview
 
 Cookie Quick Manager: A complete manager for cookies used during browsing.
+The addon is available on [addons.mozilla.org (AMO)](https://addons.mozilla.org/firefox/addon/cookie-quick-manager/).
 It allows you to view, edit, create, delete, backup, restore cookies and search them by domain names;
 private browsing is also supported.
 
