@@ -8,8 +8,8 @@ Cookie Quick Manager est destinée aux développeurs, aux testeurs ou aux person
 soucieuses du respect de leur vie privée sur Internet.
 
 Cette WebExtension est compatible avec Firefox 57 et s'inspire des addons
-[Cookies Manager+](https://addons.mozilla.org/fr/firefox/addon/cookies-manager-plus/) et
-[Advanced Cookie Manager](https://addons.mozilla.org/fr/firefox/addon/cookie-manager/)
+[Cookies Manager+](https://addons.mozilla.org/firefox/addon/cookies-manager-plus/) et
+[Advanced Cookie Manager](https://addons.mozilla.org/firefox/addon/cookie-manager/)
 dont le développement a été arrêté à cause de l'abandon du support des extensions "Legacy".
 
 # Fonctionnalités
