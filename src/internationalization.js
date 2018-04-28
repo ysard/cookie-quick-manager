@@ -31,8 +31,10 @@
 
     /*********** Events attached to UI elements ***********/
 
-    // Workaround used to speed-up the load of UI for non french users
-    if (browser.i18n.getUILanguage() == 'fr') {
+    // Workaround used to speed-up the load of UI for non supported locales
+    let supported_locales = ['fr', 'de'];
+    if (supported_locales.includes(browser.i18n.getUILanguage())) {
+        //alert(browser.i18n.getUILanguage());
         insertI18nContentIntoDocument(document);
         insertI18nTitleIntoDocument(document);
         insertI18nPopoverContentIntoDocument(document);
