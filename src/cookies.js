@@ -756,17 +756,17 @@ function get_options() {
 function disable_cookie_details() {
     // Disable all text inputs
     // Note: These inputs create a NEW cookie if they are modified
-    $("#domain").attr("readonly", true);
-    $("#name").attr("readonly", true);
-    $("#path").attr("readonly", true);
+    $("#domain").prop("readonly", true);
+    $("#name").prop("readonly", true);
+    $("#path").prop("readonly", true);
 }
 
 function enable_cookie_details() {
     // Enable all text inputs
     // Note: These inputs create a NEW cookie if they are modified
-    $("#domain").attr("readonly", false);
-    $("#name").attr("readonly", false);
-    $("#path").attr("readonly", false);
+    $("#domain").prop("readonly", false);
+    $("#name").prop("readonly", false);
+    $("#path").prop("readonly", false);
 }
 
 function onError(error) {
