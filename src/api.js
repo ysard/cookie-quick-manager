@@ -390,6 +390,28 @@ vAPI.set_cookie_protection = function(cookies, protect_flag) {
     });
 }
 
+vAPI.getFirstPartyIsolateStatus = function(status) {
+    // Set firstPartyIsolate status
+
+    var getting = browser.privacy.websites.firstPartyIsolate.get({});
+    getting.then((got) => {
+        console.log({'got': got});
+
+        if ((got.levelOfControl === "controlled_by_this_extension") ||
+            (got.levelOfControl === "controllable_by_this_extension")) {
+
+            // Set the status
+            var setting = browser.privacy.websites.firstPartyIsolate.set({
+                value: status
+            });
+            setting.then(vAPI.onSet);
+
+        } else {
+            console.log("Not able to set firstPartyIsolate");
+        }
+    });
+}
+
 /*********** Global variables ***********/
 
 vAPI.default_stores = [
