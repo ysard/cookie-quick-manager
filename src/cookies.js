@@ -679,12 +679,12 @@ function delete_cookies(promise, delete_button_selector) {
         else {
             // Deletion of a single domain is ok:
             // Get the current domain:
-            // - click on the previous element
+            // - click on the next element
             // - remove it from the list
             let $selected = $('#domain-list').find('li.active');
-            let $prev = $selected.prev();
-            if ($prev.length == 1) {
-                $prev.click();
+            let $next = $selected.next();
+            if ($next.length == 1) {
+                $next.click();
                 $selected.remove();
             } else {
                 actualizeDomains();
