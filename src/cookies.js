@@ -929,13 +929,9 @@ function showCookiesList(event) {
 
     // Get 1 promise for each cookie store
     // Each promise stores all associated cookies
-    var promises = [];
-    for (let storeId of storeIds) {
-        promises.push(browser.cookies.getAll({domain: id, storeId: storeId}));
-    }
-
+    let promise = vAPI.get_all_cookies(storeIds);
     // Merge all promises
-    Promise.all(promises).then((cookies_array) => {
+    promise.then((cookies_array) => {
 
         // Merge all results of promises
         var cookies = [];

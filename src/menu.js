@@ -21,9 +21,9 @@
 // IIFE - Immediately Invoked Function Expression
 (function(mycode) {
 
-  mycode(window, document);
+    mycode(window.vAPI, window, document);
 
-}(function(window, document) {
+}(function(vAPI, window, document) {
 
 function onError(error) {
     // Function called when a save/remove function has failed by throwing an exception.
@@ -158,7 +158,7 @@ document.addEventListener("click", (e) => {
       url: current_tab.url,
       storeId: current_tab.cookieStoreId,
     }
-    delete_cookies(browser.cookies.getAll(params));
+    vAPI.delete_cookies(browser.cookies.getAll(params));
   }
 
   else if (id === "delete_current_localstorage") {
