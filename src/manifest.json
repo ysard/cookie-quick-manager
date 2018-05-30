@@ -6,7 +6,7 @@
   "name": "Cookie Quick Manager",
   "version": "0.2rc3",
   "default_locale": "en",
-  "permissions": ["cookies","<all_urls>","activeTab", "storage", "browsingData", "contextualIdentities"],
+  "permissions": ["cookies","<all_urls>","activeTab", "storage", "browsingData", "contextualIdentities", "privacy"],
   "browser_action": {
     "browser_style": true,
     "default_title": "Cookie Quick Manager",

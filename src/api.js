@@ -31,6 +31,14 @@ vAPI.onError = function(error) {
     console.log({"Error removing/saving cookie:": error});
 }
 
+vAPI.onSet = function(result) {
+    if (result) {
+        console.log("option set success");
+    } else {
+        console.log("option set failure");
+    }
+}
+
 vAPI.getHostUrl = function(cookie) {
     // If the modified cookie has the flag isSecure, the host protocol must be https:// in order to
     // modify or delete it.
@@ -57,16 +65,31 @@ vAPI.get_all_cookies = function(storeIds) {
         if ((storeIds === undefined) || (storeIds[0] === 'all'))
             storeIds = vAPI.storeIds;
 
-        // Get 1 promise for each cookie store for each domain
-        // Each promise stores all associated cookies
-        var promises = [];
-        for (let storeId of storeIds) {
-            promises.push(browser.cookies.getAll({storeId: storeId}));
-        }
+        browser.runtime.getBrowserInfo().then(function(browser_info) {
+            // Get 1 promise for each cookie store for each domain
+            // Each promise stores all associated cookies
 
-        // Merge all promises
-        Promise.all(promises).then((cookies_array) => {
+            // Detect Firefox version:
+            // -> firstPartyDomain argument is available on Firefox 59+=
+            // {name: "Firefox", vendor: "Mozilla", version: "60.0.1", buildID: ""}
+            let version = browser_info.version.split('.')[0];
 
+            let promises = [];
+            if (parseInt(version) >= 59) {
+                // Add firstPartyDomain argument to getAll() function
+                for (let storeId of storeIds) {
+                    promises.push(browser.cookies.getAll({storeId: storeId, firstPartyDomain: null}));
+                }
+            } else {
+                // Legacy getAll() function
+                for (let storeId of storeIds) {
+                    promises.push(browser.cookies.getAll({storeId: storeId}));
+                }
+            }
+            // Merge all promises
+            return Promise.all(promises);
+        })
+        .then((cookies_array) => {
             // Merge all results of promises
             let cookies = [];
             for (let cookie_subset of cookies_array) {
@@ -76,8 +99,8 @@ vAPI.get_all_cookies = function(storeIds) {
             if (cookies.length > 0)
                 resolve(cookies);
             else
-                reject("NoCookies");
-        });
+                reject("all_cookies-NoCookies");
+        })
     });
 }
 
@@ -116,41 +139,125 @@ vAPI.get_stores = function() {
     });
 }
 
+vAPI.FPI_detection = function(promise) {
+    // Set the attribute vAPI.FPI with the status of First Party Isolation
+    // This promise is made to be chained before all promises that call
+    // browser.cookies.* on browser that can support or not this new API.
+    // vAPI.FPI is undefined if FPI is not supported by the browser,
+    // or false/true if supported but disabled/enabled.
+
+    return new Promise((resolves, rejects) => {
+        // This promise will crash on FF 59-
+        // The error is captured by the error callback.
+        console.log('Test availability of firstPartyIsolate API');
+        resolves(browser.privacy.websites.firstPartyIsolate.get({}));
+
+    })
+    .then((got) => {
+        // First Party Isolation is supported (FF 58+=)
+        console.log('firstPartyIsolate API IS available');
+        // set FPI status to true or false
+        vAPI.FPI = got.value;
+        console.log({FPI_status: vAPI.FPI});
+        return promise;
+
+    }, (error) => {
+        console.log('firstPartyIsolate API is NOT available');
+        // set FPI status
+        vAPI.FPI = undefined;
+        console.log({FPI_status: vAPI.FPI});
+        return promise;
+    });
+}
+
 vAPI.delete_cookies = function(promise) {
     // Delete all cookies in the promise
     // Return a promise
     return new Promise((resolve, reject) => {
 
-        promise.then((cookies) => {
+        vAPI.FPI_detection(promise).then((cookies) => {
 
             let promises = [];
-            for (let cookie of cookies) {
-                // Remove current cookie
-                let params = {
-                    url: vAPI.getHostUrl(cookie),
-                    name: cookie.name,
-                    storeId: cookie.storeId,
-                };
-                promises.push(browser.cookies.remove(params));
+            if ((vAPI.FPI === undefined) || (vAPI.FPI === false)) {
+                // FPI not supported or disabled
+                // Legacy method
+                for (let cookie of cookies) {
+                    // Remove current cookie
+                    let params = {
+                        url: vAPI.getHostUrl(cookie),
+                        name: cookie.name,
+                        storeId: cookie.storeId,
+                    };
+                    console.log({value: cookie.value, firstPartyDomain: cookie.firstPartyDomain});
+                    promises.push(browser.cookies.remove(params));
+                }
+
+            } else {
+                // FPI enabled
+                // firstPartyDomain is mandatory
+                for (let cookie of cookies) {
+                    // Remove current cookie
+                    let params = {
+                        url: vAPI.getHostUrl(cookie),
+                        name: cookie.name,
+                        storeId: cookie.storeId,
+                        firstPartyDomain: cookie.firstPartyDomain,
+                    };
+                    console.log({value: cookie.value, firstPartyDomain: cookie.firstPartyDomain});
+                    promises.push(browser.cookies.remove(params));
+                }
+            }
+            // Merge all promises
+            return Promise.all(promises);
+        })
+        .then((cookies_array) => {
+            // Iter on all results of promises
+            for (let deleted_cookie of cookies_array) {
+
+                // If null: no error but no suppression
+                // => display button content in red
+                if (deleted_cookie === null) {
+                    console.log({"Not removed": deleted_cookie});
+                    // => display button content in red
+                    reject("No error but not removed");
+                }
+                console.log({"Removed": deleted_cookie});
+            }
+            // Ok => all cookies are deleted properly
+            // Reactivate the interface
+            resolve();
+        }, vAPI.onError);
+    });
+}
+
+vAPI.add_cookies = function(new_cookies_promises, protection_status) {
+    // TODO cal it instead of duplicated code in export.js
+    // Take a promise on new_cookies_promises
+
+    if (protection_status === undefined)
+        protection_status = false;
+
+    return new Promise((resolve, reject) => {
+
+        new_cookies_promises.then((cookies_array) => {
+            // Iter on all results of promises
+            for (let added_cookie of cookies_array) {
+
+                // If null: no error but no save
+                if (added_cookie === null) {
+                    console.log({"Not added": added_cookie});
+                    reject("Cookie " + JSON.stringify(added_cookie) + " can't be saved");
+                }
+                console.log({"Added": added_cookie});
             }
 
-            Promise.all(promises).then((cookies_array) => {
-                // Iter on all results of promises
-                for (let deleted_cookie of cookies_array) {
+            // Protect all cookies if asked in global settings
+            if (protection_status)
+                vAPI.set_cookie_protection(cookies_array, true);
 
-                    // If null: no error but no suppression
-                    // => display button content in red
-                    if (deleted_cookie === null) {
-                        console.log({"Not removed": deleted_cookie});
-                        // => display button content in red
-                        reject("No error but not removed");
-                    }
-                    console.log({"Removed": deleted_cookie});
-                }
-                // Ok => all cookies are deleted properly
-                // Reactivate the interface
-                resolve();
-            }, vAPI.onError);
+            // Ok => all cookies are added properly
+            // Reactivate the interface
+            resolve();
         }, vAPI.onError);
     });
 }
@@ -166,27 +273,47 @@ vAPI.getCookiesFromSelectedDomain = function() {
 
         // Workaround to get click event data of the selected domain
         // Get pure HTML document (not a JQuery one)
-        var domain = document.querySelector('#domain-list li.active');
+        var domain_obj = document.querySelector('#domain-list li.active');
         //console.log($._data(domain, "events" ));
         // Get data of the first click event registered
-        var click_event_data = $._data(domain, "events" ).click[0].data
-        var id = click_event_data.id;
+        var click_event_data = $._data(domain_obj, "events" ).click[0].data
+        var domain = click_event_data.id;
         var storeIds = click_event_data.storeIds;
         // TODO: simulate multiple domains
-        var ids = [id, ];
+        var domains = [domain, ];
 
-        // Get 1 promise for each cookie store for each domain
-        // Each promise stores all associated cookies
-        var promises = [];
-        for (let id of ids) {
-            for (let storeId of storeIds) {
-                promises.push(browser.cookies.getAll({domain: id, storeId: storeId}));
+
+        browser.runtime.getBrowserInfo().then(function(browser_info) {
+            // Get 1 promise for each cookie store for each domain
+            // Each promise stores all associated cookies
+
+            // Detect Firefox version:
+            // -> firstPartyDomain argument is available on Firefox 59+=
+            // {name: "Firefox", vendor: "Mozilla", version: "60.0.1", buildID: ""}
+            let version = browser_info.version.split('.')[0];
+
+            var promises = [];
+            if (parseInt(version) >= 59) {
+                // Add firstPartyDomain argument to getAll() function
+                for (let domain of domains) {
+                    console.log({current_domain: domain});
+                    for (let storeId of storeIds) {
+                        promises.push(browser.cookies.getAll({domain: domain, storeId: storeId, firstPartyDomain: null})); //firstPartyDomain: "whatarecookies.com"}));
+                    }
+                }
+            } else {
+                // Legacy getAll() function
+                for (let domain of domains) {
+                    for (let storeId of storeIds) {
+                        promises.push(browser.cookies.getAll({domain: domain, storeId: storeId}));
+                    }
+                }
             }
-        }
-
-        // Merge all promises
-        Promise.all(promises).then((cookies_array) => {
-
+            // Merge all promises
+            return Promise.all(promises);
+        })
+        .then((cookies_array) => {
+            console.log({cookie_array: cookies_array});
             // Merge all results of promises
             let cookies = [];
             for (let cookie_subset of cookies_array) {
@@ -200,8 +327,8 @@ vAPI.getCookiesFromSelectedDomain = function() {
                 for (let cookie of cookies) {
                     // Filter on exact domain (remove sub domains from the list)
                     if (!query_subdomains) {
-                        // If current domain is not found in ids => go to next cookie
-                        if (ids.indexOf(cookie.domain) === -1)
+                        // If current domain is not found in domains => go to next cookie
+                        if (domains.indexOf(cookie.domain) === -1)
                             continue;
                     }
                     // OK: send filtered cookies
@@ -209,7 +336,7 @@ vAPI.getCookiesFromSelectedDomain = function() {
                 }
                 resolve(filtered_cookies);
             } else {
-                reject("NoCookies");
+                reject("SelectedDomain-NoCookies");
             }
         });
     });
