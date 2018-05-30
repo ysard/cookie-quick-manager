@@ -231,7 +231,8 @@ vAPI.delete_cookies = function(promise) {
 }
 
 vAPI.add_cookies = function(new_cookies_promises, protection_status) {
-    // TODO cal it instead of duplicated code in export.js
+    // Add given cookies to the cookie store
+    // Used in export.js and api.js
     // Take a promise on new_cookies_promises
 
     if (protection_status === undefined)

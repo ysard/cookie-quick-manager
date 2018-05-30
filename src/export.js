@@ -351,12 +351,6 @@ function export_content_to_file(content) {
     document.body.appendChild(f);
 }
 
-function onError(error) {
-    // Function called when a save/remove function has failed by throwing an exception.
-    console.log({"Error removing/saving cookie:": error});
-    set_info_text(browser.i18n.getMessage("cookieRestoredError", error));
-}
-
 function handleUploadedFile(content) {
     // Take a file content and dispatch it to the good parser
     parseJSONFile(content);
@@ -414,40 +408,9 @@ function parseJSONFile(content) {
     });
     get_settings.then((items) => {
         console.log(items);
-        add_cookies(promises, items.import_protected_cookies);
-    });
-
-}
-
-function add_cookies(new_cookies_promises, import_protected_cookies) {
-    // Get promises to set new cookies and import_protected_cookies as a global
-    // flag to protect these new cookies from deletion.
-
-    let add_promise = new Promise((resolve, reject) => {
-
-        Promise.all(new_cookies_promises).then((cookies_array) => {
-            // Iter on all results of promises
-            for (let added_cookie of cookies_array) {
-
-                // If null: no error but no save
-                if (added_cookie === null) {
-                    console.log({"Not added": added_cookie});
-                    reject("Cookie " + JSON.stringify(added_cookie) + " can't be saved");
-                }
-                console.log({"Added": added_cookie});
-            }
-
-            // Protect all cookies if asked in global settings
-            if (import_protected_cookies)
-                vAPI.set_cookie_protection(cookies_array, true);
-
-            // Ok => all cookies are added properly
-            // Reactivate the interface
-            resolve();
-        }, onError);
-    });
-
-    add_promise.then((ret) => {
+        vAPI.add_cookies(Promise.all(promises), items.import_protected_cookies);
+    })
+    .then((ret) => {
         // Display modal info
         set_info_text(browser.i18n.getMessage("cookieRestoredSuccess"));
         // Actualize interface
