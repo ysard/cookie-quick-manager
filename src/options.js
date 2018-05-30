@@ -22,9 +22,9 @@
 (function(mycode) {
 
     // The global jQuery object is passed as a parameter
-    mycode(window.jQuery, window, document);
+    mycode(window.jQuery, window.vAPI, window, document);
 
-}(function($, window, document) {
+}(function($, vAPI, window, document) {
 
     // The $ is now locally scoped
     $(function () {
@@ -36,6 +36,10 @@
         $('#delete_all_on_restart').change(function() {
             // Delete all cookies when the browser restarts
             set_option({'delete_all_on_restart': $(this).is(':checked')});
+        });
+        $('#fpi_status').change(function() {
+            // Set the FPI option
+            vAPI.getFirstPartyIsolateStatus($(this).is(':checked'));
         });
         $('#skin').change(function() {
             // Change skin
@@ -93,9 +97,13 @@
         $("#show_delete_all_on_restart").click(function(event) {
             $('#delete_all_on_restart_info').toggle();
         });
+        $("#show_fpi").click(function(event) {
+            $('#fpi_info').toggle();
+        });
 
         // Load options from storage and update the interface
         get_options();
+        display_features_depending_on_browser_version();
     });
 
     /*********** Utils ***********/
@@ -125,6 +133,21 @@
             $('#skin').val(items.skin);
             $('#open_in_new_tab').prop('checked', items.open_in_new_tab);
             $('#template').val(items.template);
+        });
+    }
+
+    function display_features_depending_on_browser_version() {
+
+        browser.runtime.getBrowserInfo().then(function(browser_info) {
+            // Detect Firefox version:
+            // -> firstPartyDomain argument is available on Firefox 59+=
+            // {name: "Firefox", vendor: "Mozilla", version: "60.0.1", buildID: ""}
+            let version = browser_info.version.split('.')[0];
+            if (parseInt(version) < 59) {
+                // Disable FPI on FF 59-
+                $('#fpi_status').prop('disabled', true);
+            }
+
         });
     }
 
