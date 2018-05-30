@@ -210,9 +210,9 @@ getActiveTab().then((tabs) => {
   });
 
   // Detect Firefox version:
-  // - LocalStorage is not available on Firefox 56
-  browser.runtime.getBrowserInfo().then((info) => {
-    let version = info.version.split('.')[0];
+  // -> LocalStorage is not available on Firefox 56
+  browser.runtime.getBrowserInfo().then((browser_info) => {
+    let version = browser_info.version.split('.')[0];
     if (parseInt(version) >= 57)
         document.querySelector('#delete_current_localstorage').style['display'] = 'inline-block';
   });

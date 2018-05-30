@@ -398,6 +398,7 @@ function parseJSONFile(content) {
 
         // Session cookie has no expiration date
         if (json_cookie["Expires raw"] != "0") {
+            // Refuse expired cookies
             let expirationDate = parseInt(json_cookie["Expires raw"], 10);
             if (expirationDate <= ((Date.now() / 1000|0) + 1))
                 continue;
