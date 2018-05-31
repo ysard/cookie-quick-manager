@@ -757,6 +757,7 @@ function disable_cookie_details() {
     // Disable all text inputs
     // Note: These inputs create a NEW cookie if they are modified
     $("#domain").prop("readonly", true);
+    $('#fpi-domain').prop("readonly", true);
     $("#name").prop("readonly", true);
     $("#path").prop("readonly", true);
 }
@@ -765,6 +766,7 @@ function enable_cookie_details() {
     // Enable all text inputs
     // Note: These inputs create a NEW cookie if they are modified
     $("#domain").prop("readonly", false);
+    $('#fpi-domain').prop("readonly", false);
     $("#name").prop("readonly", false);
     $("#path").prop("readonly", false);
 }
@@ -1037,6 +1039,7 @@ function display_cookie_details(event) {
 
     // Fill the fields
     $('#domain').val(cookie.domain);
+    $('#fpi-domain').val(cookie.firstPartyDomain);
     $('#name').val(cookie.name);
     $('#value').val(cookie.value);
     $('#path').val(cookie.path);

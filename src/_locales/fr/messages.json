@@ -24,6 +24,11 @@
     "description": "Attribute of a cookie in the details panel."
   },
 
+  "cFpiDomain": {
+    "message": "First-Party ",
+    "description": "Attribute of a cookie in the details panel."
+  },
+
   "cName": {
     "message": "Nom ",
     "description": "Attribute of a cookie in the details panel."
@@ -110,6 +115,11 @@
   "tooltip_cDomain": {
     "message": "Un cookie host-only ne s'applique qu'au domaine courant. Les autres cookies s'appliquent également aux sous-domaines, et leur attribut 'domaine' possède un '.' en en-tête.",
     "description": ""
+  },
+
+  "tooltip_cFpiDomain": {
+    "message": "L'isolement de la première partie empêche les régies publicitaires et autres sites d'identifier les utilisateurs au cours de leur navigation (voir les options).",
+    "description": "Description of what FPI is."
   },
 
   "tooltip_buttonUrl": {

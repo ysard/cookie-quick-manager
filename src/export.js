@@ -239,6 +239,7 @@ function build_cookie_dump() {
         '{ISDOMAIN}': get_domain_status(false),
         '{ISDOMAIN_RAW}': get_domain_status(true),
         '{STORE_RAW}': $('#store').val(),
+        '{FPI_RAW}': $('#fpi-domain').val(),
     };
 
     // Replace variables in template
@@ -305,6 +306,7 @@ function build_domain_dump(cookie) {
         '{ISDOMAIN}': get_domain_status(false),
         '{ISDOMAIN_RAW}': cookie.hostOnly,
         '{STORE_RAW}': cookie.storeId,
+        '{FPI_RAW}': cookie.firstPartyDomain ? cookie.firstPartyDomain : "",
     };
 
     // Replace variables in template
@@ -373,42 +375,53 @@ function parseJSONFile(content) {
         return;
     }
 
-    // Build cookies
-    let promises = [];
-    for (let json_cookie of json_content) {
-        let params = {
-            url: json_cookie["Host raw"],
-            name: json_cookie["Name raw"],
-            value: json_cookie["Content raw"],
-            path: json_cookie["Path raw"],
-            httpOnly: (json_cookie["HTTP only raw"] === 'true'),
-            secure: (json_cookie["Send for raw"] === 'true'),
-            storeId: (json_cookie["Private raw"]  === 'true') ? 'firefox-private' : 'firefox-default',
-        };
-
-        if (json_cookie["Store raw"] !== undefined) {
-            params['storeId'] = json_cookie["Store raw"];
-        }
-
-        // Session cookie has no expiration date
-        if (json_cookie["Expires raw"] != "0") {
-            // Refuse expired cookies
-            let expirationDate = parseInt(json_cookie["Expires raw"], 10);
-            if (expirationDate <= ((Date.now() / 1000|0) + 1))
-                continue;
-            params['expirationDate'] = expirationDate;
-        }
-        console.log(params);
-        promises.push(browser.cookies.set(params));
-    }
-
     // Handle import_protected_cookies global option
-    let get_settings = browser.storage.local.get({
+    var get_settings = browser.storage.local.get({
         import_protected_cookies: false
     });
-    get_settings.then((items) => {
+    vAPI.FPI_detection(get_settings).then((items) => {
         console.log(items);
-        vAPI.add_cookies(Promise.all(promises), items.import_protected_cookies);
+        console.log(vAPI.FPI);
+
+        // Build cookies
+        let promises = [];
+        for (let json_cookie of json_content) {
+            let params = {
+                url: json_cookie["Host raw"],
+                name: json_cookie["Name raw"],
+                value: json_cookie["Content raw"],
+                path: json_cookie["Path raw"],
+                httpOnly: (json_cookie["HTTP only raw"] === 'true'),
+                secure: (json_cookie["Send for raw"] === 'true'),
+                storeId: (json_cookie["Private raw"]  === 'true') ? 'firefox-private' : 'firefox-default',
+            };
+
+            if (json_cookie["Store raw"] !== undefined) {
+                params['storeId'] = json_cookie["Store raw"];
+            }
+
+            // Session cookie has no expiration date
+            if (json_cookie["Expires raw"] != "0") {
+                // Refuse expired cookies
+                let expirationDate = parseInt(json_cookie["Expires raw"], 10);
+                if (expirationDate <= ((Date.now() / 1000|0) + 1))
+                    continue;
+                params['expirationDate'] = expirationDate;
+            }
+
+            if (vAPI.FPI !== undefined) {
+                // FPI enabled or disabled but supported
+                // firstPartyDomain can be set
+                // If it is not a FPI cookie, set empty string ""
+                params['firstPartyDomain'] = (json_cookie["First Party Domain"]) ? json_cookie["First Party Domain"] : "";
+            }
+
+            console.log(params);
+            promises.push(browser.cookies.set(params));
+        }
+
+        return vAPI.add_cookies(Promise.all(promises), items.import_protected_cookies);
+
     })
     .then((ret) => {
         // Display modal info

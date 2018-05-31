@@ -450,7 +450,8 @@ vAPI.template_JSON = {
 \t"HTTP only raw": "{ISHTTPONLY_RAW}",\n\
 \t"This domain only": "{ISDOMAIN}",\n\
 \t"This domain only raw": "{ISDOMAIN_RAW}",\n\
-\t"Store raw": "{STORE_RAW}"\n\
+\t"Store raw": "{STORE_RAW}",\n\
+\t"First Party Domain": "{FPI_RAW}"\n\
 }',
     left_tag: '[',
     right_tag: ']',
