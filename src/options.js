@@ -137,17 +137,26 @@
     }
 
     function display_features_depending_on_browser_version() {
+        // Display features according to the capactities of the browser
 
-        browser.runtime.getBrowserInfo().then(function(browser_info) {
+        // First-Party Isolation
+        vAPI.FPI_detection(browser.runtime.getBrowserInfo()).then((browser_info) => {
+            console.log(browser_info);
             // Detect Firefox version:
             // -> firstPartyDomain argument is available on Firefox 59+=
+            // -> privacy.firstparty.isolate is available on Firefox 58 but we don't want it
+            // since we can't handle these cookies on this browser.
             // {name: "Firefox", vendor: "Mozilla", version: "60.0.1", buildID: ""}
             let version = browser_info.version.split('.')[0];
-            if (parseInt(version) < 59) {
-                // Disable FPI on FF 59-
-                $('#fpi_status').prop('disabled', true);
-            }
 
+            if ((vAPI.FPI === undefined) || (parseInt(version) < 59)) {
+                // Firefox 58-=
+                // FPI is not available or we don't want it
+                $('#fpi_status').prop('disabled', true);
+            } else {
+                // Display FPI status
+                $('#fpi_status').prop('checked', vAPI.FPI);
+            }
         });
     }
 
