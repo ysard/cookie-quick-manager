@@ -110,9 +110,18 @@ $( "#save_button" ).click(function() {
     }
     // Set cookie
     console.log(params);
-    var promise = browser.cookies.set(params);
 
-    promise.then((cookie) => {
+    vAPI.FPI_detection().then(() => {
+
+        if (vAPI.FPI !== undefined) {
+            // FPI supported
+            // firstPartyDomain is mandatory
+            params['firstPartyDomain'] = $('#fpi-domain').val();
+        }
+
+        return browser.cookies.set(params);
+    })
+    .then((cookie) => {
         // Reactivate the interface
         console.log({"Cookie saved: ": cookie});
 
@@ -1097,8 +1106,17 @@ function delete_current_cookie() {
       storeId: $('#store').val(),
     }
 
-    var removing = browser.cookies.remove(params);
-    removing.then((cookie) => {
+    vAPI.FPI_detection().then(() => {
+
+        if (vAPI.FPI !== undefined) {
+            // FPI supported
+            // firstPartyDomain is mandatory
+            params['firstPartyDomain'] = $('#fpi-domain').val();
+        }
+
+        return browser.cookies.remove(params);
+    })
+    .then((cookie) => {
         // Reactivate the interface
         console.log({"Removed:": cookie});
 
