@@ -141,7 +141,6 @@
 
         // First-Party Isolation
         vAPI.FPI_detection(browser.runtime.getBrowserInfo()).then((browser_info) => {
-            console.log(browser_info);
             // Detect Firefox version:
             // -> firstPartyDomain argument is available on Firefox 59+=
             // -> privacy.firstparty.isolate is available on Firefox 58 but we don't want it
