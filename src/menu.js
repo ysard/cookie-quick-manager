@@ -43,51 +43,6 @@ function getHostUrl(cookie) {
     return host_protocol + cookie.domain + cookie.path;
 }
 
-function delete_cookies(promise) {
-    // PS: copy of vAPI function
-    // Delete all cookies in the promise
-    // Return a promise
-    return new Promise((resolve, reject) => {
-
-        promise.then((cookies) => {
-
-            let promises = [];
-            for (let cookie of cookies) {
-                // Remove current cookie
-                let params = {
-                    url: getHostUrl(cookie),
-                    name: cookie.name,
-                    storeId: cookie.storeId,
-                };
-                promises.push(browser.cookies.remove(params));
-            }
-
-            Promise.all(promises).then((cookies_array) => {
-                // Iter on all results of promises
-                for (let deleted_cookie of cookies_array) {
-
-                    // If null: no error but no suppression
-                    // => display button content in red
-                    if (deleted_cookie === null) {
-                        console.log({"Not removed": deleted_cookie});
-                        // => display button content in red
-                        reject("No error but not removed");
-                    }
-                    console.log({"Removed": deleted_cookie});
-                }
-
-                let a = document.querySelector('#delete_current_cookies');
-                // Since we add a text content as a child node, we can just replace it (3rd pos)
-                a.childNodes[2].replaceWith(" (0)");
-
-                // Ok => all cookies are deleted properly
-                // Reactivate the interface
-                resolve();
-            }, onError);
-        }, onError);
-    });
-}
-
 function createWindow(createData) {
   // Get settings
   let get_settings = browser.storage.local.get(["addonSize", "open_in_new_tab"]);
@@ -154,11 +109,32 @@ document.addEventListener("click", (e) => {
 
   else if (id === "delete_current_cookies") {
     // Delete all cookies for the current domain/store
-    var params = {
-      url: current_tab.url,
-      storeId: current_tab.cookieStoreId,
-    }
-    vAPI.delete_cookies(browser.cookies.getAll(params));
+    browser.runtime.getBrowserInfo().then((browser_info) => {
+        // TODO: reuse params from initialization: avoid getBrowserInfo() call
+        let params = {
+            url: current_tab.url,
+            storeId: current_tab.cookieStoreId,
+        }
+
+        // Detect Firefox version:
+        // -> firstPartyDomain argument is available on Firefox 59+=
+        // {name: "Firefox", vendor: "Mozilla", version: "60.0.1", buildID: ""}
+        let version = browser_info.version.split('.')[0];
+        if (parseInt(version) >= 59)
+            params['firstPartyDomain'] = null;
+
+        return vAPI.delete_cookies(browser.cookies.getAll(params));
+    })
+    .then((ret) => {
+        // Reset the cookie number
+        // PS: we make the assumption that all cookies are deleted
+        let a = document.querySelector('#delete_current_cookies');
+        // Since we add a text content as a child node, we can just replace it (4rd pos)
+        a.childNodes[3].replaceWith(" (0)");
+    }, (error) => {
+        // Force the closing of the window
+        window.close();
+    });
   }
 
   else if (id === "delete_current_localstorage") {
@@ -171,6 +147,7 @@ document.addEventListener("click", (e) => {
   else if (id === "options") {
       // Open Options Page
       browser.runtime.openOptionsPage();
+      // Force the closing of the window
       window.close();
   }
 
@@ -199,23 +176,32 @@ getActiveTab().then((tabs) => {
   a.appendChild(content);
 
   // Display a shortcut to delete all cookies for the current domain/store
-  // Print the number of cookies
-  browser.cookies.getAll({
-      url: current_tab.url,
-      storeId: current_tab.cookieStoreId,
-  }).then((cookies) => {
+  // Display a shortcut to delete LocalStorage
+  browser.runtime.getBrowserInfo().then((browser_info) => {
+      let params = {
+          url: current_tab.url,
+          storeId: current_tab.cookieStoreId,
+      }
+
+      // Detect Firefox version:
+      // {name: "Firefox", vendor: "Mozilla", version: "60.0.1", buildID: ""}
+      let version = browser_info.version.split('.')[0];
+
+      // -> firstPartyDomain argument is available on Firefox 59+=
+      if (parseInt(version) >= 59)
+          params['firstPartyDomain'] = null;
+
+      // -> LocalStorage is not available on Firefox 56
+      if (parseInt(version) >= 57)
+          document.querySelector('#delete_current_localstorage').style['display'] = 'inline-block';
+
+      return browser.cookies.getAll(params);
+  })
+  .then((cookies) => {
+      // Print the number of cookies
       let a = document.querySelector('#delete_current_cookies');
       let content = document.createTextNode(" (" + cookies.length + ")");
       a.appendChild(content);
   });
-
-  // Detect Firefox version:
-  // -> LocalStorage is not available on Firefox 56
-  browser.runtime.getBrowserInfo().then((browser_info) => {
-    let version = browser_info.version.split('.')[0];
-    if (parseInt(version) >= 57)
-        document.querySelector('#delete_current_localstorage').style['display'] = 'inline-block';
-  });
 });
-
 }));
