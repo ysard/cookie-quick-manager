@@ -115,6 +115,11 @@
       .popover {
         max-width: 500px;
       }
+      .btn .caret {
+        position: absolute;
+        top: 3px;
+        right: calc(50% - 4px);
+      }
       .glyphicon-unlock {
         /* workaround to add missing glyphicon-unlock from bootstrap font */
         background-image:   url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAAOCAQAAABTaC4eAAAAAmJLR0QA/4ePzL8AAAAJcEhZcwAACxMAAAsTAQCanBgAAAAHdElNRQfiAQIRNgZ9qgwVAAAAGXRFWHRDb21tZW50AENyZWF0ZWQgd2l0aCBHSU1QV4EOFwAAAIVJREFUGNNjZGD4Lygb9DLgNwMDAwMDK4PShhvrGN8zMzDsDb0S/I8BAv4xvNXY+/vRJQYGBrbNDJuT1kCEk9YwbGbbDGFvZoAyEDwWBgYGXwYMwMSAFTCiGAAB/xkYkVTzIZQiDFH9/clX9TeG2T/+QDCa8GtOCEYT/slQvvAnXpfgdjcAIaImqpRhrMMAAAAASUVORK5CYII=');
@@ -317,7 +322,7 @@
             title="Delete all the cookies" data-i18n-title="tooltipADelete"><span class="glyphicon glyphicon-trash"></span></button>
             <div class="dropup dropup-custom">
               <button type="button" class="btn btn-dark dropdown-toggle"
-              data-toggle="dropdown"><span class="glyphicon glyphicon-lock"></span></button>
+              data-toggle="dropdown" my-data-toogle="dropdown_and_tooltip" tooltip-title="Protect/Unprotect all cookies"><span class="glyphicon glyphicon-lock"></span><span class="caret"></span></button>
               <ul class="dropdown-menu">
                 <li><a href="#" id="protect_all_button" data-toggle="modal" data-i18n-content="menu_protect_all">Protect all cookies</a></li>
                 <li><a href="#" id="unprotect_all_button" data-toggle="modal" data-i18n-content="menu_unprotect_all">Unprotect all cookies</a></li>
@@ -325,7 +330,7 @@
             </div>
             <div class="dropup dropup-custom">
               <button type="button" class="btn btn-dark dropdown-toggle"
-              data-toggle="dropdown"><span class="glyphicon glyphicon-folder-open"></span></button>
+              data-toggle="dropdown" my-data-toogle="dropdown_and_tooltip" tooltip-title="Export/Import"><span class="glyphicon glyphicon-folder-open"></span><span class="caret"></span></button>
               <ul class="dropdown-menu">
                 <li class="dropdown-header" data-i18n-content="menuHeaderExport">Export:</li>
                 <li><a href="#" id="clipboard_cookie_export" data-toggle="modal" data-target="#modal_clipboard" data-i18n-content="menuC2Clipboard">Copy cookie to clipboard</a></li>
@@ -345,7 +350,7 @@
             </div>
             <button type="button" class="btn btn-dark" id="donate_button"
             data-toggle="popover" data-placement="top" data-html="true"
-            data-i18n-popover-content="contributeContent"><span class="glyphicon glyphicon-bitcoin"></span></button>
+            data-i18n-popover-content="contributeContent" my-data-toogle="dropdown_and_tooltip"><span class="glyphicon glyphicon-bitcoin"></span></button>
           </div>
         </div>
         <div class="col-sm-4">

@@ -267,6 +267,7 @@ vAPI.add_cookies = function(new_cookies_promises, protection_status) {
     // Add given cookies to the cookie store
     // Used in export.js and api.js
     // Take a promise on new_cookies_promises
+    // Return a promise
 
     if (protection_status === undefined)
         protection_status = false;
