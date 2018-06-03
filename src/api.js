@@ -173,39 +173,28 @@ vAPI.FPI_detection = function(promise) {
 vAPI.delete_cookies = function(promise) {
     // Delete all cookies in the promise
     // Return a promise
+    // PS: there is no verification of the support of FPI here
+    // because, the promise is already composed of cookies that
+    // come from getAll() and have the firstPartyDomain property if it is activated.
+    // This presence of this property gives the status of the FPI support.
     return new Promise((resolve, reject) => {
 
-        vAPI.FPI_detection(promise).then((cookies) => {
-
+        promise.then((cookies) => {
             let promises = [];
-            if ((vAPI.FPI === undefined) || (vAPI.FPI === false)) {
-                // FPI not supported or disabled
-                // Legacy method
-                for (let cookie of cookies) {
-                    // Remove current cookie
-                    let params = {
-                        url: vAPI.getHostUrl(cookie),
-                        name: cookie.name,
-                        storeId: cookie.storeId,
-                    };
-                    console.log({value: cookie.value, firstPartyDomain: cookie.firstPartyDomain});
-                    promises.push(browser.cookies.remove(params));
-                }
+            for (let cookie of cookies) {
+                // Remove current cookie
+                let params = {
+                    url: vAPI.getHostUrl(cookie),
+                    name: cookie.name,
+                    storeId: cookie.storeId,
+                };
 
-            } else {
-                // FPI enabled
-                // firstPartyDomain is mandatory
-                for (let cookie of cookies) {
-                    // Remove current cookie
-                    let params = {
-                        url: vAPI.getHostUrl(cookie),
-                        name: cookie.name,
-                        storeId: cookie.storeId,
-                        firstPartyDomain: cookie.firstPartyDomain,
-                    };
-                    console.log({value: cookie.value, firstPartyDomain: cookie.firstPartyDomain});
-                    promises.push(browser.cookies.remove(params));
-                }
+                // Handle FPI property
+                if (cookie.firstPartyDomain !== undefined)
+                    params.firstPartyDomain = cookie.firstPartyDomain;
+
+                //console.log({value: cookie.value, firstPartyDomain: cookie.firstPartyDomain});
+                promises.push(browser.cookies.remove(params));
             }
             // Merge all promises
             return Promise.all(promises);
