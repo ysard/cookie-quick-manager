@@ -219,6 +219,50 @@ vAPI.delete_cookies = function(promise) {
     });
 }
 
+vAPI.copy_cookies_to_store = function(promise, store_id) {
+    // Copy a set of cookies to the store with the given store_id
+    // Return a promise
+
+    return new Promise((resolve, reject) => {
+        promise.then((cookies) => {
+
+            let promises = [];
+            for (let cookie of cookies) {
+                // Build cookie
+                let params = {
+                    url: vAPI.getHostUrl(cookie),
+                    name: cookie.name,
+                    value: cookie.value,
+                    path: cookie.path,
+                    httpOnly: cookie.httpOnly,
+                    secure: cookie.secure,
+                    storeId: store_id,
+                };
+
+                // Session cookie has no expiration date
+                if (!cookie.session) {
+                    // Refuse expired cookies
+                    if (cookie.expirationDate <= ((Date.now() / 1000|0) + 1))
+                        continue;
+                    params['expirationDate'] = cookie.expirationDate;
+                }
+
+                // Handle FPI property
+                if (cookie.firstPartyDomain !== undefined)
+                    params.firstPartyDomain = cookie.firstPartyDomain;
+
+                promises.push(browser.cookies.set(params));
+            }
+            // Merge all promises
+            return vAPI.add_cookies(Promise.all(promises));
+        })
+        .then((ret) => {
+            console.log("Cookies are copied");
+            resolve();
+        }, vAPI.onError);
+    });
+}
+
 vAPI.add_cookies = function(new_cookies_promises, protection_status) {
     // Add given cookies to the cookie store
     // Used in export.js and api.js
