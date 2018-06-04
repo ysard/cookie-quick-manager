@@ -735,6 +735,7 @@ function delete_cookies(promise, delete_button_selector) {
 function no_cookie_alert(domNode) {
     // No cookies to display
     // Add info to the given node (cookie-list or domain-list div)
+    // TODO: currently take a native DOM element instead a jquery one...
     let p = document.createElement("p");
     let content = document.createTextNode(browser.i18n.getMessage("noCookieAlert")); //"No cookies in this tab."
     let parent = domNode.parentNode;
@@ -809,12 +810,9 @@ function reset_cookie_details() {
 }
 
 function actualizeDomains() {
-    // Reset domains/cookies list
     // Reset details
     // Rebuild domains list with a new query
     // Called when searchbox is modified, and when actualize button is pressed
-    $('#domain-list').empty();
-    $('#cookie-list').empty();
     reset_cookie_details();
     showDomains(vAPI.storeIds);
     //getStores();
@@ -858,7 +856,8 @@ function showDomains(storeIds) {
      */
     let searched_domain = $('#search_domain').val();
     let searched_store = $('#search_store').val();
-    var domainList = document.getElementById('domain-list');
+    let $domainList = $('#domain-list');
+    let fragment = document.createDocumentFragment();
 
     // Filter on selected store
     if (searched_store != 'all')
@@ -901,7 +900,7 @@ function showDomains(storeIds) {
             li.appendChild(content);
             li.appendChild(badge);
 
-            // Display badge if cookie comes from a special store
+            // Display store badge if the cookie comes from a special store/container
             for (let storeId of domains[domain].storeIds) {
                 if (storeId == 'firefox-default')
                     continue;
@@ -914,7 +913,7 @@ function showDomains(storeIds) {
                 li.appendChild(private_badge);
             }
 
-            domainList.appendChild(li);
+            fragment.appendChild(li);
 
             // When a user click on the domain, we build a new query to get/display domain cookies
             // TODO: workaround: attach all storeIds in case of someone creates a private cookie
@@ -922,21 +921,28 @@ function showDomains(storeIds) {
             // cookie will be not displayed until user reloads the domains list.
             $(li).bind('click', {id: domain, storeIds: /*domains[domain].*/storeIds}, showCookiesList);
         });
+        // Reset previous list
+        $domainList.empty();
+        $domainList.append(fragment);
 
         // Print no cookie alert if we filtered domains, and there are no more domains to display.
         if (display_count == 0) {
             // No domain to display
-            no_cookie_alert(domainList);
+            $cookieList = $('#cookie-list');
+            $cookieList.empty();
+            no_cookie_alert($domainList[0]);
+            no_cookie_alert($cookieList[0]);
             return;
         }
 
         // Simulate click on the first domain in the list when the list is built
+        // TODO: reuse jquery selector
         $("#domain-list li").first().click();
 
     }, (error) => {
         // No domain to display
         console.log(error);
-        no_cookie_alert(domainList);
+        no_cookie_alert($domainList[0]);
     });
 }
 
@@ -961,9 +967,11 @@ function showCookiesList(event) {
             cookies = cookies.concat(cookie_subset);
         }
 
-        var cookieList = document.getElementById('cookie-list');
+        let $cookieList = $('#cookie-list');
+        let fragment = document.createDocumentFragment();
+
         // Reset previous list
-        cookieList.innerHTML = "";
+        $cookieList.empty();
 
         if (cookies.length > 0) {
             // Count cookies displayed (not subdomains filtered)
@@ -1012,7 +1020,7 @@ function showCookiesList(event) {
                     }
                 } catch (e) {}
 
-                cookieList.appendChild(li);
+                fragment.appendChild(li);
 
                 // When a user click on the cookie, we build a new query to display the details
                 // in the last ui section.
@@ -1020,22 +1028,23 @@ function showCookiesList(event) {
                 $(li).data("cookie", cookie);
                 $(li).bind('click', display_cookie_details);
             }
+            $cookieList.append(fragment);
 
             // Print no cookie alert if we filtered subdomains, and there are no more cookies to display.
             if (display_count == 0) {
                 // No cookie to display: Search clicked domain and remove it
                 //console.log($that.parent().find('li.active'));
                 $that.parent().find('li.active').remove();
-                no_cookie_alert(cookieList);
+                no_cookie_alert($cookieList[0]);
             } else {
                 // Simulate click on the first cookie in the list when the list is built
                 $("#cookie-list li").first().click();
             }
         } else {
             // No cookie to display: Search clicked domain and remove it
-            //console.log($that.parent().find('li.active'));
+            // TODO: reuse jquery selector
             $that.parent().find('li.active').remove();
-            no_cookie_alert(cookieList);
+            no_cookie_alert($cookieList[0]);
         }
     }).catch(reason => {
         console.log({"Error showCookiesList":reason});
