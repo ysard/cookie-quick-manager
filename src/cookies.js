@@ -924,21 +924,23 @@ function showDomains(storeIds) {
         // Print no cookie alert if we filtered domains, and there are no more domains to display.
         if (display_count == 0) {
             // No domain to display
-            $cookieList = $('#cookie-list');
-            $cookieList.empty();
-            no_cookie_alert($domainList[0]);
-            no_cookie_alert($cookieList[0]);
-            return;
+            throw Error("No domain to display");
         }
 
         // Simulate click on the first domain in the list when the list is built
-        // TODO: reuse jquery selector
         $("#domain-list li").first().click();
 
-    }, (error) => {
+    })
+    .catch((error) => {
         // No domain to display
-        console.log(error);
+        // Also catch error if there is no domain to display
+        console.log({"Error showDomains": error});
+        // Reset lists and display the error message.
+        $cookieList = $('#cookie-list');
+        $domainList.empty();
+        $cookieList.empty();
         no_cookie_alert($domainList[0]);
+        no_cookie_alert($cookieList[0]);
     });
 }
 
@@ -1038,12 +1040,11 @@ function showCookiesList(event) {
             }
         } else {
             // No cookie to display: Search clicked domain and remove it
-            // TODO: reuse jquery selector
             $that.parent().find('li.active').remove();
             no_cookie_alert($cookieList[0]);
         }
-    }).catch(reason => {
-        console.log({"Error showCookiesList":reason});
+    }).catch((error) => {
+        console.log({"Error showCookiesList": error});
     });
 }
 
