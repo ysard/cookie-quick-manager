@@ -51,7 +51,7 @@ $("#file_domain_export").click(function() {
     promise.then((cookies) => {
         // Make 1 json for each cookie and store it
         // Merge and display templates
-        export_content_to_file(get_concatenated_content(get_templates(cookies)));
+        export_content_to_file_wrapper(cookies);
 
     }, (error) => {
         // No cookie
@@ -63,7 +63,7 @@ $("#file_all_export").click(function() {
     // Build 1 json template for each cookie in all stores
     let promise = vAPI.get_all_cookies([$('#search_store').val()]);
     promise.then((cookies) => {
-        export_content_to_file(get_concatenated_content(get_templates(cookies)));
+        export_content_to_file_wrapper(cookies);
     });
 });
 
@@ -150,6 +150,14 @@ function get_templates(cookies) {
     return templates;
 }
 
+function export_content_to_file_wrapper(cookies) {
+    // Wrapper that chains 3 functions
+    // This function is exported to window namespace.
+    // Used in contextual Menu (save option),
+    // and in click events: #file_domain_export, #file_all_export
+    export_content_to_file(get_concatenated_content(get_templates(cookies)));
+}
+
 function secure_string(unescaped_string) {
     // Escape double quotes and backslashs only for JSON template
     if (cookie_clipboard_template.name == 'JSON')
@@ -161,6 +169,7 @@ function secure_string(unescaped_string) {
 
 function display_json_in_clipboard_area(cookies_promise) {
     // Fill the textarea with the cookies in the given promise
+    // This function is exported to window namespace.
 
     cookies_promise.then((cookies) => {
         // Make 1 json for each cookie
@@ -459,4 +468,6 @@ function get_options() {
 
 var cookie_clipboard_template;
 
+window.display_json_in_clipboard_area = display_json_in_clipboard_area;
+window.export_content_to_file_wrapper = export_content_to_file_wrapper;
 }));
