@@ -104,9 +104,70 @@
     "description": "Dropdown menu option."
   },
 
+  "menu_tooltip_dropup_protect": {
+    "message": "Protect/Unprotect all the cookies",
+    "description": "Tooltip for the dropup menu."
+  },
+
+  "menu_tooltip_dropup_export": {
+    "message": "Export/Import",
+    "description": "Tooltip for the dropup menu."
+  },
+
   "buttonClose": {
     "message": "Close",
-    "description": "Close button on modal popovers."
+    "description": "Close button on modal popovers and contextual menus."
+  },
+
+
+
+
+  "contextMenu_domain_copy2Clipboard": {
+    "message": "Copy to clipboard",
+    "description": "Option for the contextual menu that opens on a domain."
+  },
+
+  "contextMenu_domain_copy2File": {
+    "message": "Save to file",
+    "description": "Option for the contextual menu that opens on a domain."
+  },
+
+  "contextMenu_domain_protect": {
+    "message": "Protect",
+    "description": "Option for the contextual menu that opens on a domain."
+  },
+
+  "contextMenu_domain_unprotect": {
+    "message": "Unprotect",
+    "description": "Option for the contextual menu that opens on a domain."
+  },
+
+  "contextMenu_domain_delete": {
+    "message": "Delete",
+    "description": "Option for the contextual menu that opens on a domain."
+  },
+
+  "contextMenu_domain_copy2container": {
+    "message": "Copy to container",
+    "description": "Option for the contextual menu that opens on a domain."
+  },
+
+
+
+
+  "container_all": {
+    "message": "All",
+    "description": "Name that matches for all the stores in the browser."
+  },
+
+  "container_default": {
+    "message": "Default",
+    "description": "Name of the default store in the browser."
+  },
+
+  "container_private": {
+    "message": "Private browsing",
+    "description": "Name of the Private browsing store."
   },
 
 

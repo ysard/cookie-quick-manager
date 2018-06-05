@@ -69,6 +69,7 @@
 
     function insertI18nPopoverContentIntoDocument(document) {
         // Set content and title for popover elements
+        // Title message in _locales must be prefixed by 'tooltip'
 
         let i18nElements = document.querySelectorAll('[data-i18n-popover-content]');
 

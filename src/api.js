@@ -478,7 +478,7 @@ vAPI.getFirstPartyIsolateStatus = function(status) {
 
 vAPI.default_stores = [
     {
-        name: "Default",
+        name: browser.i18n.getMessage("container_default"),
         icon: "circle",
         iconUrl: "",
         color: "black",
@@ -486,7 +486,7 @@ vAPI.default_stores = [
         cookieStoreId: "firefox-default",
     },
     {
-        name: "Private",
+        name: browser.i18n.getMessage("container_private"),
         icon: "private-browsing",
         iconUrl: "icons/private-browsing.svg",
         color: "purple",

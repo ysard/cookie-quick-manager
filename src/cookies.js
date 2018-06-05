@@ -623,7 +623,7 @@ function showStores(stores) {
             // WARNING: do not call unshift method here. stores is not readonly
             // and is repercuted to vAPI.default_stores (when contexts == false)...
             stores = [{
-                name: "All",
+                name: browser.i18n.getMessage("container_all"),
                 icon: "circle",
                 iconUrl: "",
                 color: "black",
