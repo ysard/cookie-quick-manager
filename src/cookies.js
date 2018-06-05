@@ -365,33 +365,26 @@ $('#button_optimal_size').click(function() {
     });
 });
 
-$("#protect_all_button").click(function(event) {
+$("#protect_all_button").click(function() {
 
     // Get all cookies for this store and protect them
     let promise = vAPI.get_all_cookies([$('#search_store').val()]);
     promise.then((cookies) => {
-        vAPI.set_cookie_protection(cookies, true);
-        // Update the UI
-        // why we don't just click on the current domain ?
-        // Because Firefox 57 is too fast for the asynchronous api
-        // to update the list of protected cookies before clicking.
-        set_protect_lock_icon(true);
+        vAPI.set_cookie_protection(cookies, true).then(() => {
+            // Update the UI
+            $('#domain-list').find('li.active').click();
+        });
     });
-    console.log('la');
-    event.preventDefault();
-    console.log('fin');
 });
 
-$("#unprotect_all_button").click(function(event) {
+$("#unprotect_all_button").click(function() {
     // Get all cookies for this store and unprotect them
     let promise = vAPI.get_all_cookies([$('#search_store').val()]);
     promise.then((cookies) => {
-        vAPI.set_cookie_protection(cookies, false);
-        // Update the UI
-        // why we don't just click on the current domain ?
-        // Because Firefox 57 is too fast for the asynchronous api
-        // to update the list of protected cookies before clicking.
-        set_protect_lock_icon(false);
+        vAPI.set_cookie_protection(cookies, false).then(() => {
+            // Update the UI
+            $('#domain-list').find('li.active').click();
+        });
     });
 });
 

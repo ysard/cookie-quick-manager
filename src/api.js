@@ -288,12 +288,18 @@ vAPI.add_cookies = function(new_cookies_promises, protection_status) {
 
             // Protect all cookies if asked in global settings
             if (protection_status)
-                vAPI.set_cookie_protection(cookies_array, true);
+                return vAPI.set_cookie_protection(cookies_array, true);
 
-            // Ok => all cookies are added properly
+        }, vAPI.onError).then(() => {
+            // Ok => all cookies are added/protected properly
             // Reactivate the interface
             resolve();
-        }, vAPI.onError);
+        }, (error) => {
+            // Errors while adding the cookies,
+            // or while the protection of cookies.
+            // TODO: make a proper message
+            reject(JSON.stringify(error));
+        });
     });
 }
 
