@@ -170,8 +170,6 @@ $("#protect_button").click(function() {
         if (name == '')
             return;
 
-        let button_icon = $("#protect_button span");
-
         // Check domain
         if (!(domain in protected_cookies))
             protected_cookies[domain] = [];
@@ -181,15 +179,13 @@ $("#protect_button").click(function() {
             console.log({'protect: add': name});
             protected_cookies[domain].push(name);
 
-            button_icon.removeClass("glyphicon-lock");
-            button_icon.addClass("glyphicon-unlock");
+            set_protect_lock_icon(true);
         } else {
             // This cookie will not be protected anymore
             console.log({'protect: rm': name});
             protected_cookies[domain] = protected_cookies[domain].filter(item => ![name,].includes(item));
 
-            button_icon.removeClass("glyphicon-unlock");
-            button_icon.addClass("glyphicon-lock");
+            set_protect_lock_icon(false);
         }
         //console.log(protected_cookies);
         // Set new protected_cookies on storage area
@@ -369,8 +365,9 @@ $('#button_optimal_size').click(function() {
     });
 });
 
-$("#protect_all_button").click(function() {
-    // Build 1 json template for each cookie in all stores
+$("#protect_all_button").click(function(event) {
+
+    // Get all cookies for this store and protect them
     let promise = vAPI.get_all_cookies([$('#search_store').val()]);
     promise.then((cookies) => {
         vAPI.set_cookie_protection(cookies, true);
@@ -378,14 +375,15 @@ $("#protect_all_button").click(function() {
         // why we don't just click on the current domain ?
         // Because Firefox 57 is too fast for the asynchronous api
         // to update the list of protected cookies before clicking.
-        let button_icon = $("#protect_button span");
-        button_icon.removeClass("glyphicon-lock");
-        button_icon.addClass("glyphicon-unlock");
+        set_protect_lock_icon(true);
     });
+    console.log('la');
+    event.preventDefault();
+    console.log('fin');
 });
 
-$("#unprotect_all_button").click(function() {
-    // Build 1 json template for each cookie in all stores
+$("#unprotect_all_button").click(function(event) {
+    // Get all cookies for this store and unprotect them
     let promise = vAPI.get_all_cookies([$('#search_store').val()]);
     promise.then((cookies) => {
         vAPI.set_cookie_protection(cookies, false);
@@ -393,9 +391,7 @@ $("#unprotect_all_button").click(function() {
         // why we don't just click on the current domain ?
         // Because Firefox 57 is too fast for the asynchronous api
         // to update the list of protected cookies before clicking.
-        let button_icon = $("#protect_button span");
-        button_icon.removeClass("glyphicon-unlock");
-        button_icon.addClass("glyphicon-lock");
+        set_protect_lock_icon(false);
     });
 });
 
@@ -1103,14 +1099,31 @@ function display_cookie_details(event) {
 
     // If the cookie is not in protected_cookies array: display lock icon
     // otherwise, display unlock icon
-    let button_icon = $("#protect_button span");
     if (protected_cookies[cookie.domain] === undefined ||
         protected_cookies[cookie.domain].indexOf(cookie.name) === -1) {
         // is not protected
-        button_icon.removeClass("glyphicon-unlock");
-        button_icon.addClass("glyphicon-lock");
+        set_protect_lock_icon(false);
     } else {
         // is protected
+        set_protect_lock_icon(true);
+    }
+}
+
+function set_protect_lock_icon(status) {
+    // Switch class of the icon on the button #protect_button
+    // If status is true, display a locked padlock
+    // else, display an unlocked padlock.
+
+    let button_icon = $("#protect_button span");
+    if (status === true) {
+        // Switch to lock icon
+        // is protected
+        button_icon.removeClass("glyphicon-unlock");
+        button_icon.addClass("glyphicon-lock");
+
+    } else {
+        // Switch to unlock icon
+        // is not protected
         button_icon.removeClass("glyphicon-lock");
         button_icon.addClass("glyphicon-unlock");
     }
