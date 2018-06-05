@@ -146,6 +146,11 @@
       .top-buttons span:hover {
         color: red;
       }
+      .btn-dark:focus {
+         /* Add a border when buttons are focused by tab key
+            btn-dark doesn't have this distinction. */
+         border-color: #8c8c8c;
+      }
 
       @media only screen and (max-width: 768px) {
         .central-col {
@@ -177,12 +182,12 @@
 
         <div class="col-sm-4">
           <h2 data-i18n-content="domainsListTitle">Domains</h2>
-          <ul id="domain-list" class="list-group"></ul>
+          <ul tabindex="1" id="domain-list" class="list-group"></ul>
         </div>
 
         <div class="col-sm-4 central-col">
           <h2 data-i18n-content="cookiesListTitle">Cookies</h2>
-          <ul id="cookie-list" class="list-group"></ul>
+          <ul tabindex="2" id="cookie-list" class="list-group"></ul>
         </div>
 
         <div class="col-sm-4">

@@ -271,12 +271,8 @@ $(document).keydown(function(event){
     /*************************************************************************/
     // Change selected list with Ctrl + left or Ctrl + right
     if (event.ctrlKey) {
-        if (key == 37) // left
-            $current_selected_list = $('#domain-list');
-        else if (key == 39) // right
-            $current_selected_list = $('#cookie-list');
 
-        else if (key == 70) { // F => search
+        if (key == 70) { // F => search
             $('#search_domain').select();
             // Avoid to display the search box of the browser
             event.preventDefault();
@@ -288,8 +284,10 @@ $(document).keydown(function(event){
     // Up & down key pressed
     // Make a loop on all items of the list.
     // When the end is reached, the next selected item is then the first of the list.
-    if (key != 40 && key != 38)
-        return;
+    if (key != 40 && key != 38) {
+        if (!$('#domain-list').is(':focus') && !$('#cookie-list').is(':focus'))
+            return;
+    }
 
     // Init default selected list => done in main namespace
     /*if ($current_selected_list === undefined)
@@ -321,6 +319,9 @@ $(document).keydown(function(event){
             $current = $selected.prev();
         }
     }
+    // Quick and dirty adjustment to avoid to raise an exception below
+    if ($current === undefined)
+        return;
     adjust_scrollbar($current);
 
     // Simulate click on current item (domain or cookie)
@@ -436,6 +437,18 @@ browser.storage.onChanged.addListener(function (changes, area) {
     }
 });
 
+$('#domain-list').focus(function() {
+    // When the focus is set on this list, we memorize it
+    // as the element concerned by the action of the keys up and down
+    $current_selected_list = $(this);
+});
+
+$('#cookie-list').focus(function() {
+    // When the focus is set on this list, we memorize it
+    // as the element concerned by the action of the keys up and down
+    $current_selected_list = $(this);
+});
+
 /*********** Initializations ***********/
 
 // Init datetimepicker object
@@ -473,6 +486,9 @@ get_options();
 
 // Fill the domains list
 getStores();
+
+// Focus on the main default list: #domain-list
+$current_selected_list.focus();
 
 });
 
@@ -732,7 +748,6 @@ function no_cookie_alert(domNode) {
     domNode.appendChild(p);
 
     // Focus on the domain list by default
-    // TODO: sufficient ?
     $current_selected_list = $('#domain-list');
 }
 
