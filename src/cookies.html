@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <link rel="stylesheet" href="static/css/bootstrap.min.css">
     <link rel="stylesheet" href="static/css/bootstrap-datetimepicker.min.css">
+    <link rel="stylesheet" href="static/js/jquery.contextMenu.min.css">
     <title>Cookie Quick Manager</title>
     <style>
       /*
@@ -151,6 +152,29 @@
             btn-dark doesn't have this distinction. */
          border-color: #8c8c8c;
       }
+
+      /* ContextMenu */
+      .context-menu-icon::before {
+        /* blue to grey */
+        color: #333;
+        /* context-menu-icons.woff2 to Bootstrap font */
+        font-family: "Glyphicons Halflings";
+        font-size: 12px;
+      }
+      .context-menu-item.context-menu-icon-unlock:before {
+        content:"";
+        background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAAOCAQAAABTaC4eAAAAAmJLR0QA/4ePzL8AAAAJcEhZcwAACxMAAAsTAQCanBgAAAAHdElNRQfiAQIRNgZ9qgwVAAAAGXRFWHRDb21tZW50AENyZWF0ZWQgd2l0aCBHSU1QV4EOFwAAAIVJREFUGNNjZGD4Lygb9DLgNwMDAwMDK4PShhvrGN8zMzDsDb0S/I8BAv4xvNXY+/vRJQYGBrbNDJuT1kCEk9YwbGbbDGFvZoAyEDwWBgYGXwYMwMSAFTCiGAAB/xkYkVTzIZQiDFH9/clX9TeG2T/+QDCa8GtOCEYT/slQvvAnXpfgdjcAIaImqpRhrMMAAAAASUVORK5CYII=');
+        height: 14px;
+        width: 14px;
+        background-repeat: no-repeat;
+        left: 7px;
+      }
+      .context-menu-item.context-menu-icon-lock:before {content:"\e033";}
+      .context-menu-item.context-menu-icon-trash:before {content:"\e020";}
+      .context-menu-item.context-menu-icon-duplicate:before {content:"\e224";}
+      .context-menu-item.context-menu-icon-save:before {content:"\e166";}
+      .context-menu-item.context-menu-icon-copy:before {content:"\e205";}
+      .context-menu-item.context-menu-icon-quit:before {content:"\e014";}
 
       @media only screen and (max-width: 768px) {
         .central-col {
@@ -424,6 +448,7 @@
     <script src="static/js/bootstrap.min.js"></script>
     <script src="static/js/moment.min.js"></script>
     <script src="static/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="static/js/jquery.contextMenu.min.js"></script>
     <script src="api.js"></script>
     <script src="cookies.js"></script>
     <script src="export.js"></script>

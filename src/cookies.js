@@ -450,6 +450,101 @@ $('#cookie-list').focus(function() {
     $current_selected_list = $(this);
 });
 
+
+$('#domain-list').contextMenu({
+
+    selector: 'li',
+    zIndex: 10,
+    events: {
+        show : function(options){
+            $(this).click();
+            return true;
+        }
+    },
+    build: function($trigger, e) {
+        // this callback is executed every time the menu is to be shown
+        // its results are destroyed every time the menu is hidden
+        // e is the original contextmenu event, containing e.pageX and e.pageY (amongst other data)
+        return {
+            callback: function(key, options) {
+                // WARNING: curious inversion: name of item is in options instead of key
+                // as described at: https://swisnl.github.io/jQuery-contextMenu/demo/sub-menus.html
+                console.log({
+                    clicked: true,
+                    key: key,
+                    options: options,
+                    text: $(this).text()
+                });
+
+                let promise = vAPI.getCookiesFromSelectedDomain();
+                vAPI.copy_cookies_to_store(promise, options).then((ret) => {
+                    // actualizeDomains();
+                    // TODO: click on the same domain
+                    $(this).click();
+                }, null);
+            },
+            items: {
+                "copy": {name: browser.i18n.getMessage("contextMenu_domain_copy2Clipboard"), icon: "copy",
+                    callback: function(itemKey, opt, rootMenu, originalEvent) {
+                        // Remove all cookies in the selected domain
+                        let promise = vAPI.getCookiesFromSelectedDomain();
+                        window.display_json_in_clipboard_area(promise);
+                        $('#modal_clipboard').modal("show");
+                    }
+                },
+                "save": {name: browser.i18n.getMessage("contextMenu_domain_copy2File"), icon: "save",
+                    callback: function(itemKey, opt, rootMenu, originalEvent) {
+                        // Get all cookies in the selected domain
+                        let promise = vAPI.getCookiesFromSelectedDomain();
+                        promise.then((cookies) => {
+                            // Make 1 json for each cookie and store it
+                            // Merge and display templates
+                            window.export_content_to_file_wrapper(cookies);
+                        }, (error) => {
+                            // No cookie
+                            console.log({message: "No domain selected", error: error});
+                        });
+                    }
+                },
+                "protect": {name: browser.i18n.getMessage("contextMenu_domain_protect"), icon: "lock",
+                    callback: function(itemKey, opt, rootMenu, originalEvent) {
+                        // Remove all cookies in the selected domain
+                        let promise = vAPI.getCookiesFromSelectedDomain();
+                        promise.then((cookies) => {
+                            vAPI.set_cookie_protection(cookies, true).then(() => {
+                                // Update the UI
+                                $(this).click();
+                            });
+                        });
+                    }
+                },
+                "unprotect": {name: browser.i18n.getMessage("contextMenu_domain_unprotect"), icon: "unlock",
+                    callback: function(itemKey, opt, rootMenu, originalEvent) {
+                        // Remove all cookies in the selected domain
+                        let promise = vAPI.getCookiesFromSelectedDomain();
+                        promise.then((cookies) => {
+                            vAPI.set_cookie_protection(cookies, false).then(() => {
+                                // Update the UI
+                                $(this).click();
+                            });
+                        });
+                    }
+                },
+                "delete": {name: browser.i18n.getMessage("contextMenu_domain_delete"), icon: "trash",
+                    callback: function(itemKey, opt, rootMenu, originalEvent) {
+                        // Remove all cookies in the selected domain
+                        // TODO #delete_domain_button n'existe plus
+                        delete_cookies(vAPI.getCookiesFromSelectedDomain(), "#delete_domain_button span");
+                    }
+                },
+                "contexts_selector": context_menu_elements,
+                "sep1": "---------",
+                "quit": {name: browser.i18n.getMessage("buttonClose"), icon: function($element, key, item){ return 'context-menu-icon context-menu-icon-quit'; }}
+            }
+        };
+    }
+});
+
 /*********** Initializations ***********/
 
 // Init datetimepicker object
@@ -667,8 +762,29 @@ function showStores(stores) {
         }
     }
 
+    function build_context_menu() {
+        // Context menu: copy to container
+        let elements = {};
+        $.each(stores, function (index, store) {
+            // Set key
+            elements[store.cookieStoreId] = {
+                name: store.name,
+            };
+        });
+
+        context_menu_elements = {
+            name: browser.i18n.getMessage("contextMenu_domain_copy2container"),
+            items: elements,
+            icon: "duplicate",
+        };
+    }
+
+    // Cookie details: store selector
     update_select_form('#store');
+    // Cookie search: store filter
     update_select_form('#search_store');
+    // Context menu: copy to container
+    build_context_menu();
 }
 
 function getStores() {
@@ -1199,7 +1315,7 @@ function update_skin(skin) {
 /*********** Global variables ***********/
 
 var $current_selected_list = $('#domain-list');
-
+var context_menu_elements;
 var protected_cookies;
 var addon_window_type;
 // Init dict of storeIds with iconURl and color as values
