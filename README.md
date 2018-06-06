@@ -34,6 +34,16 @@ It requires the following permissions to operate:
 * Cookies: Allows access to the browser's cookie manager,
 * ActiveTab: Allows access to the consulted url, and favicon if it exists.
 
+# Installation from sources
+
+- open Firefox
+- enter "about:debugging" in the URL bar
+- click on "Load Temporary Add-on"
+- open the file "./src/manifest.json" on the repository you just cloned
+- that's it !
+
+More information at [developer.mozilla.org](https://developer.mozilla.org/en-US/Add-ons/WebExtensions/Debugging).
+
 # Support & source code
 
 The extension is in full development with the launch of Firefox Quantum;
