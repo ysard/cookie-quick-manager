@@ -820,20 +820,14 @@ function delete_cookies(promise, delete_button_selector) {
             actualizeDomains();
         else {
             // Deletion of a single domain is ok:
-            // Get the current domain:
-            // - click on the next element
-            // - remove it from the list
-            let $selected = $('#domain-list').find('li.active');
-            let $next = $selected.next();
-            if ($next.length == 1) {
-                $next.click();
-                $selected.remove();
-            } else {
+            // Try to select the next domain, then the previous domain.
+            // Remove the current domain from the list
+            if(!select_ideal_remaining_element($('#domain-list').find('li.active'))) {
+                // No domain to display, reset the UI
+                console.log("No more domains");
                 actualizeDomains();
             }
         }
-
-
     }, (error) => {
         console.log({RemovedError: error});
         // If null: no error but no suppression
@@ -1290,7 +1284,20 @@ function delete_current_cookie() {
             $("#delete_button span").removeClass("button-error");
             disable_cookie_details();
             reset_cookie_details();
-            $('#domain-list').find('li.active').click();
+
+            // Clean the list of cookies and domains
+            // We try to select the next cookie first, then the previous,
+            // then the next domain, and finally the previous domain.
+            if(!select_ideal_remaining_element($('#cookie-list').find('li.active'))) {
+                // No cookie to display: Search clicked domain and remove it
+                console.log("No more cookies");
+
+                if(!select_ideal_remaining_element($('#domain-list').find('li.active'))) {
+                    // No domain to display, reset the UI
+                    console.log("No more domains");
+                    actualizeDomains();
+                }
+            }
         }
     }, onError);
 }
@@ -1310,6 +1317,31 @@ function update_skin(skin) {
             rel: 'stylesheet',
             href: skin + '.css'
         });
+}
+
+function select_ideal_remaining_element($selected_element) {
+    // Clean the list of cookies or domains
+    // We try to select the next cookie first, then the previous.
+    // Take the active element in the cookies list or in the domains list,
+    // return false if there is no remaining element to click on, true otherwise.
+
+    // Next cookie ?
+    let $next = $selected_element.next();
+    if ($next.length == 1) {
+        $next.click();
+        $selected_element.remove();
+        return true;
+    } else {
+        // Previous cookie ?
+        let $prev = $selected_element.prev();
+        if ($prev.length == 1) {
+            $prev.click();
+            $selected_element.remove();
+            return true;
+        }
+        // No remaining element
+        return false;
+    }
 }
 
 /*********** Global variables ***********/
