@@ -270,7 +270,8 @@ $(document).keydown(function(event){
 
     /*************************************************************************/
     // Change selected list with Ctrl + left or Ctrl + right
-    if (event.ctrlKey) {
+    // metakey => MacOS (command)
+    if (event.metaKey || event.ctrlKey) {
 
         if (key == 70) { // F => search
             $('#search_domain').select();
