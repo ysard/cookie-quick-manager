@@ -370,7 +370,6 @@ $('#button_optimal_size').click(function() {
 });
 
 $("#protect_all_button").click(function() {
-
     // Get all cookies for this store and protect them
     let promise = vAPI.get_all_cookies([$('#search_store').val()]);
     promise.then((cookies) => {
@@ -866,7 +865,7 @@ function delete_cookies(promise, delete_button_selector) {
 function no_cookie_alert(domNode) {
     // No cookies to display
     // Add info to the given node (cookie-list or domain-list div)
-    // TODO: currently take a native DOM element instead a jquery one...
+    // WARNING: currently take a native DOM element instead a jquery one...
     let p = document.createElement("p");
     let content = document.createTextNode(browser.i18n.getMessage("noCookieAlert")); //"No cookies in this tab."
     let parent = domNode.parentNode;
@@ -1144,13 +1143,12 @@ function showCookiesList(event, refresh_domain_badges) {
                 li.appendChild(content);
 
                 // Display a lock badge if cookie is protected
-                try {
-                    if (protected_cookies[cookie.domain].indexOf(cookie.name) !== -1) {
-                        let lock_badge = document.createElement("span");
-                        lock_badge.className = "lock-badge glyphicon glyphicon-lock";
-                        li.appendChild(lock_badge);
-                    }
-                } catch (e) {}
+                if (cookie.domain in protected_cookies
+                    && protected_cookies[cookie.domain].indexOf(cookie.name) !== -1) {
+                    let lock_badge = document.createElement("span");
+                    lock_badge.className = "lock-badge glyphicon glyphicon-lock";
+                    li.appendChild(lock_badge);
+                }
 
                 fragment.appendChild(li);
 
