@@ -131,11 +131,13 @@ $( "#save_button" ).click(function() {
             $("#save_button span").addClass("button-error");
         } else {
             // Supress red color, disable & reset text editing for the next cookie
-            // Simulate click on the same domain
             $("#save_button span").removeClass("button-error");
             disable_cookie_details();
             reset_cookie_details();
-            $('#domain-list').find('li.active').click();
+
+            // Simulate click on the same domain with recalculation of badges
+            // (because almost 1 new cookie is added, with maybe a new container)
+            $('#domain-list').find('li.active').trigger('click', true);
         }
     }, onError);
 });
@@ -478,9 +480,9 @@ $('#domain-list').contextMenu({
 
                 let promise = vAPI.getCookiesFromSelectedDomain();
                 vAPI.copy_cookies_to_store(promise, options).then((ret) => {
-                    // actualizeDomains();
-                    // TODO: click on the same domain
-                    $(this).click();
+                    // Simulate click on the same domain with recalculation of badges
+                    // (because almost 1 new cookie is added, with maybe a new container)
+                    $(this).trigger('click', true);
                 }, null);
             },
             items: {
@@ -808,6 +810,8 @@ function getStores() {
 
 function delete_cookies(promise, delete_button_selector) {
     // Delete all cookies in the promise
+    // Called when #delete_all_button is clicked,
+    // and when the domain deletion option in the context menu is clicked
     let deletion_promise = vAPI.delete_cookies(promise);
     deletion_promise.then((ret) => {
         // Supress red color, disable & reset text editing for the next cookie
@@ -1019,13 +1023,13 @@ function showDomains(storeIds) {
             for (let storeId of domains[domain].storeIds) {
                 if (storeId == 'firefox-default')
                     continue;
-                let private_badge = document.createElement("span");
-                private_badge.className = "store-badge";
-                private_badge.style['background-color'] = storeIcons[storeId][1];
-                private_badge.style['mask'] = 'url(' + storeIcons[storeId][0] + ') no-repeat 50% 50%';
-                private_badge.style['mask-size'] = 'cover';
+                let store_badge = document.createElement("span");
+                store_badge.className = "store-badge";
+                store_badge.style['background-color'] = storeIcons[storeId][1];
+                store_badge.style['mask'] = 'url(' + storeIcons[storeId][0] + ') no-repeat 50% 50%';
+                store_badge.style['mask-size'] = 'cover';
 
-                li.appendChild(private_badge);
+                li.appendChild(store_badge);
             }
 
             fragment.appendChild(li);
@@ -1063,7 +1067,7 @@ function showDomains(storeIds) {
     });
 }
 
-function showCookiesList(event) {
+function showCookiesList(event, refresh_domain_badges) {
     var id = event.data.id;
     var storeIds = event.data.storeIds
 
@@ -1116,13 +1120,13 @@ function showCookiesList(event) {
 
                 // Display badge if cookie comes from a special store
                 if (cookie.storeId != 'firefox-default') {
-                    let private_badge = document.createElement("span");
-                    private_badge.className = "cookie-badge";
-                    private_badge.style['background-color'] = storeIcons[cookie.storeId][1];
-                    private_badge.style['mask'] = 'url(' + storeIcons[cookie.storeId][0] + ') no-repeat 50% 50%';
-                    private_badge.style['mask-size'] = 'cover';
+                    let store_badge = document.createElement("span");
+                    store_badge.className = "cookie-badge";
+                    store_badge.style['background-color'] = storeIcons[cookie.storeId][1];
+                    store_badge.style['mask'] = 'url(' + storeIcons[cookie.storeId][0] + ') no-repeat 50% 50%';
+                    store_badge.style['mask-size'] = 'cover';
 
-                    li.appendChild(private_badge);
+                    li.appendChild(store_badge);
                 }
 
                 // Add text content
@@ -1154,6 +1158,9 @@ function showCookiesList(event) {
                 $that.parent().find('li.active').remove();
                 no_cookie_alert($cookieList[0]);
             } else {
+                if (refresh_domain_badges !== undefined && refresh_domain_badges === true)
+                    update_selected_domain_badges();
+
                 // Simulate click on the first cookie in the list when the list is built
                 $("#cookie-list li").first().click();
             }
@@ -1297,9 +1304,56 @@ function delete_current_cookie() {
                     console.log("No more domains");
                     actualizeDomains();
                 }
+            } else {
+                // Just update the badges according to the stores used by the remaining cookies
+                console.log("Some remaining cookies");
+                update_selected_domain_badges();
             }
         }
     }, onError);
+}
+
+function update_selected_domain_badges() {
+    // Update the store badges of the selected domain
+    // This function is used after a deletion of a cookie,
+    // after the addition, or after a copy of multiple cookies
+    // from the same domainin another container.
+    // The cookie list must be already refreshed if used after adding at least 1 cookie;
+    // this is why we give the argument 'true' to the event 'click' triggered after an addition.
+    // showCookiesList will handle this argument and call this function itself.
+
+    let $current_cookies = $('#cookie-list').find('li');
+    let $selected_domain = $('#domain-list').find('li.active');
+
+    // Update the main badge with the new number of cookies
+    $selected_domain.find('.badge').text($current_cookies.length);
+
+    // Build a set of stores ids available in the current cookies
+    // PS: Remove firefox-default store (no badge for it)!
+    var unique = [];
+    let store_id;
+    $current_cookies.each(function (index) {
+        store_id = $(this).data('cookie').storeId;
+        if ((store_id != 'firefox-default') && (unique.indexOf(store_id) === -1)) {
+            unique.push(store_id);
+        }
+    });
+
+    // Reset store badges
+    $selected_domain.find('.store-badge').remove();
+
+    // Display new store badges if the cookie comes from a special store/container
+    for (let storeId of unique) {
+        // Create
+        let store_badge = document.createElement("span");
+        store_badge.className = "store-badge";
+        store_badge.style['background-color'] = storeIcons[storeId][1];
+        store_badge.style['mask'] = 'url(' + storeIcons[storeId][0] + ') no-repeat 50% 50%';
+        store_badge.style['mask-size'] = 'cover';
+
+        // Append the badge to the li element
+        $selected_domain.append(store_badge);
+    }
 }
 
 function update_skin(skin) {
