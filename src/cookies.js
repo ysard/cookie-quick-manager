@@ -816,7 +816,7 @@ function delete_cookies(promise, delete_button_selector) {
     // Called when #delete_all_button is clicked,
     // and when the domain deletion option in the context menu is clicked
     let deletion_promise = vAPI.delete_cookies(promise);
-    deletion_promise.then((ret) => {
+    deletion_promise.then((number_of_remaining_cookies) => {
         // Supress red color, disable & reset text editing for the next cookie
         $(delete_button_selector).removeClass("button-error");
 
@@ -826,6 +826,14 @@ function delete_cookies(promise, delete_button_selector) {
         if (delete_button_selector == "#delete_all_button span")
             actualizeDomains();
         else {
+            // If there are protected cookies
+            if (number_of_remaining_cookies != 0) {
+                // Simulate click on the same domain with recalculation of badges
+                // (because almost 1 new cookie is added, with maybe a new container)
+                $('#domain-list').find('li.active').trigger('click', true);
+                return;
+            }
+
             // Deletion of a single domain is ok:
             // Try to select the next domain, then the previous domain.
             // Remove the current domain from the list
@@ -1263,9 +1271,18 @@ function delete_current_cookie() {
     /* Remove a cookie displayed on details zone
      * NOTE: Remove inexistant cookie: Removed: null
      */
+
+    // DO NOT delete protected cookie
+    let cookie_domain = $('#domain').val();
+    let cookie_name = $('#name').val();
+    if (cookie_domain in protected_cookies
+        && protected_cookies[cookie_domain].indexOf(cookie_name) !== -1) {
+        return;
+    }
+
     var params = {
       url: vAPI.getHostUrl_from_UI(),
-      name: $('#name').val(),
+      name: cookie_domain,
       storeId: $('#store').val(),
     }
 

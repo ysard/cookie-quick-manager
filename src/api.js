@@ -177,11 +177,33 @@ vAPI.delete_cookies = function(promise) {
     // because, the promise is already composed of cookies that
     // come from getAll() and have the firstPartyDomain property if it is activated.
     // This presence of this property gives the status of the FPI support.
+    // The promise returns the number of remaining cookies (not deleted because
+    // they are protected against deletion)
+
     return new Promise((resolve, reject) => {
 
-        promise.then((cookies) => {
+        // DO NOT delete protected cookies
+        var protected_cookies;
+        var number_of_given_cookies;
+
+        browser.storage.local.get({
+            protected_cookies: {},
+        })
+        .then((items) => {
+
+            protected_cookies = items.protected_cookies;
+            return promise;
+        })
+        .then((cookies) => {
             let promises = [];
+            number_of_given_cookies = cookies.length;
+
             for (let cookie of cookies) {
+                // DO NOT delete protected cookies
+                if (cookie.domain in protected_cookies
+                    && protected_cookies[cookie.domain].indexOf(cookie.name) !== -1)
+                    continue;
+
                 // Remove current cookie
                 let params = {
                     url: vAPI.getHostUrl(cookie),
@@ -214,7 +236,8 @@ vAPI.delete_cookies = function(promise) {
             }
             // Ok => all cookies are deleted properly
             // Reactivate the interface
-            resolve();
+            // Return the number of remaining cookies
+            resolve(number_of_given_cookies - cookies_array.length);
         }, vAPI.onError);
     });
 }
