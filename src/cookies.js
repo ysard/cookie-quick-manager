@@ -768,6 +768,9 @@ function showStores(stores) {
         // Context menu: copy to container
         let elements = {};
         $.each(stores, function (index, store) {
+            // Remove 'all' entry
+            if (store.cookieStoreId == 'all')
+                return;
             // Set key
             elements[store.cookieStoreId] = {
                 name: store.name,
