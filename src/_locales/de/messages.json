@@ -162,11 +162,6 @@
     "description": "Global button to refresh the interface."
   },
 
-  "tooltipDDelete": {
-    "message": "Cookies der ausgewählten Domain löschen",
-    "description": "Button to delete the selected domain."
-  },
-
   "tooltipADelete": {
     "message": "All Cookies löschen",
     "description": "Button to delete all the cookies in the browser."

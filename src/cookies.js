@@ -199,12 +199,6 @@ $("#protect_button").click(function() {
     //});
 });
 
-$("#delete_domain_button").click(function() {
-    // Remove each cookie for the selected domain
-    var promise = vAPI.getCookiesFromSelectedDomain();
-    delete_cookies(promise, "#delete_domain_button span");
-});
-
 $("#delete_all_button").click(function() {
     // Remove all cookies
     var promise = vAPI.get_all_cookies([$('#search_store').val()]);
