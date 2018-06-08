@@ -234,8 +234,8 @@
   },
 
   "tooltipADelete": {
-    "message": "Delete all the cookies",
-    "description": "Button to delete all the cookies in the browser."
+    "message": "Delete all the cookies of the selected context",
+    "description": "Button to delete all the cookies in the selected context."
   },
 
   "tooltipcontributeContent": {
@@ -259,7 +259,7 @@
   },
 
   "tooltipCProtect": {
-    "message": "Erasure protection<br>When the padlock is closed you can click on it and prevent the future deletion of this cookie.",
+    "message": "Erasure protection<br>When the padlock is closed, it means that a future deletion of this cookie by this addon will be refused.",
     "description": "Button to protect or unprotect the current cookie from deletion."
   },
 

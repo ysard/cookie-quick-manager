@@ -230,8 +230,8 @@
   },
 
   "tooltipADelete": {
-    "message": "Supprimer tous les cookies du navigateur",
-    "description": "Button to delete all the cookies in the browser."
+    "message": "Supprimer tous les cookies du context sélectionné",
+    "description": "Button to delete all the cookies in the selected context."
   },
 
   "tooltipcontributeContent": {
@@ -255,7 +255,7 @@
   },
 
   "tooltipCProtect": {
-    "message": "Protection contre l'effacement<br>Quand le cadenas est fermé vous pouvez cliquer dessus et empêcher la suppression future de ce cookie.",
+    "message": "Protection contre l'effacement<br>Quand le cadenas est fermé, cela signifie qu'une suppression future de ce cookie par cet addon sera refusée.",
     "description": "Button to protect or unprotect the current cookie from deletion."
   },
 

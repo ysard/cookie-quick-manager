@@ -164,7 +164,7 @@
 
   "tooltipADelete": {
     "message": "All Cookies löschen",
-    "description": "Button to delete all the cookies in the browser."
+    "description": "Button to delete all the cookies in the selected context."
   },
 
   "tooltipcontributeContent": {
@@ -186,11 +186,6 @@
   "tooltipCDelete": {
     "message": "Diesen Cookie löschen",
     "description": "Button to delete the current cookie."
-  },
-
-  "tooltipCProtect": {
-    "message": "Löschschutz<br>Wenn das Schloss geschlossen ist, kannst du durch einen Klick die künftige Löschung diese Cookies verhindern.",
-    "description": "Button to protect or unprotect the current cookie from deletion."
   },
 
   "contributeContent": {
