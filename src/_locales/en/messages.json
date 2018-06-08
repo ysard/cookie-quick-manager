@@ -49,6 +49,11 @@
     "description": "Checkbox for search engine, used to query subdomains."
   },
 
+  "selectQueryContexts": {
+    "message": "Context(s):",
+    "description": "Text for search engine describing the content of the drop-down list of stores."
+  },
+
   "menu_protect_all": {
     "message": "Protect all cookies",
     "description": "Dropdown menu option."
@@ -216,6 +221,11 @@
   "tooltipQuerySubdomains": {
     "message": "Display also the cookies of the subdomains concerned by the selected domain",
     "description": "Checkbox for search engine, used to query subdomains."
+  },
+
+  "tooltipQueryContexts": {
+    "message": "Contexts are used to separate storage data by online activities without having to clear the browsing history, disconnect and reconnect, or use different browsers.",
+    "description": "Text for search engine describing the content of the drop-down list of stores."
   },
 
   "tooltipRefresh": {
