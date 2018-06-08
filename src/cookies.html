@@ -64,14 +64,16 @@
         /* bootstrap: padding: 10px 15px; */
         padding: 3px 17px;
       }
-      .search_store_form {
-        padding-left: 0px;
-        padding-right: 3px;
+      .navbar {
+        margin-bottom: 0px;
+      }
+      .navbar-left {
+        /* bootstrap correction: Increase space between elements in the navbar */
+        margin-left: 10px;
       }
       #search_store {
         padding-left: 7px;
       }
-
       .form-group {
         /* Reduce space between input lines in cookie details */
         margin-bottom: 1px;
@@ -103,9 +105,10 @@
       #clipboard_textarea {
         height: 320px;
       }
-      .checkbox {
-        /* overwrite bootstrap class: reduce space with search form */
-        padding-left: 5px;
+      .subdomains-checkbox label {
+        font-weight: normal;
+        margin-bottom: -1px;
+        vertical-align: middle;
       }
       #donate_button, .btc-color {
         color: rgb(247, 148, 19);
@@ -197,13 +200,44 @@
     </style>
   </head>
   <body>
-    <!--<div class="panel-section panel-section-header">
-      <div class="text-section-header" id="header-title">Cookie Quick Manager</div>
-    </div>-->
+    <!-- Navbar -->
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <!-- Search domain -->
+        <div class="navbar-form">
+          <div class="input-group" style="float:left">
+            <input type="text" class="form-control" name="search_domain" id="search_domain" placeholder="Search">
+            <div class="input-group-btn">
+              <button class="btn btn-default" type="submit" id="search_domain_submit"><span class="glyphicon glyphicon-search"></span></button>
+            </div>
+          </div>
+          <!-- Sub-domains option -->
+          <div class="subdomains-checkbox checkbox-inline navbar-left">
+            <input class="form-check-input" type="checkbox" id="query-subdomains">
+            <label class="form-check-label" for="query-subdomains"
+            data-toggle="tooltip"
+            title="Display also the cookies of the subdomains concerned by the selected domain"
+            data-i18n-title="tooltipQuerySubdomains" data-i18n-content="checkboxQuerySubdomains"> Sub-domains
+            </label>
+          </div>
+          <!-- Select store -->
+          <div class="search_store_form navbar-left">
+            <span data-toggle="tooltip"
+            title="Contexts are used to separate storage data by online activities without having to clear the browsing history, disconnect and reconnect, or use different browsers."
+            data-i18n-title="tooltipQueryContexts"
+            data-i18n-content="selectQueryContexts">Context(s):</span>
+            <select class="form-control" id="search_store"></select>
+          </div>
+          <!-- Refresh the view -->
+          <button type="button" class="btn btn-dark navbar-left" id="actualize_button"
+          data-toggle="tooltip"
+          title="Refresh the list of domains" data-i18n-title="tooltipRefresh"><span class="glyphicon glyphicon-refresh"></span></button>
+        </div>
+      </div>
+    </nav>
     <div class="container">
       <!-- 3 columns for domains, cookies, details -->
       <div class="row">
-
         <div class="col-sm-4">
           <h2 data-i18n-content="domainsListTitle">Domains</h2>
           <ul tabindex="1" id="domain-list" class="list-group"></ul>
@@ -320,73 +354,44 @@
       <!-- Commands -->
       <div class="row">
         <!-- Generic commands -->
-        <div class="col-sm-4">
-          <!-- Search -->
-          <div class="form-row">
-            <div class="col-sm-7 input-group" style="float:left">
-              <input type="text" class="form-control" name="search_domain" id="search_domain" placeholder="Search">
-              <div class="input-group-btn">
-                <button class="btn btn-default" type="submit" id="search_domain_submit"><span class="glyphicon glyphicon-search"></span></button>
-              </div>
-            </div>
-            <div class="col-sm-5 checkbox form-check">
-              <label class="form-check-label"
-              data-toggle="tooltip"
-              title="Display also the cookies of the subdomains concerned by the selected domain"
-              data-i18n-title="tooltipQuerySubdomains">
-              <input class="form-check-input" type="checkbox" id="query-subdomains" data-i18n-content="checkboxQuerySubdomains"> Sub-domains
-              </label>
-            </div>
-            <div class="col-sm-4 search_store_form">
-              <select class="form-control" id="search_store"></select>
-            </div>
-          </div>
+        <div class="col-sm-8">
           <!-- Buttons -->
-          <div>
-            <button type="button" class="btn btn-dark" id="actualize_button"
-            data-toggle="tooltip"
-            title="Refresh the list of domains" data-i18n-title="tooltipRefresh"><span class="glyphicon glyphicon-refresh"></span></button>
-            <button type="button" class="btn btn-dark" id="delete_all_button"
-            data-toggle="tooltip"
-            title="Delete all the cookies" data-i18n-title="tooltipADelete"><span class="glyphicon glyphicon-trash"></span></button>
-            <div class="dropup dropup-custom">
-              <button type="button" class="btn btn-dark dropdown-toggle"
-              data-toggle="dropdown" my-data-toogle="dropdown_and_tooltip" data-i18n-title="menu_tooltip_dropup_protect" tooltip-title="Protect/Unprotect all the cookies"><span class="glyphicon glyphicon-lock"></span><span class="caret"></span></button>
-              <ul class="dropdown-menu">
-                <li><a data-target="collapse" href="#" id="protect_all_button" data-toggle="modal" data-i18n-content="menu_protect_all">Protect all cookies</a></li>
-                <li><a data-target="collapse" href="#" id="unprotect_all_button" data-toggle="modal" data-i18n-content="menu_unprotect_all">Unprotect all cookies</a></li>
-              </ul>
-            </div>
-            <div class="dropup dropup-custom">
-              <button type="button" class="btn btn-dark dropdown-toggle"
-              data-toggle="dropdown" my-data-toogle="dropdown_and_tooltip" data-i18n-title="menu_tooltip_dropup_export" tooltip-title="Export/Import"><span class="glyphicon glyphicon-folder-open"></span><span class="caret"></span></button>
-              <ul class="dropdown-menu">
-                <li class="dropdown-header" data-i18n-content="menuHeaderExport">Export:</li>
-                <li><a href="#" id="clipboard_cookie_export" data-toggle="modal" data-target="#modal_clipboard" data-i18n-content="menuC2Clipboard">Copy cookie to clipboard</a></li>
-                <li><a href="#" id="clipboard_domain_export" data-toggle="modal" data-target="#modal_clipboard" data-i18n-content="menuD2Clipboard">Copy domain to clipboard</a></li>
-                <li><a href="#" id="clipboard_all_export" data-toggle="modal" data-target="#modal_clipboard" data-i18n-content="menuA2Clipboard">Copy all to clipboard</a></li>
-                <li><a href="#" id="file_cookie_export" data-i18n-content="menuC2File">Save cookie to file</a></li>
-                <li><a href="#" id="file_domain_export" data-i18n-content="menuD2File">Save domain to file</a></li>
-                <li><a href="#" id="file_all_export" data-i18n-content="menuA2File">Save all to file</a></li>
-                <li class="divider"></li>
-                <li class="dropdown-header" data-i18n-content="menuHeaderImport">Import:</li>
-                <li>
-                  <a href="#" id="import_file" data-i18n-content="menuRestore">Restore cookies from file</a>
-                  <!--accept="text/plain"-->
-                  <input type="file" id="file_elem" style="display:none">
-                </li>
-              </ul>
-            </div>
-            <button type="button" class="btn btn-dark" id="donate_button"
-            data-toggle="popover" data-placement="top" data-html="true"
-            data-i18n-popover-content="contributeContent" my-data-toogle="dropdown_and_tooltip"><span class="glyphicon glyphicon-bitcoin"></span></button>
-          </div>
-        </div>
-        <div class="col-sm-4">
-          <button type="button" class="btn btn-dark" id="delete_domain_button"
+          <button type="button" class="btn btn-dark" id="delete_all_button"
           data-toggle="tooltip"
-          title="Delete cookies from the selected domain" data-i18n-title="tooltipDDelete"><span class="glyphicon glyphicon-trash"></span></button>
+          title="Delete all the cookies" data-i18n-title="tooltipADelete"><span class="glyphicon glyphicon-trash"></span></button>
+          <div class="dropup dropup-custom">
+            <button type="button" class="btn btn-dark dropdown-toggle"
+            data-toggle="dropdown" my-data-toogle="dropdown_and_tooltip" data-i18n-title="menu_tooltip_dropup_protect" tooltip-title="Protect/Unprotect all the cookies"><span class="glyphicon glyphicon-lock"></span><span class="caret"></span></button>
+            <ul class="dropdown-menu">
+              <li><a data-target="collapse" href="#" id="protect_all_button" data-toggle="modal" data-i18n-content="menu_protect_all">Protect all cookies</a></li>
+              <li><a data-target="collapse" href="#" id="unprotect_all_button" data-toggle="modal" data-i18n-content="menu_unprotect_all">Unprotect all cookies</a></li>
+            </ul>
+          </div>
+          <div class="dropup dropup-custom">
+            <button type="button" class="btn btn-dark dropdown-toggle"
+            data-toggle="dropdown" my-data-toogle="dropdown_and_tooltip" data-i18n-title="menu_tooltip_dropup_export" tooltip-title="Export/Import"><span class="glyphicon glyphicon-folder-open"></span><span class="caret"></span></button>
+            <ul class="dropdown-menu">
+              <li class="dropdown-header" data-i18n-content="menuHeaderExport">Export:</li>
+              <li><a href="#" id="clipboard_cookie_export" data-toggle="modal" data-target="#modal_clipboard" data-i18n-content="menuC2Clipboard">Copy cookie to clipboard</a></li>
+              <li><a href="#" id="clipboard_domain_export" data-toggle="modal" data-target="#modal_clipboard" data-i18n-content="menuD2Clipboard">Copy domain to clipboard</a></li>
+              <li><a href="#" id="clipboard_all_export" data-toggle="modal" data-target="#modal_clipboard" data-i18n-content="menuA2Clipboard">Copy all to clipboard</a></li>
+              <li><a href="#" id="file_cookie_export" data-i18n-content="menuC2File">Save cookie to file</a></li>
+              <li><a href="#" id="file_domain_export" data-i18n-content="menuD2File">Save domain to file</a></li>
+              <li><a href="#" id="file_all_export" data-i18n-content="menuA2File">Save all to file</a></li>
+              <li class="divider"></li>
+              <li class="dropdown-header" data-i18n-content="menuHeaderImport">Import:</li>
+              <li>
+                <a href="#" id="import_file" data-i18n-content="menuRestore">Restore cookies from file</a>
+                <!--accept="text/plain"-->
+                <input type="file" id="file_elem" style="display:none">
+              </li>
+            </ul>
+          </div>
+          <button type="button" class="btn btn-dark" id="donate_button"
+          data-toggle="popover" data-placement="top" data-html="true"
+          data-i18n-popover-content="contributeContent" my-data-toogle="dropdown_and_tooltip"><span class="glyphicon glyphicon-bitcoin"></span></button>
         </div>
+
         <!-- Specific commands for current cookie -->
         <div class="col-sm-4">
           <button type="button" class="btn btn-dark" id="save_button"
