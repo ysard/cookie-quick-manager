@@ -850,8 +850,9 @@ function delete_cookies(promise, delete_button_selector) {
             actualizeDomains();
         else {
             reset_cookie_details();
-            // Click on the same domain since there are not deleted cookies
-            $('#domain-list').find('li.active').click();
+            // Simulate click on the same domain with recalculation of badges
+            // (because almost 1 new cookie is added, with maybe a new container)
+            $('#domain-list').find('li.active').trigger('click', true);
         }
     });
 }
