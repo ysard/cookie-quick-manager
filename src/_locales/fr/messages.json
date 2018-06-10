@@ -44,6 +44,11 @@
     "description": "Attribute of a cookie in the details panel."
   },
 
+  "cStore": {
+    "message": "Contexte ",
+    "description": "Attribute of a cookie in the details panel."
+  },
+
   "checkboxQuerySubdomains": {
     "message": " Sous-domaines",
     "description": "Checkbox for search engine used to query subdomains."
@@ -230,7 +235,7 @@
   },
 
   "tooltipADelete": {
-    "message": "Supprimer tous les cookies du context sélectionné",
+    "message": "Supprimer tous les cookies du contexte sélectionné",
     "description": "Button to delete all the cookies in the selected context."
   },
 

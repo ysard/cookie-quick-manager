@@ -44,6 +44,11 @@
     "description": "Attribute of a cookie in the details panel."
   },
 
+  "cStore": {
+    "message": "Context ",
+    "description": "Attribute of a cookie in the details panel."
+  },
+
   "checkboxQuerySubdomains": {
     "message": " Sub-domains",
     "description": "Checkbox for search engine, used to query subdomains."
