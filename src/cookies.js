@@ -1027,13 +1027,9 @@ function showDomains(storeIds) {
             for (let storeId of domains[domain].storeIds) {
                 if (storeId == 'firefox-default')
                     continue;
-                let store_badge = document.createElement("span");
-                store_badge.className = "store-badge";
-                store_badge.style['background-color'] = storeIcons[storeId][1];
-                store_badge.style['mask'] = 'url(' + storeIcons[storeId][0] + ') no-repeat 50% 50%';
-                store_badge.style['mask-size'] = 'cover';
-
-                li.appendChild(store_badge);
+                li.appendChild(
+                    get_store_badge_element(storeIcons[storeId][1], storeIcons[storeId][0])
+                );
             }
 
             fragment.appendChild(li);
@@ -1124,13 +1120,9 @@ function showCookiesList(event, refresh_domain_badges) {
 
                 // Display badge if cookie comes from a special store
                 if (cookie.storeId != 'firefox-default') {
-                    let store_badge = document.createElement("span");
-                    store_badge.className = "cookie-badge";
-                    store_badge.style['background-color'] = storeIcons[cookie.storeId][1];
-                    store_badge.style['mask'] = 'url(' + storeIcons[cookie.storeId][0] + ') no-repeat 50% 50%';
-                    store_badge.style['mask-size'] = 'cover';
-
-                    li.appendChild(store_badge);
+                    li.appendChild(
+                        get_store_badge_element(storeIcons[cookie.storeId][1], storeIcons[cookie.storeId][0])
+                    );
                 }
 
                 // Add text content
@@ -1356,15 +1348,10 @@ function update_selected_domain_badges() {
 
     // Display new store badges if the cookie comes from a special store/container
     for (let storeId of unique) {
-        // Create
-        let store_badge = document.createElement("span");
-        store_badge.className = "store-badge";
-        store_badge.style['background-color'] = storeIcons[storeId][1];
-        store_badge.style['mask'] = 'url(' + storeIcons[storeId][0] + ') no-repeat 50% 50%';
-        store_badge.style['mask-size'] = 'cover';
-
-        // Append the badge to the li element
-        $selected_domain.append(store_badge);
+        // Create & Append the badge to the li element
+        $selected_domain.appendChild(
+            get_store_badge_element(storeIcons[storeId][1], storeIcons[storeId][0])
+        );
     }
 }
 
@@ -1408,6 +1395,18 @@ function select_ideal_remaining_element($selected_element) {
         // No remaining element
         return false;
     }
+}
+
+function get_store_badge_element(background_color, icon_url) {
+    // Return a span html element which is a badge with the given data
+    // Take a rgb color code, and the url of the svg icon to display.
+
+    let store_badge = document.createElement("span");
+    store_badge.className = "store-badge";
+    store_badge.style['background-color'] = background_color;
+    store_badge.style['mask'] = 'url(' + icon_url + ') no-repeat 50% 50%';
+    store_badge.style['mask-size'] = 'cover';
+    return store_badge;
 }
 
 /*********** Global variables ***********/
