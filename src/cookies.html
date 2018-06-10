@@ -206,14 +206,14 @@
         <!-- Search domain -->
         <div class="navbar-form">
           <div class="input-group" style="float:left">
-            <input type="text" class="form-control" name="search_domain" id="search_domain" placeholder="Search">
+            <input tabindex="1" type="text" class="form-control" name="search_domain" id="search_domain" placeholder="Search">
             <div class="input-group-btn">
-              <button class="btn btn-default" type="submit" id="search_domain_submit"><span class="glyphicon glyphicon-search"></span></button>
+              <button tabindex="2" class="btn btn-default" type="submit" id="search_domain_submit"><span class="glyphicon glyphicon-search"></span></button>
             </div>
           </div>
           <!-- Sub-domains option -->
           <div class="subdomains-checkbox checkbox-inline navbar-left">
-            <input class="form-check-input" type="checkbox" id="query-subdomains">
+            <input tabindex="3" class="form-check-input" type="checkbox" id="query-subdomains">
             <label class="form-check-label" for="query-subdomains"
             data-toggle="tooltip"
             title="Display also the cookies of the subdomains concerned by the selected domain"
@@ -226,10 +226,10 @@
             title="Contexts are used to separate storage data by online activities without having to clear the browsing history, disconnect and reconnect, or use different browsers."
             data-i18n-title="tooltipQueryContexts"
             data-i18n-content="selectQueryContexts">Context(s):</span>
-            <select class="form-control" id="search_store"></select>
+            <select tabindex="4" class="form-control" id="search_store"></select>
           </div>
           <!-- Refresh the view -->
-          <button type="button" class="btn btn-dark navbar-left" id="actualize_button"
+          <button tabindex="5" type="button" class="btn btn-dark navbar-left" id="actualize_button"
           data-toggle="tooltip"
           title="Refresh the list of domains" data-i18n-title="tooltipRefresh"><span class="glyphicon glyphicon-refresh"></span></button>
         </div>
@@ -240,12 +240,12 @@
       <div class="row">
         <div class="col-sm-4">
           <h2 data-i18n-content="domainsListTitle">Domains</h2>
-          <ul tabindex="1" id="domain-list" class="list-group"></ul>
+          <ul tabindex="6" id="domain-list" class="list-group"></ul>
         </div>
 
         <div class="col-sm-4 central-col">
           <h2 data-i18n-content="cookiesListTitle">Cookies</h2>
-          <ul tabindex="2" id="cookie-list" class="list-group"></ul>
+          <ul tabindex="7" id="cookie-list" class="list-group"></ul>
         </div>
 
         <div class="col-sm-4">
