@@ -1267,7 +1267,7 @@ function delete_current_cookie() {
 
     var params = {
       url: vAPI.getHostUrl_from_UI(),
-      name: cookie_domain,
+      name: cookie_name,
       storeId: $('#store').val(),
     }
 
