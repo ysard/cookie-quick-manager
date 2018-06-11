@@ -1096,7 +1096,7 @@ function showCookiesList(event, refresh_domain_badges) {
                 // Display badge if cookie comes from a special store
                 if (cookie.storeId != 'firefox-default') {
                     li.appendChild(
-                        get_store_badge_element(storeIcons[cookie.storeId][1], storeIcons[cookie.storeId][0])
+                        get_store_badge_element(storeIcons[cookie.storeId][1], storeIcons[cookie.storeId][0], 'cookie-badge')
                     );
                 }
 
@@ -1365,12 +1365,13 @@ function select_ideal_remaining_element($selected_element) {
     }
 }
 
-function get_store_badge_element(background_color, icon_url) {
+function get_store_badge_element(background_color, icon_url, class_name) {
     // Return a span html element which is a badge with the given data
     // Take a rgb color code, and the url of the svg icon to display.
+    // Set the class_name argument if given.
 
     let store_badge = document.createElement("span");
-    store_badge.className = "store-badge";
+    store_badge.className = (class_name !== undefined) ? class_name : "store-badge";
     store_badge.style['background-color'] = background_color;
     store_badge.style['mask'] = 'url(' + icon_url + ') no-repeat 50% 50%';
     store_badge.style['mask-size'] = 'cover';
