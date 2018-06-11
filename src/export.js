@@ -114,12 +114,9 @@ browser.storage.onChanged.addListener(function (changes, area) {
     // Called when the local storage area is modified
     // Here: we handle only 'template' key.
 
-    //console.log("Change in storage area: " + area);
-    console.log(changes);
     // Reload template
-    if (changes.template !== undefined) {
+    if (changes.template !== undefined)
         cookie_clipboard_template = vAPI.templates[changes.template.newValue];
-    }
 });
 
 /*********** Initializations ***********/
@@ -389,8 +386,8 @@ function parseJSONFile(content) {
         import_protected_cookies: false
     });
     vAPI.FPI_detection(get_settings).then((items) => {
-        console.log(items);
-        console.log(vAPI.FPI);
+        //console.log(items);
+        //console.log(vAPI.FPI);
 
         // Build cookies
         let promises = [];

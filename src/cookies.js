@@ -178,13 +178,13 @@ $("#protect_button").click(function() {
         // Check name
         if (protected_cookies[domain].indexOf(name) === -1) {
             // This cookie will be protected
-            console.log({'protect: add': name});
+            //console.log({'protect: add': name});
             protected_cookies[domain].push(name);
 
             set_protect_lock_icon(true);
         } else {
             // This cookie will not be protected anymore
-            console.log({'protect: rm': name});
+            //console.log({'protect: rm': name});
             protected_cookies[domain] = protected_cookies[domain].filter(item => ![name,].includes(item));
 
             set_protect_lock_icon(false);
@@ -299,7 +299,6 @@ $(document).keydown(function(event){
 
     if ( key == 40 ) // Down key
     {
-        console.log($selected.length);
         if ( ! $selected.length || $selected.is(':last-child') ) {
             $current = $listItems.eq(0);
         }
@@ -414,16 +413,13 @@ browser.storage.onChanged.addListener(function (changes, area) {
     // if the global option import_protected_cookies is true, modifications
     // are made in protected_cookies array.
 
-    //console.log("Change in storage area: " + area);
-    console.log(changes);
     // Reload protected_cookies
     if (changes['protected_cookies'] !== undefined)
         protected_cookies = changes.protected_cookies.newValue;
 
     // Load/remove css skin
-    if (changes['skin'] !== undefined) {
+    if (changes['skin'] !== undefined)
         update_skin(changes.skin.newValue);
-    }
 });
 
 $('#domain-list').focus(function() {
@@ -583,7 +579,7 @@ function firefox57_workaround_for_blank_panel() {
 
     // Get parameter from full url
     // If addon is opened in a new tab, there is no issue on FF57+
-    var current_addon_url = new URL(window.location.href);
+    let current_addon_url = new URL(window.location.href);
     addon_window_type = current_addon_url.searchParams.get('type');
     if (addon_window_type != 'window') {
         $('#button_optimal_size').toggle();
@@ -609,7 +605,7 @@ function adjust_scrollbar($current) {
      * since there is a bottom margin of -1px => 7px
      */
     /*
-     c onsole.log({scroll: $current_selected_list.scro*llTop()});
+    console.log({scroll: $current_selected_list.scro*llTop()});
     console.log({scroll_height: $current_selected_list.prop('scrollHeight')});
     console.log({clientHeight: $current_selected_list.prop('clientHeight')});
     console.log({curr_top: $current.position().top});
@@ -632,7 +628,7 @@ function adjust_scrollbar($current) {
             // The cursor is on the first element and the user presses up another time
             // Set scrolltop to maximum
             new_scrollpos = max_scrollpos;
-            console.log({DOWN_another_time: $current.position().top});
+            //console.log({DOWN_another_time: $current.position().top});
         }
         else
             // Increment scrolltop since the previous element is already near to be hidden
@@ -645,12 +641,12 @@ function adjust_scrollbar($current) {
             // The cursor is on the last element and the user presses down another time
             // Set scrolltop to 0
             new_scrollpos = 0;
-            console.log({UP_another_time: $current.position().top});
+            //console.log({UP_another_time: $current.position().top});
         } else {
             // Decrement the scrolltop => go to the value 0,
             // with the current element near to the top
             new_scrollpos = scrollpos - ($current.height() + 7);
-            console.log({up_decr: $current.position().top});
+            //console.log({up_decr: $current.position().top});
         }
     }
     $current_selected_list.scrollTop(new_scrollpos);
@@ -735,7 +731,6 @@ function showStores(stores) {
 
         for (let store of stores) {
             // Build text & icon for each store
-            //console.log(store);
             let $elem = $('<span/>', {
                 css: {
                     'background-color': store.colorCode,
@@ -1251,7 +1246,6 @@ function delete_current_cookie() {
             // firstPartyDomain is mandatory
             params['firstPartyDomain'] = $('#fpi-domain').val();
         }
-
         return browser.cookies.remove(params);
     })
     .then((cookie) => {

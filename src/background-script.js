@@ -157,7 +157,7 @@ browser.storage.onChanged.addListener(function (changes, area) {
     // protected or not from deletion when there is a deletion event.
 
     //console.log("Change in storage area: " + area);
-    console.log(changes);
+    //console.log(changes);
     if (changes['protected_cookies'] !== undefined)
         protected_cookies = changes.protected_cookies.newValue;
 
