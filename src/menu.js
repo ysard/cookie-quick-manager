@@ -59,8 +59,8 @@ function createWindow(createData) {
     }
 
     // Open new window
-    let height = 531;
-    let width = 1095;
+    let height = vAPI.optimal_window_height;
+    let width = vAPI.optimal_window_width;
 
     // If addonSize item is in storage and if previous sizes are too small
     // => force default values
@@ -70,8 +70,8 @@ function createWindow(createData) {
       width = items.addonSize.width;
     }
     //console.log({h:height, w:width});
-    /*
-     * TODO: why it is not ok on some computers with small resolution ?*/
+    //console.log({h:items.addonSize.height, w:items.addonSize.width});
+    // TODO: why it is not ok on some computers with small resolution ?
     createData.width = width;
     createData.height = height;
 

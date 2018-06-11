@@ -354,11 +354,10 @@ $('#expiration_date').on("dp.change", function(event) {
 $('#button_optimal_size').click(function() {
     // Optimal size on click
     browser.windows.getCurrent().then((currentWindow) => {
-        var updateInfo = {
-            width: 1095,
-            height: 531,
+        let updateInfo = {
+            width: vAPI.optimal_window_width,
+            height: vAPI.optimal_window_height,
         };
-        console.log(updateInfo);
         browser.windows.update(currentWindow.id, updateInfo);
     });
 });
@@ -398,16 +397,10 @@ window.onresize = function(event) {
     if (addon_window_type != 'window')
         return;
 
-    addonSize = {
+    let addonSize = {
         width: window.innerWidth,
         height: window.innerHeight
     };
-    /*
-     *  // minus the width of the scrollbar:
-     *  width = $(window).width();
-     *  height = $(window).height();
-     */
-    //console.log(addonSize);
     let set_settings = browser.storage.local.set({addonSize});
     set_settings.then(null, (error) => {
         console.log(`Error_resizing: ${error}`);
@@ -598,6 +591,7 @@ function firefox57_workaround_for_blank_panel() {
     }
 
     browser.windows.getCurrent().then((currentWindow) => {
+        // PS: innerHeight has always a value of 1 pixel less than currentWindow.height
         var updateInfo = {
             width: window.innerWidth,
             height: window.innerHeight + 2, // 2 pixel more than original size...

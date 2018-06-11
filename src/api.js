@@ -576,4 +576,8 @@ vAPI.templates = {
 // PS: "DD-MM-YYYY hh:mm:ss a"), 'a' is for am/pm
 vAPI.date_format = "DD-MM-YYYY HH:mm:ss";
 
+// Optimal size of the windowed addon
+vAPI.optimal_window_width = 1095;
+vAPI.optimal_window_height = 585;
+
 })(this);

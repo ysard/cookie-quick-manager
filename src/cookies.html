@@ -7,15 +7,22 @@
     <link rel="stylesheet" href="static/js/jquery.contextMenu.min.css">
     <title>Cookie Quick Manager</title>
     <style>
-      /*
-      .panel {
-      padding: 5px;
-      }
-      */
       .container {
         width: 100%;
       }
+      /* Force lists to fit in the browser viewport */
+      #list_and_details {
+        height: calc(100vh - 100px);
+      }
+      .row .list {
+        height: inherit;
+      }
+      #domain-list, #cookie-list {
+        height: calc(100% - 30px);
+        overflow-y: auto;
+      }
       .central-col {
+        /* Reset padding to get more space in this column */
         padding-left: 0px;
         padding-right: 0px;
       }
@@ -27,10 +34,6 @@
         overflow: hidden;
         text-overflow: ellipsis;
         /*word-wrap: break-word; */
-      }
-      #domain-list, #cookie-list {
-        height: 405px;
-        overflow-y: auto;
       }
       #value {
         height: 166px;
@@ -237,13 +240,13 @@
     </nav>
     <div class="container">
       <!-- 3 columns for domains, cookies, details -->
-      <div class="row">
-        <div class="col-sm-4">
+      <div id="list_and_details" class="row">
+        <div class="list col-sm-4">
           <h2 data-i18n-content="domainsListTitle">Domains</h2>
           <ul tabindex="6" id="domain-list" class="list-group"></ul>
         </div>
 
-        <div class="col-sm-4 central-col">
+        <div class="list col-sm-4 central-col">
           <h2 data-i18n-content="cookiesListTitle">Cookies</h2>
           <ul tabindex="7" id="cookie-list" class="list-group"></ul>
         </div>
