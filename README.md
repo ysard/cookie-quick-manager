@@ -15,24 +15,33 @@ whose development has been discontinued due to the withdrawal of the support for
 
 # Features
 
-A user can search for cookies of a domain and subdomains which depend on it.
-
-All the attributes of a cookie can be modified: domain, path, name, value,
+- Search: A user can search for cookies of a domain and subdomains which depend on it.
+- Edit: All the attributes of a cookie can be modified: domain, path, name, value,
 expiration date, as well as secure and httponly flags.
-
-The export and import of a cookie or cookies from a domain in JSON format is just as easy.
-
-Each parameter and functionality is briefly described when the mouse is over the element.
+- Export: The export and import of a cookie or cookies from a domain in JSON or Netscape format is just as easy.
+- User friendly: Each parameter and functionality is briefly described when the mouse is over the element.
+- First-Party Isolation: Supported with some limitations from Firefox 59 (included) to Firefox 62 (not included),
+and without limitations on Firefox 62 (sheduled on September 2018).
+- Contexts: Contexts (also called containers, contextual identities, or stores) are supported.
+A user can copy cookies from a container to another.
 
 # Privacy
 
-This addon does not store any personal information.
+This addon does not store or leak any personal information.
 
 It requires the following permissions to operate:
 
 * Host permission for all urls: This allows you to edit the cookies of any visited site,
-* Cookies: Allows access to the browser's cookie manager,
-* ActiveTab: Allows access to the consulted url, and favicon if it exists.
+* Cookies: Allows access to the browser's cookie store,
+* ActiveTab: Allows access to the currently consulted url, and its favicon if it exists.
+* Storage: Allows the storage of the following user settings:
+    - size of the windowed mode,
+    - protected cookies (only the name of the domains),
+    - the template used to import/export the cookies,
+    - the skin.
+* Browsing data: Enables extensions to clear the data that is accumulated while the user is browsing (LocalStorage here).
+* Contextual Identities: Allows the addon to list the containers,
+* Privacy: Access and modify various privacy-related browser settings (the FirstPartyIsolation flag here).
 
 # Installation from sources
 

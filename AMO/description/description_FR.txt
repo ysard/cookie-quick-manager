@@ -14,25 +14,34 @@ dont le développement a été arrêté à cause de l'abandon du support des ext
 
 # Fonctionnalités
 
-Un utilisateur peut rechercher les cookies d'un domaine et des sous-domaines
+- Recherche : Un utilisateur peut rechercher les cookies d'un domaine et des sous-domaines
 qui en dépendent.
-
-Tous les attributs d'un cookie peuvent être modifiés: domaine, chemin, nom, valeur,
+- Édition : Tous les attributs d'un cookie peuvent être modifiés : domaine, chemin, nom, valeur,
 date d'expiration ainsi que les flags secure et httponly.
-
-L'exportation et l'importation d'un cookie ou des cookies d'un domaine au format JSON est tout aussi facile.
-
-Chaque paramètre et fonctionnalité est brièvement décrit au survol de la souris.
+- Export : L'exportation et l'importation d'un cookie ou des cookies d'un domaine au format JSON ou Netscape est tout aussi facile.
+- Ergonomie : Chaque paramètre et fonctionnalité est brièvement décrit au survol de la souris.
+- Isolation de la première partie (First-Party Isolation) : Supportée avec limitations
+pour Firefox 59, 60 et 61; et supportée sans limitations à partir de Firefox 62 (prévue pour septembre 2018).
+- Contextes : Les contextes de navigation (aussi appelés containers ou contextual identities)
+sont supportés. Un utilisateur peut par exemple copier des cookies d'un contexte vers un autre.
 
 # Vie privée & droits
 
-Cet addon ne stocke aucune information personnelle.
+Cet addon ne stocke et ne fait fuiter aucune information personnelle.
 
 Il requiert les droits suivants pour fonctionner:
 
-* Host permission for all urls: Cela permet d'éditer les cookies de n'importe quel site consulté,
-* Cookies: Autorise l'accès au gestionnaire de cookie du navigateur,
-* ActiveTab: Autorise l'accès à l'url consultée ainsi qu'à la favicon si elle existe.
+* Host permission for all urls : Cela permet d'éditer les cookies de n'importe quel site consulté,
+* Cookies : Autorise l'accès à la base de données des cookies du navigateur,
+* ActiveTab : Autorise l'accès à l'url consultée ainsi qu'à sa favicon si elle existe.
+* Storage : Autorise le stockage des paramètres utilisateur suivants :
+    - dimensions de la fenêtre,
+    - la liste des noms de domaines possédant un cookie protégé par l'addon,
+    - le template d'exportation choisi (JSON/Netscape),
+    - le thème graphique utilisé.
+* Browsing data : Autorise l'addon à effacer les données accumulées lors de la navigation (la base de données LocalStorage ici),
+* Contextual Identities : Autorise l'addon à lister les contextes de navigation,
+* Privacy : Autorise l'accès et la modification de paramètres liés à la vie privée (gestion de l'option FirstPartyIsolation).
 
 # Support & code source
 
