@@ -183,13 +183,19 @@
       .context-menu-item.context-menu-icon-quit:before {content:"\e014";}
 
       @media only screen and (max-width: 768px) {
+        /* Force and fix height of lists */
+        #list_and_details {
+            height: 100%;
+        }
+        #domain-list, #cookie-list {
+            height: 150px;
+        }
         .central-col {
             padding-left: 15px;
             padding-right: 15px;
         }
-        #domain-list, #cookie-list {
-            height: 100px;
-            overflow-y: auto;
+        .navbar-left {
+            margin-left: 0px;
         }
         #toggle_buttons {
             float: right;
@@ -224,7 +230,7 @@
             </label>
           </div>
           <!-- Select store -->
-          <div class="search_store_form navbar-left">
+          <div class="navbar-left">
             <span data-toggle="tooltip"
             title="Contexts are used to separate storage data by online activities without having to clear the browsing history, disconnect and reconnect, or use different browsers."
             data-i18n-title="tooltipQueryContexts"
