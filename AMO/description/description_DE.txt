@@ -1,18 +1,14 @@
-# Übersicht
+<strong>Übersicht</strong>
 
 Cookie Quick Manager: Ein kompleter Manager für Cookies, die beim Surfen benuzt werden.
-Ermöglicht dir Cookies anzusehen, zu ändern, zu erstellen, zu löschen, zu sichern, wiederherzustellen und sie mittles Domainnamen zu durchsuchen;
-Privater Modus wird auch unterstützt.
+Ermöglicht dir Cookies anzusehen, zu ändern, zu erstellen, zu löschen, zu sichern, wiederherzustellen und sie mittles Domainnamen zu durchsuchen; Privater Modus wird auch unterstützt.
 
-Cookie Quick Manager wurde sowohl für Entwickler und Tester kreiert, als auch für Menschen,
-die sich Gedanken über ihre Privatsphäre im Internet machen.
+Cookie Quick Manager wurde sowohl für Entwickler und Tester kreiert, als auch für Menschen, die sich Gedanken über ihre Privatsphäre im Internet machen.
 
-Dieses Add-on ist mit Firefox 57 kompatible und wurde inspiriet von Add-ons wie
-[Cookies Manager+](https://addons.mozilla.org/firefox/addon/cookies-manager-plus/) und
-[Advanced Cookie Manager](https://addons.mozilla.org/fr/firefox/addon/cookie-manager/),
-deren Entwicklung durch die Umstellung des Erweiterungen-Systems eingestellt.
+Dieses Add-on ist mit Firefox 57 kompatible und wurde inspiriet von Add-ons wie <a href="https://addons.mozilla.org/fr/firefox/addon/cookies-manager-plus/">Cookies Manager+</a>
+und <a href="https://addons.mozilla.org/fr/firefox/addon/cookie-manager/">Advanced Cookie Manager</a>, deren Entwicklung durch die Umstellung des Erweiterungen-Systems eingestellt.
 
-# Funktionsumfang
+<strong>Funktionsumfang</strong>
 
 Nutzer können nach zugehörigen Cookies einer Domain und deren Subdomains suchen.
 
@@ -23,7 +19,7 @@ Export und Import eines oder mehrer Cookies einer Domain in JSON Format ist eben
 
 Jedes Parameter und jede Funktion werden beim Berühren mit der Maus (hover) kurz erläutert.
 
-# Privatsphäre
+<strong>Privatsphäre</strong>
 
 Diese Add-on speichert keine persönlichen Daten.
 
@@ -33,12 +29,10 @@ Um korrekt zu funktionieren, benötigt es die folgenden Berechtigungen:
 * Cookies: Erlaubt den Zugriff zum Cookie Manager des Browsers,
 * ActiveTab: Erlaubt den Zugriff auf die momentan aktive URL sowie auf das Favicon, falls vorhanden.
 
-# Hilfe & Quellcode
+<strong>Hilfe & Quellcode</strong>
 
-Die Erweiterung ist seit dem Launch von Firefox Quantum in Entwicklung:
-Für Fragen, Fehlermeldungen und Feature-Anfragen nutze bitte das
-[GitHub Repository](https://github.com/ysard/cookie-quick-manager/issues) (English).
+Die Erweiterung ist seit dem Launch von Firefox Quantum in Entwicklung: Für Fragen, Fehlermeldungen und Feature-Anfragen nutze bitte das <a href="https://github.com/ysard/cookie-quick-manager/issues">GitHub repository</a> (English).
 
-# Lizenz
+<strong>Lizenz</strong>
 
-[GPLv3](https://github.com/ysard/cookie-quick-manager/blob/master/LICENSE).
+<a href="https://github.com/ysard/cookie-quick-manager/blob/master/LICENSE">GPLv3</a>.
