@@ -179,7 +179,6 @@
 
   "tooltipEdit": {
     "message": "Grau hinterlegte Felder freischalten<br>Erstellung eines neuen Cookies, indem der aktuelle als Vorlage geändert wird.",
-    "message": "Grau hinterlegte Felder freischalten<br>Allow to create a new cookie by editing the current one as a template.",
     "description": "Button to edit current cookie."
   },
 
