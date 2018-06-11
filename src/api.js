@@ -331,6 +331,8 @@ vAPI.getCookiesFromSelectedDomain = function() {
     // Return also cookies for subdomains if the subdomain checkbox is checked.
     // https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Objets_globaux/Promise
     // TODO: handle multiple domains
+    // TODO: pas d'accès à l'interface ici...
+    // => la fonction doit prendre directement la liste des domaines, les stores, l'état de query-subdomains
     // Used by export.js on #clipboard_domain_export click event
 
     return new Promise((resolve, reject) => {
@@ -352,19 +354,34 @@ vAPI.getCookiesFromSelectedDomain = function() {
             // Each promise stores all associated cookies
 
             // Detect Firefox version:
+            // Ex: {name: "Firefox", vendor: "Mozilla", version: "60.0.1", buildID: ""}
             // -> firstPartyDomain argument is available on Firefox 59+=
-            // {name: "Firefox", vendor: "Mozilla", version: "60.0.1", buildID: ""}
-            let version = browser_info.version.split('.')[0];
+            // -> browser.cookies.getAll() can't be queried on Firefox 59+=
+            // with firstPartyDomain argument AND domain argument...
+            // So for users that need to edit FPI cookies, we simply return all domains
+            // filtered by forcing the checkbox query-subdomains to be unchecked.
+            // (if it is checked, we can't filter all the domains...)
+            // See https://bugzilla.mozilla.org/show_bug.cgi?id=1465063
+            let version = parseInt(browser_info.version.split('.')[0]);
 
             var promises = [];
-            if (parseInt(version) >= 59) {
+            if (version >= 62) {
                 // Add firstPartyDomain argument to getAll() function
                 for (let domain of domains) {
                     console.log({current_domain: domain});
                     for (let storeId of storeIds) {
-                        promises.push(browser.cookies.getAll({domain: domain, storeId: storeId, firstPartyDomain: null})); //firstPartyDomain: "whatarecookies.com"}));
+                        promises.push(browser.cookies.getAll({domain: domain, storeId: storeId, firstPartyDomain: null}));
                     }
                 }
+            } else if ((version >= 59) && (version < 62)) {
+                // See explanations above.
+                // Force unchecked status, remove the checkbox from the UI...
+                let $query_subdomains_checkbox = $('#query-subdomains');
+                $query_subdomains_checkbox.prop('checked', false);
+                $query_subdomains_checkbox.parent().hide();
+
+                // Return all cookies from the stores. domains will be filtered in the next step below
+                return vAPI.get_all_cookies(storeIds);
             } else {
                 // Legacy getAll() function
                 for (let domain of domains) {
@@ -389,8 +406,8 @@ vAPI.getCookiesFromSelectedDomain = function() {
                 let filtered_cookies = [];
                 let query_subdomains = $('#query-subdomains').is(':checked');
                 for (let cookie of cookies) {
-                    // Filter on exact domain (remove sub domains from the list)
                     if (!query_subdomains) {
+                        // Filter on exact domain (remove sub domains from the list)
                         // If current domain is not found in domains => go to next cookie
                         if (domains.indexOf(cookie.domain) === -1)
                             continue;

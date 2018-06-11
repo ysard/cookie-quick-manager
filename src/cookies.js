@@ -1069,8 +1069,9 @@ function showDomains(storeIds) {
 }
 
 function showCookiesList(event, refresh_domain_badges) {
-    var id = event.data.id;
-    var storeIds = event.data.storeIds
+    // Get the arguments of the event
+    /*var id = event.data.id;
+    var storeIds = event.data.storeIds*/
 
     // Display selected domain as active and reset previously selected domain
     $that = $(this);
@@ -1079,15 +1080,10 @@ function showCookiesList(event, refresh_domain_badges) {
 
     // Get 1 promise for each cookie store
     // Each promise stores all associated cookies
-    let promise = vAPI.get_all_cookies(storeIds);
+    // NOTE: On FF62- and FF59+=, the promise simply returns the content of vAPI.get_all_cookies(storeIds)
+    let promise = vAPI.getCookiesFromSelectedDomain();
     // Merge all promises
-    promise.then((cookies_array) => {
-
-        // Merge all results of promises
-        var cookies = [];
-        for (let cookie_subset of cookies_array) {
-            cookies = cookies.concat(cookie_subset);
-        }
+    promise.then((cookies) => {
 
         let $cookieList = $('#cookie-list');
         let fragment = document.createDocumentFragment();
@@ -1096,18 +1092,7 @@ function showCookiesList(event, refresh_domain_badges) {
         $cookieList.empty();
 
         if (cookies.length > 0) {
-            // Count cookies displayed (not subdomains filtered)
-            var display_count = 0;
-            // Avoid to query the same element multiple times
-            var query_subdomains = $('#query-subdomains').is(':checked');
-
             for (let cookie of cookies) {
-                // Filter on exact domain (remove sub domains from the list)
-                if (!query_subdomains) {
-                    if (id != cookie.domain)
-                        continue;
-                }
-                display_count++;
 
                 let li = document.createElement("li");
                 li.className = "list-group-item";
@@ -1147,21 +1132,15 @@ function showCookiesList(event, refresh_domain_badges) {
             }
             $cookieList.append(fragment);
 
-            // Print no cookie alert if we filtered subdomains, and there are no more cookies to display.
-            if (display_count == 0) {
-                // No cookie to display: Search clicked domain and remove it
-                //console.log($that.parent().find('li.active'));
-                $that.parent().find('li.active').remove();
-                no_cookie_alert($cookieList[0]);
-            } else {
-                if (refresh_domain_badges !== undefined && refresh_domain_badges === true)
-                    update_selected_domain_badges();
+            if (refresh_domain_badges !== undefined && refresh_domain_badges === true)
+                update_selected_domain_badges();
 
-                // Simulate click on the first cookie in the list when the list is built
-                $("#cookie-list li").first().click();
-            }
+            // Simulate click on the first cookie in the list when the list is built
+            $("#cookie-list li").first().click();
+
         } else {
             // No cookie to display: Search clicked domain and remove it
+            // Print no cookie alert if we filtered subdomains, and there are no more cookies to display.
             $that.parent().find('li.active').remove();
             no_cookie_alert($cookieList[0]);
         }
