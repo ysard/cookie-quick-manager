@@ -175,6 +175,10 @@
     "description": "Name of the default store in the browser."
   },
 
+  "container_private": {
+    "message": "Navigation privée",
+    "description": "Name of the Private browsing store."
+  },
 
 
 
