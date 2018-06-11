@@ -585,13 +585,24 @@ function firefox57_workaround_for_blank_panel() {
         $('#button_optimal_size').toggle();
         return;
     }
-
     browser.windows.getCurrent().then((currentWindow) => {
         // PS: innerHeight has always a value of 1 pixel less than currentWindow.height
         var updateInfo = {
             width: window.innerWidth,
             height: window.innerHeight + 2, // 2 pixel more than original size...
         };
+        /*
+         console.log({
+            current_height: currentWindow.height,
+            current_width: currentWindow.width,
+            inner_height: window.innerHeight,
+            inner_width: window.innerWidth,
+            jquery_viewport_width: $(window).width(),
+            jquery_viewport_height: $(window).height(),
+            jquery_document_width: $(document).width(),
+            jquery_document_height: $(document).height(),
+        });
+        */
         browser.windows.update(currentWindow.id, updateInfo);
     });
 }
