@@ -258,8 +258,8 @@ $("#toggle_url").click(function() {
 $(document).keydown(function(event){
     let key = event.which;
 
-    // Delete current cookie with suppr or backspace (MacOS)
-    if ((key == 46) || (key == 8)) {
+    // Delete current cookie with suppr or command + backspace (MacOS)
+    if ((key == 46) || (event.metaKey && (key == 8))) {
         delete_current_cookie();
         return;
     }
