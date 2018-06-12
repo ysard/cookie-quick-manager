@@ -43,12 +43,12 @@ $('#search_domain_submit').click(actualizeDomains);
 $('#query-subdomains').click(actualizeDomains);
 // Actualize button pressed
 $("#actualize_button").click(function() {
-    // Copy of actualizeDomains() but call getStores() instead of showDomains()
+    // Copy of actualizeDomains() but call get_stores() instead of showDomains()
     // It is the unique function that actualize stores
     $('#domain-list').empty();
     $('#cookie-list').empty();
     reset_cookie_details();
-    getStores();
+    get_stores();
 });
 
 $( "#save_button" ).click(function() {
@@ -565,7 +565,7 @@ setDefaultDomain();
 get_options();
 
 // Fill the domains list
-getStores();
+get_stores();
 
 // Focus on the main default list: #domain-list
 $current_selected_list.focus();
@@ -785,7 +785,7 @@ function showStores(stores) {
     build_context_menu();
 }
 
-function getStores() {
+function get_stores() {
     /* Initialize the list of domains in the ui & the list of containers/stores in section "details" */
 
     vAPI.get_stores().then((stores) => {
@@ -939,7 +939,7 @@ function actualizeDomains() {
     // Called when searchbox is modified, and when actualize button is pressed
     reset_cookie_details();
     showDomains(vAPI.storeIds);
-    //getStores();
+    //get_stores();
 }
 
 function isExpired(expirationDate) {
