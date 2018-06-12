@@ -790,9 +790,13 @@ function get_stores() {
 
     vAPI.get_stores().then((stores) => {
 
-        // Init dict of storeIds with iconURl and color as values
+        // Init dict of storeIds with iconURl, color and name as values
         for (let store of stores) {
-            storeIcons[store.cookieStoreId] = [store.iconUrl, store.colorCode];
+            storesData[store.cookieStoreId] = {
+                iconUrl: store.iconUrl,
+                colorCode: store.colorCode,
+                name: store.name,
+            };
         }
 
         // Display stores with their icon on the select menu
@@ -1028,8 +1032,9 @@ function showDomains(storeIds) {
             for (let storeId of domains[domain].storeIds) {
                 if (storeId == 'firefox-default')
                     continue;
+                let store = storesData[storeId];
                 li.appendChild(
-                    get_store_badge_element(storeIcons[storeId][1], storeIcons[storeId][0])
+                    get_store_badge_element(store.colorCode, store.iconUrl, store.name)
                 );
             }
 
@@ -1106,8 +1111,9 @@ function showCookiesList(event, refresh_domain_badges) {
 
                 // Display badge if cookie comes from a special store
                 if (cookie.storeId != 'firefox-default') {
+                    let store = storesData[cookie.storeId];
                     li.appendChild(
-                        get_store_badge_element(storeIcons[cookie.storeId][1], storeIcons[cookie.storeId][0], 'cookie-badge')
+                        get_store_badge_element(store.colorCode, store.iconUrl, store.name, 'cookie-badge')
                     );
                 }
 
@@ -1328,8 +1334,9 @@ function update_selected_domain_badges() {
     // Display new store badges if the cookie comes from a special store/container
     for (let storeId of unique) {
         // Create & Append the badge to the li element
+        let store = storesData[storeId];
         $selected_domain.append(
-            get_store_badge_element(storeIcons[storeId][1], storeIcons[storeId][0])
+            get_store_badge_element(store.colorCode, store.iconUrl, store.name)
         );
     }
 }
@@ -1376,13 +1383,14 @@ function select_ideal_remaining_element($selected_element) {
     }
 }
 
-function get_store_badge_element(background_color, icon_url, class_name) {
+function get_store_badge_element(background_color, icon_url, store_name, class_name) {
     // Return a span html element which is a badge with the given data
     // Take a rgb color code, and the url of the svg icon to display.
     // Set the class_name argument if given.
 
     let store_badge = document.createElement("span");
     store_badge.className = (class_name !== undefined) ? class_name : "store-badge";
+    store_badge.title = store_name;
     store_badge.style['background-color'] = background_color;
     store_badge.style['mask'] = 'url(' + icon_url + ') no-repeat 50% 50%';
     store_badge.style['mask-size'] = 'cover';
@@ -1396,5 +1404,5 @@ var context_menu_elements;
 var protected_cookies;
 var addon_window_type;
 // Init dict of storeIds with iconURl and color as values
-var storeIcons = {};
+var storesData = {};
 }));
