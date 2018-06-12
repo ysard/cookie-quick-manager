@@ -1328,7 +1328,7 @@ function update_selected_domain_badges() {
     // Display new store badges if the cookie comes from a special store/container
     for (let storeId of unique) {
         // Create & Append the badge to the li element
-        $selected_domain.appendChild(
+        $selected_domain.append(
             get_store_badge_element(storeIcons[storeId][1], storeIcons[storeId][0])
         );
     }
