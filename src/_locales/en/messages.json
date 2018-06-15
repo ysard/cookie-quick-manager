@@ -424,14 +424,24 @@
     "description": "Keyboard shortcut description: ctrl+right"
   },
 
+  "oDelCurrentCookie": {
+    "message": "Delete the current cookie",
+    "description": "Keyboard shortcut description: suppr"
+  },
+
   "oSearchDomain": {
     "message": "Search a domain",
     "description": "Keyboard shortcut description: ctrl+F"
   },
 
-  "oDelCurrentCookie": {
-    "message": "Delete the current cookie",
-    "description": "Keyboard shortcut description: suppr"
+  "oRestoreFile": {
+    "message": "Restore a JSON backup",
+    "description": "Keyboard shortcut description: ctrl+O"
+  },
+
+  "oExportAll": {
+    "message": "Export all cookies to a file",
+    "description": "Keyboard shortcut description: ctrl+S"
   }
 
 }

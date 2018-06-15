@@ -271,10 +271,15 @@ $(document).keydown(function(event){
 
         if (key == 70) { // F => search
             $('#search_domain').select();
-            // Avoid to display the search box of the browser
-            event.preventDefault();
+        } else if (key == 79) { // O => import cookies, import file
+            $("#import_file").click();
+        } else if (key == 83) { // S => export all cookies, save file
+            $("#file_all_export").click();
+        } else {
+            return;
         }
-        return;
+        // Avoid to trigger the default behavior of the browser
+        event.preventDefault();
     }
 
     /*************************************************************************/

@@ -343,13 +343,14 @@
     "description": "Keyboard shortcut description: ctrl+right"
   },
 
-  "oSearchDomain": {
-    "message": "Domain suchen",
-    "description": "Keyboard shortcut description: ctrl+F"
-  },
-
   "oDelCurrentCookie": {
     "message": "Diesen Cookie löschen",
     "description": "Keyboard shortcut description: suppr"
+  },
+
+  "oSearchDomain": {
+    "message": "Domain suchen",
+    "description": "Keyboard shortcut description: ctrl+F"
   }
+
 }
