@@ -343,13 +343,25 @@ function download(filename, text) {
 function export_content_to_file(content) {
     // Due do FF bug (cf download() function)
     // We have to create an iframe to propose a file to the user
+
+    // Choose the right filename/filetype according to the selected export format
+    let cookie_filename;
+    let cookie_filetype;
+    if (cookie_clipboard_template.name == 'JSON') {
+        cookie_filename = 'cookies.json';
+        cookie_filetype = 'application/json';
+    } else {
+        cookie_filename = 'cookies.txt';
+        cookie_filetype = 'text/plain';
+    }
+
     var f = document.createElement('iframe');
     f.style.position = 'fixed';
     f.style.left = f.style.top = '-99px';
     //f.style.width = f.style.height = '99px';
-    f.srcdoc = '<a download="cookies.json" target="_blank">cookies.json</a>';
+    f.srcdoc = '<a download="' + cookie_filename + '" target="_blank">' + cookie_filename + '</a>';
     f.onload = function() {
-        var blob = new Blob([content], {type: 'application/json'});
+        var blob = new Blob([content], {type: cookie_filetype});
         var a = f.contentDocument.querySelector('a');
         a.href = f.contentWindow.URL.createObjectURL(blob);
         a.click();
