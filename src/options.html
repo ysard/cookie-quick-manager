@@ -71,6 +71,9 @@
       kbd {
         font-weight: 700;
       }
+      #changelog span {
+        padding-left: 20px;
+      }
     </style>
   </head>
   <body>
@@ -176,6 +179,64 @@
             <li><a href="https://github.com/ysard/cookie-quick-manager/issues" data-i18n-content="oIssues">Issues</a></li>
             <li>Thanks: Gschanuel, Killogy, Laniakea64, Lejomoz, Machou, Practik, Seanryan-seanryan, Scheinercc.</li>
           </ul>
+          <div id="changelog">
+          <h2>Changelog</h2>
+            <span>0.3rc3</span>
+            <ul>
+                <li>Add Changelog information to options page</li>
+                <li>Fix filename/filetype of exported file, according to the selected export format</li>
+                <li>Add Ctrl+O/Ctrl+S shortcuts to Import/Export cookies from/to a backup. Close #28</li>
+                <li>Add a title to store badges; this title will be displayed on mouse hover; closes #27</li>
+            </ul>
+            <span>0.3rc2</span>
+            <ul>
+                <li>Repair update_selected_domain_badges, since 5e8dd60</li>
+                <li>Fix bug with delete key on mac, which also deletes the current cookie..</li>
+                <li>Update AMO descriptions</li>
+            </ul>
+            <span>0.3rc1</span>
+            <ul>
+                <li>Update AMO descriptions</li>
+                <li>Fix mediaqueries for the small layout</li>
+                <li>Force lists to fit in the browser viewport; adjust the optimal heigth of the windowed mode</li>
+                <li>Inform users about broken FPI feature until FF62; see 176a98b</li>
+                <li>Trigger badges recalculation when removing domain/domains</li>
+                <li>Refactoring</li>
+                <li>More updated translations</li>
+                <li>Move search related inputs/buttons on a dedicated navbar</li>
+                <li>Remove bin button for the deletion of cookies in a domain</li>
+                <li>Do not delete domain from list with protected cookie, or don't try to remove a single protected co
+    okie; close #25</li>
+                <li>Update badges on domains after deletion, addition, copy to another container: counter & container
+    badges; closes #24</li>
+                <li>Repositioning the cursor to the next item if it exists, or to the previous item after removing a d
+    omain or cookie in the lists; closes #15</li>
+                <li>implementation of a contextual menu on the domains</li>
+                <li>Add support for backspace as suppr key on MacOS; improve the display of shortcuts; closes #26</li>
+                <li>Fix Ctrl+F shortcut for macOS: use meta key; close #11</li>
+                <li>Solve focus bugs, closes #20 and #21</li>
+                <li>Fix empty domains or no domain to show error.</li>
+                <li>Swap lock icon state; Refactoring; close #10</li>
+                <li>Speed up the display of domains/cookies; solve the duplication of cookies during the search</li>
+                <li>Add caret to dropdown and popover menus; Also add tooltips on them</li>
+                <li>Support of First-Party Isolation</li>
+                <li>Use jquery 3.3.1 instead of 2.x</li>
+                <li>Support of de and fr locales</li>
+            </ul>
+            <span>0.2rc4</span>
+            <ul>
+                <li>Various UI fixs</li>
+                <li>Add lock badge on cookie-list for those which are protecte</li>
+                <li>Add buttons in popup menu: delete current cookies &amp; clear LocalStorage; new permission browsingdata is required</li>
+                <li>Quick selector to search cookies in specific containers</li></li>
+            </ul>
+            <span>0.2rc3</span>
+            <ul>
+                <li>Add badges corresponding to the containers for each domain & cookie</li>
+                <li>Add select menu for stores/containers in cookie details</li>
+                <li>API for containers in FF57+</li>
+            </ul>
+          </div>
         </div>
         <div id="shortcuts" class="tab-pane">
           <table class="table">
