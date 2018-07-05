@@ -365,9 +365,9 @@
         <!-- Generic commands -->
         <div class="col-sm-8">
           <!-- Buttons -->
-          <button type="button" class="btn btn-dark" id="delete_all_button"
-          data-toggle="tooltip"
-          title="Delete all the cookies" data-i18n-title="tooltipADelete"><span class="glyphicon glyphicon-trash"></span></button>
+          <button type="button" class="btn btn-dark"
+          my-data-toogle="dropdown_and_tooltip" data-toggle="modal" data-target="#modal_alert"
+          tooltip-title="Delete all the cookies of the selected context" data-i18n-title="tooltipADelete"><span class="glyphicon glyphicon-trash"></span></button>
           <div class="dropup dropup-custom">
             <button type="button" class="btn btn-dark dropdown-toggle"
             data-toggle="dropdown" my-data-toogle="dropdown_and_tooltip" data-i18n-title="menu_tooltip_dropup_protect" tooltip-title="Protect/Unprotect all the cookies"><span class="glyphicon glyphicon-lock"></span><span class="caret"></span></button>
@@ -438,7 +438,7 @@
       </div>
     </div>
 
-     <!-- Modal overlay used to display the results of importation -->
+    <!-- Modal overlay used to display the results of importation -->
     <div id="modal_info" class="modal fade" role="dialog">
       <div class="modal-dialog modal-sm">
         <!-- Modal content-->
@@ -451,6 +451,27 @@
             <p id="info_text"></p>
           </div>
           <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal" data-i18n-content="buttonClose">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal overlay used to display the alert when a user is about to delete all cookies from a context -->
+    <div id="modal_alert" class="modal fade" role="dialog">
+      <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title" data-i18n-content="modalAlertTitle">Are you sure you want to delete these cookies?</h4>
+          </div>
+          <div class="modal-body" data-i18n-content="modalAlertContent">
+            Your action will erase cookies from the current context!
+            That is, not just the ones you see in search results or those currently selected.
+          </div>
+          <div class="modal-footer">
+            <button type="button" id="delete_all_button" class="btn btn-default btn-danger" data-dismiss="modal" data-i18n-content="buttonContinue">Continue</button>
             <button type="button" class="btn btn-default" data-dismiss="modal" data-i18n-content="buttonClose">Close</button>
           </div>
         </div>

@@ -129,6 +129,11 @@
     "description": "Close button on modal popovers and contextual menus."
   },
 
+  "buttonContinue": {
+    "message": "Continuer",
+    "description": "Continue button on modal popovers and contextual menus."
+  },
+
 
 
 
@@ -275,6 +280,15 @@
 
 
 
+  "modalAlertTitle": {
+    "message": "Êtes-vous sûr de vouloir effacer ces cookies ?",
+    "description": "Title on modal dialog window, when a user is about to delete all cookies from a context."
+  },
+
+  "modalAlertContent": {
+    "message": "Votre action effacera les cookies du contexte courant ! C'est-à-dire, pas seulement ceux que vous voyez en résultat de recherche ou ceux qui sont actuellement sélectionnés.",
+    "description": "Content on modal dialog window, when a user is about to delete all cookies from a context."
+  },
 
   "modalClipboardTitle": {
     "message": "Export de $cookie_number$ cookie(s)",
