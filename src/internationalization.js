@@ -51,6 +51,7 @@
         i18nElements.forEach(function (i18nElement) {
 
             let i18nMessageName = i18nElement.getAttribute('data-i18n-content');
+            // TODO: use innerHTML instead for the html parsing (less efficient).
             i18nElement.textContent = browser.i18n.getMessage(i18nMessageName);
         });
     };

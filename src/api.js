@@ -280,7 +280,9 @@ vAPI.copy_cookies_to_store = function(promise, store_id) {
             return vAPI.add_cookies(Promise.all(promises));
         })
         .then((ret) => {
-            console.log("Cookies are copied");
+            // PS: when add_cookies raises an error, it handles itself this error,
+            // so we can end up here right after.
+            console.log("copy_cookies_to_store has ended");
             resolve();
         }, vAPI.onError);
     });

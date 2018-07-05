@@ -1013,10 +1013,10 @@ function showDomains(storeIds) {
         domains_names.sort();
         var display_count = 0;
         //add an <li> item with the name and value of the cookie to the list
-        domains_names.forEach(function(domain){
+        domains_names.forEach(function(domain_name){
 
             // Do not display domains different than the searched one
-            if (searched_domain != "" && domain.indexOf(searched_domain) === -1) {
+            if (searched_domain != "" && domain_name.indexOf(searched_domain) === -1) {
                 return;
             }
             // Count displayed domains
@@ -1024,17 +1024,17 @@ function showDomains(storeIds) {
 
             let li = document.createElement("li");
             li.className = "list-group-item";
-            let b_content = document.createTextNode(domains[domain].number);
-            let content = document.createTextNode(domain);
+            let badge_content = document.createTextNode(domains[domain_name].number);
+            let text_content = document.createTextNode(domain_name);
             // Add a badge with the number of cookies for that domain
             let badge = document.createElement("span");
             badge.className = "badge";
-            badge.appendChild(b_content);
-            li.appendChild(content);
+            badge.appendChild(badge_content);
+            li.appendChild(text_content);
             li.appendChild(badge);
 
             // Display store badge if the cookie comes from a special store/container
-            for (let storeId of domains[domain].storeIds) {
+            for (let storeId of domains[domain_name].storeIds) {
                 if (storeId == 'firefox-default')
                     continue;
                 let store = storesData[storeId];
@@ -1049,7 +1049,7 @@ function showDomains(storeIds) {
             // TODO: workaround: attach all storeIds in case of someone creates a private cookie
             // in a domain with only default cookies => without these 2 ids, the private
             // cookie will be not displayed until user reloads the domains list.
-            $(li).bind('click', {id: domain, storeIds: /*domains[domain].*/storeIds}, showCookiesList);
+            $(li).bind('click', {id: domain_name, storeIds: /*domains[domain_name].*/storeIds}, showCookiesList);
         });
         // Reset previous list
         $domainList.empty();
