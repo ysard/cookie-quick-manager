@@ -93,7 +93,7 @@ document.addEventListener("click", (e) => {
       // Send current url
       let createData = {
         type: "panel",
-        url: "cookies.html?parent_url=" + current_tab.url,
+        url: "cookies.html?parent_url=" + encodeURIComponent(current_tab.url),
       };
       createWindow(createData);
   }

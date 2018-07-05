@@ -965,7 +965,7 @@ function setDefaultDomain() {
 
     // Get parameter from full url
     let current_addon_url = new URL(window.location.href);
-    let parent_url = current_addon_url.searchParams.get("parent_url");
+    let parent_url = decodeURIComponent(current_addon_url.searchParams.get("parent_url"));
     if (parent_url == "")
         return;
     // Get domain from hostname without subdomain
