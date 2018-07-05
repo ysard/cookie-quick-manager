@@ -50,7 +50,13 @@ $("#actualize_button").click(function() {
     reset_cookie_details();
     get_stores();
 });
-
+$("#auto_actualize_checkbox").click(function() {
+    // Toggle the listener which monitors the creation/deletion/modification of cookies
+    if (browser.cookies.onChanged.hasListener(cookies_onChangedListener))
+        browser.cookies.onChanged.removeListener(cookies_onChangedListener);
+    else
+        browser.cookies.onChanged.addListener(cookies_onChangedListener);
+});
 $( "#save_button" ).click(function() {
     /* Save a cookie displayed on details zone
      * ---
@@ -1401,6 +1407,32 @@ function get_store_badge_element(background_color, icon_url, store_name, class_n
     store_badge.style['mask-size'] = 'cover';
     return store_badge;
 }
+
+var cookies_onChangedListener = (function(changeInfo) {
+    // Listener which monitors the creation/deletion/modification of cookies
+
+    let cookie_domain = $('#domain').val();
+    console.log({"Change event": {
+        domain_changed: changeInfo.cookie.domain,
+        current_domain: cookie_domain,
+    }});
+
+    if (changeInfo.cookie.domain == cookie_domain) {
+        // The same domain as the one selected is concerned
+
+        // Delete event or add event
+        if (changeInfo.cause == 'explicit') {
+            // Simulate click on the same domain with recalculation of badges
+            // (because almost 1 new cookie is added, with maybe a new container)
+            $('#domain-list').find('li.active').trigger('click', true);
+        }
+    } else {
+        // The selected domain is different => reload everything
+        // TODO: search the domain in the list and update its badges,
+        // instead of reload all the interface
+        actualizeDomains();
+    }
+});
 
 /*********** Global variables ***********/
 

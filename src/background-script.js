@@ -86,6 +86,9 @@ browser.cookies.onChanged.addListener(function(changeInfo) {
      * Delete event:
      * Object {removed: true, cookie: Object, cause: "explicit" }
      *
+     * Add event:
+     * Object {removed: false, cookie: Object, cause: "explicit" }
+     *
      * if (changeInfo.removed && changeInfo.cause == "explicit") {
      *     // Reset 2 lists
      *     document.getElementById('domain-list').innerHTML = "";
