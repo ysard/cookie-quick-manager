@@ -59,6 +59,11 @@
     "description": "Text for search engine describing the content of the drop-down list of stores."
   },
 
+  "checkboxAutoActualize": {
+    "message": " Auto-refresh",
+    "description": "Checkbox to monitor cookies and refresh the interface."
+  },
+
   "menu_protect_all": {
     "message": "Protect all cookies",
     "description": "Dropdown menu option."
@@ -241,6 +246,11 @@
   "tooltipRefresh": {
     "message": "Refresh the list of domains",
     "description": "Global button to refresh the interface."
+  },
+
+  "tooltipAutoActualize": {
+    "message": "Monitor cookies and auto-refresh the interface",
+    "description": "Checkbox to monitor cookies and refresh the interface."
   },
 
   "tooltipADelete": {
