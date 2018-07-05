@@ -224,14 +224,14 @@
           <div class="navbar-checkbox checkbox-inline navbar-left">
             <input tabindex="3" class="form-check-input" type="checkbox" id="query-subdomains">
             <label class="form-check-label" for="query-subdomains"
-            data-toggle="tooltip"
+            data-toggle="tooltip" data-placement="bottom"
             title="Display also the cookies of the subdomains concerned by the selected domain"
             data-i18n-title="tooltipQuerySubdomains" data-i18n-content="checkboxQuerySubdomains"> Sub-domains
             </label>
           </div>
           <!-- Select store -->
           <div class="navbar-left">
-            <span data-toggle="tooltip"
+            <span data-toggle="tooltip" data-placement="bottom"
             title="Contexts are used to separate storage data by online activities without having to clear the browsing history, disconnect and reconnect, or use different browsers."
             data-i18n-title="tooltipQueryContexts"
             data-i18n-content="selectQueryContexts">Context(s):</span>
@@ -239,7 +239,7 @@
           </div>
           <!-- Refresh the view -->
           <button tabindex="5" type="button" class="btn btn-dark navbar-left" id="actualize_button"
-          data-toggle="tooltip"
+          data-toggle="tooltip" data-placement="bottom"
           title="Refresh the list of domains" data-i18n-title="tooltipRefresh"><span class="glyphicon glyphicon-refresh"></span></button>
           <div class="navbar-checkbox checkbox-inline navbar-left">
             <input tabindex="3" class="form-check-input" type="checkbox" id="auto_actualize_checkbox">
@@ -274,7 +274,7 @@
           <form id="cookie-details">
             <div class="form-group row">
               <label for="domain" class="col-sm-2 col-form-label"
-              data-toggle="tooltip"
+              data-toggle="tooltip" data-placement="left"
               title="A host-only cookie, applies only to the current domain. Other cookies also apply to subdomains, and their domain has a leading point." data-i18n-title="tooltip_cDomain" data-i18n-content="cDomain">Domain </label>
               <div class="col-sm-10">
                 <input type="text" class="form-control" name="domain" id="domain" readonly>
@@ -282,7 +282,7 @@
             </div>
             <div class="form-group row">
               <label for="fpi-domain" class="col-sm-2 col-form-label"
-              data-toggle="tooltip"
+              data-toggle="tooltip" data-placement="left"
               title="First-Party Isolation prevents third party trackers from using cookies to identify the user across different websites (see options)." data-i18n-title="tooltip_cFpiDomain" data-i18n-content="cFpiDomain">First-Party </label>
               <div class="col-sm-10">
                 <input type="text" class="form-control" name="fpi-domain" id="fpi-domain" readonly>
@@ -316,7 +316,7 @@
             </div>
             <div class="form-group row">
               <label id="select_store" class="col-sm-2 col-form-label" for="store"
-              data-html="true" data-toggle="tooltip"
+              data-html="true" data-toggle="tooltip" data-placement="left"
               title="Browsing context<br>Select a context to make sure that the cookie is accessible in it." data-i18n-title="tooltip_cStore" data-i18n-content="cStore">Context </label>
               <div class="col-sm-10">
                 <select class="form-control" id="store">
@@ -325,7 +325,7 @@
             </div>
             <div class="form-group row">
               <label class="col-sm-2 col-form-label" for="httponly"
-              data-html="true" data-toggle="tooltip"
+              data-html="true" data-toggle="tooltip" data-placement="left"
               title="Theft protection<br>Check to force the cookie to be sent only over HTTP(S),<br> i.e. block JavaScript access like in XSS context." data-i18n-title="tooltip_cHttpOnly">httpOnly</label>
               <div class="col-sm-10">
                 <div class="form-check form-check-inline">
@@ -335,7 +335,7 @@
             </div>
             <div class="form-group row">
               <label class="col-sm-2 col-form-label" for="issecure"
-              data-html="true" data-toggle="tooltip"
+              data-html="true" data-toggle="tooltip" data-placement="left"
               title="Theft protection<br>Check to force the cookie to be sent only over secure channels like HTTPS." data-i18n-title="tooltip_cIsSecure">isSecure</label>
               <div class="col-sm-10">
                 <div class="form-check form-check-inline">
@@ -346,7 +346,7 @@
             <!-- Session related block: checkbox + datetimepicker -->
             <div class="form-group row">
               <label class="col-sm-2 col-form-label" for="issession"
-              data-html="true" data-toggle="tooltip"
+              data-html="true" data-toggle="tooltip" data-placement="left"
               title="Validity period<br>Check to force the cookie to expire at the end of the session." data-i18n-title="tooltip_cIsSession">isSession</label>
               <div class="col-sm-10">
                 <div class="form-check form-check-inline">

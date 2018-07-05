@@ -554,14 +554,14 @@ $('#expiration_date').datetimepicker({
 $('[data-toggle="popover"]').popover();
 
 // Enable tooltips
-$('[data-toggle="tooltip"]').tooltip({placement: "right", trigger: "hover"});
+$('[data-toggle="tooltip"]').tooltip(); //{placement: "right", trigger: "hover"});
 $('[my-data-toogle="dropdown_and_tooltip"]').each(function() {
     // Method to display tooltip AND dropdown/popover
     // data-toggle="" as usual, do not call dropdown() here,
     // but call only tooltip()
     // https://stackoverflow.com/questions/24107002/bootstrap-3-popover-and-tooltip-on-the-same-element
     $(this).tooltip({
-        placement: "right",
+        placement: "top",
         trigger: "hover",
         title : $(this).attr("tooltip-title")
     });
