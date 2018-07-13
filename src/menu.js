@@ -119,12 +119,6 @@ document.addEventListener("click", (e) => {
         return vAPI.delete_cookies(browser.cookies.getAll(params));
     })
     .then((ret) => {
-        // Reset the cookie number
-        // PS: we make the assumption that all cookies are deleted
-        let a = document.querySelector('#delete_current_cookies');
-        // Since we add a text content as a child node, we can just replace it (4rd pos)
-        a.childNodes[3].replaceWith(" (0)");
-    }, (error) => {
         // Force the closing of the window
         window.close();
     });
@@ -134,7 +128,10 @@ document.addEventListener("click", (e) => {
       // Purge LocalStore for the current domain
       // NOTE: subdomains will not be taken into account
       let prom = browser.browsingData.removeLocalStorage({hostnames: [(new URL(current_tab.url)).hostname, ]});
-      prom.then(null);
+      prom.then((ret) => {
+          // Force the closing of the window
+          window.close();
+      });
   }
 
   else if (id === "options") {
@@ -204,6 +201,7 @@ getActiveTab().then((tabs) => {
   .then((cookies) => {
       // Print the number of cookies
       let a = document.querySelector('#delete_current_cookies');
+      // text content is a child node, at the 4rd pos
       let content = document.createTextNode(" (" + cookies.length + ")");
       a.appendChild(content);
   });
