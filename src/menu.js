@@ -36,13 +36,6 @@ function getActiveTab() {
   return browser.tabs.query({currentWindow: true, active: true});
 }
 
-function getHostUrl(cookie) {
-    // If the modified cookie has the flag isSecure, the host protocol must be https:// in order to
-    // modify or delete it.
-    var host_protocol = (cookie.secure) ? 'https://' : 'http://';
-    return host_protocol + cookie.domain + cookie.path;
-}
-
 function createWindow(createData) {
   // Get settings
   let get_settings = browser.storage.local.get(["addonSize", "open_in_new_tab"]);
@@ -90,7 +83,7 @@ document.addEventListener("click", (e) => {
   let id = e.target.id;
 
   if (id === "search_cookie_manager") {
-      // Send current url
+      // Search cookies for a domain: Send current url
       let createData = {
         type: "panel",
         url: "cookies.html?parent_url=" + encodeURIComponent(current_tab.url),
@@ -99,7 +92,7 @@ document.addEventListener("click", (e) => {
   }
 
   else if (id === "simple_cookie_manager") {
-    // Send empty url
+    // Just launch the addon: Send empty url
     let createData = {
       type: "panel",
       url: "cookies.html?parent_url=",
@@ -108,7 +101,7 @@ document.addEventListener("click", (e) => {
   }
 
   else if (id === "delete_current_cookies") {
-    // Delete all cookies for the current domain/store
+    // Delete all cookies for the current domain & store
     browser.runtime.getBrowserInfo().then((browser_info) => {
         // TODO: reuse params from initialization: avoid getBrowserInfo() call
         let params = {
@@ -175,7 +168,7 @@ getActiveTab().then((tabs) => {
   a.appendChild(img);
   a.appendChild(content);
 
-  // Display a shortcut to delete all cookies for the current domain/store
+  // Display a shortcut to delete all cookies for the current domain & store
   // Display a shortcut to delete LocalStorage
   browser.runtime.getBrowserInfo().then((browser_info) => {
       let params = {
