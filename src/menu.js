@@ -185,8 +185,19 @@ getActiveTab().then((tabs) => {
           params['firstPartyDomain'] = null;
 
       // -> LocalStorage is not available on Firefox 56
-      if (parseInt(version) >= 57)
-          document.querySelector('#delete_current_localstorage').style['display'] = 'inline-block';
+      if (parseInt(version) >= 57) {
+          // Display the shortcut
+          let a = document.querySelector('#delete_current_localstorage');
+          a.style['display'] = 'inline-block';
+
+          // Get the number of localstorage items
+          browser.tabs.executeScript({
+              code: "(function (){return localStorage.length;})();"
+          }).then((ret) => {
+              let content = document.createTextNode(" (" + ret[0] + ")");
+              a.appendChild(content);
+          });
+      }
 
       return browser.cookies.getAll(params);
   })
