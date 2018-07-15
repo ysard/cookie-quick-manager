@@ -21,29 +21,54 @@
 // IIFE - Immediately Invoked Function Expression
 (function(mycode) {
 
-    // The global jQuery object is passed as a parameter
-    mycode(window.jQuery, window, document);
+    // The global arguments are passed as parameters
+    mycode(window, document);
 
-}(function($, window, document) {
+}(function(window, document) {
 
-    // The $ is now locally scoped
-    $(function () {
+    // The arguments are now locally scoped
 
-    /*********** Events attached to UI elements ***********/
+    /*
+     * $(function(){
+     *  set_translations();
+     * });
+     */
 
-    // Workaround used to speed-up the load of UI for non supported locales
-    let supported_locales = ['fr', 'de'];
-    if (supported_locales.includes(browser.i18n.getUILanguage())) {
-        //alert(browser.i18n.getUILanguage());
-        insertI18nContentIntoDocument(document);
-        insertI18nTitleIntoDocument(document);
-        insertI18nPopoverContentIntoDocument(document);
-    }
-    });
+    /* By using the event DOMContentLoaded instead of JQuery $(function(){code});
+     * to isolate code that is executed when the DOM is ready, we have to
+     * modify the attributes "title" instead of "data-original-title".
+     *
+     * It seems that DOMContentLoaded is emitted sooner than the $(document).ready
+     * of JQuery.
+     *
+     * JQuery ready: data-original-title
+     * Pure JS DOMContentLoaded: title
+     */
+
+    document.addEventListener("DOMContentLoaded", function(event) {
+        /*********** Events attached to UI elements ***********/
+
+
+        /*********** Initializations ***********/
+
+        set_translations();
+
+    }, false);
 
     /*********** Utils ***********/
 
-    function insertI18nContentIntoDocument(document) {
+    function set_translations() {
+        //console.log(browser.i18n.getUILanguage());
+        // Workaround used to speed-up the load of UI for non supported locales
+        let supported_locales = ['fr', 'de'];
+        if (supported_locales.includes(browser.i18n.getUILanguage())) {
+            insertI18nContentIntoDocument();
+            insertI18nTitleIntoDocument();
+            insertI18nPopoverContentIntoDocument();
+        }
+    }
+
+    function insertI18nContentIntoDocument() {
         // Set text content for UI elements
 
         let i18nElements = document.querySelectorAll('[data-i18n-content]');
@@ -56,7 +81,7 @@
         });
     };
 
-    function insertI18nTitleIntoDocument(document) {
+    function insertI18nTitleIntoDocument() {
         // Set title for tooltips elements
 
         let i18nElements = document.querySelectorAll('[data-i18n-title]');
@@ -64,11 +89,12 @@
         i18nElements.forEach(function (i18nElement) {
 
             let i18nMessageName = i18nElement.getAttribute('data-i18n-title');
-            i18nElement.setAttribute('data-original-title', browser.i18n.getMessage(i18nMessageName));
+            //i18nElement.setAttribute('data-original-title', browser.i18n.getMessage(i18nMessageName));
+            i18nElement.setAttribute('title', browser.i18n.getMessage(i18nMessageName));
         });
     };
 
-    function insertI18nPopoverContentIntoDocument(document) {
+    function insertI18nPopoverContentIntoDocument() {
         // Set content and title for popover elements
         // Title message in _locales must be prefixed by 'tooltip'
 
