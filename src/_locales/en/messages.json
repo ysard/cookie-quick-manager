@@ -467,6 +467,29 @@
   "oExportAll": {
     "message": "Export all cookies to a file",
     "description": "Keyboard shortcut description: ctrl+S"
+  },
+
+
+
+
+  "popupSearch": {
+    "message": "Search cookie for: ",
+    "description": "Popup menu: Search and edit cookies in the main interface of CQM"
+  },
+
+  "popupDeleteCurrentCookies": {
+    "message": "Delete current cookies",
+    "description": "Popup menu: Delete current cookies"
+  },
+
+  "popupDeleteCurrentLocalStorage": {
+    "message": "Delete current LocalStorage",
+    "description": "Popup menu: Delete current LocalStorage"
+  },
+
+  "popupOptions": {
+    "message": "Options",
+    "description": "Popup menu: go to options page"
   }
 
 }
