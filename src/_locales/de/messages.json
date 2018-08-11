@@ -100,7 +100,7 @@
   },
 
   "menuRestore": {
-    "message": "Cookies von Datei wiederherestellen",
+    "message": "Cookies von Datei wiederherstellen",
     "description": "Dropdown menu option."
   },
 
@@ -259,7 +259,7 @@
   },
 
   "oDelete_all_on_restart": {
-    "message": " All Cookies beim Neustart löschen",
+    "message": " Alle Cookies beim Neustart löschen",
     "description": "Settings page: Checkbox"
   },
 
