@@ -199,7 +199,7 @@
   },
 
   "tooltip_cFpiDomain": {
-    "message": "First-Party Isolation prevents third party trackers from using cookies to identify the user across different websites (see options).",
+    "message": "First-Party Isolation verhindert, dass Drittanbieter Cookies verwenden, um den Benutzer auf verschiedenen Websites zu identifizieren (siehe Optionen).",
     "description": "Description of what FPI is."
   },
 
