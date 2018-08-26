@@ -44,9 +44,24 @@
     "description": "Attribute of a cookie in the details panel."
   },
 
+  "cStore": {
+    "message": "Kontext ",
+    "description": "Attribute of a cookie in the details panel."
+  },
+
   "checkboxQuerySubdomains": {
     "message": " Sub-domains",
     "description": "Checkbox for search engine used to query subdomains."
+  },
+
+  "selectQueryContexts": {
+    "message": "Kontext(e):",
+    "description": "Text for search engine describing the content of the drop-down list of stores."
+  },
+
+  "checkboxAutoActualize": {
+    "message": " Auto-Refresh",
+    "description": "Checkbox to monitor cookies and refresh the interface."
   },
 
   "menu_protect_all": {
@@ -100,13 +115,79 @@
   },
 
   "menuRestore": {
-    "message": "Cookies von Datei wiederherstellen",
+    "message": "Cookies aus Datei wiederherstellen",
     "description": "Dropdown menu option."
+  },
+
+  "menu_tooltip_dropup_protect": {
+    "message": "Sperre/Entsperre alle Cookies",
+    "description": "Tooltip for the dropup menu."
+  },
+
+  "menu_tooltip_dropup_export": {
+    "message": "Export/Import",
+    "description": "Tooltip for the dropup menu."
   },
 
   "buttonClose": {
     "message": "Schließen",
     "description": "Close button on modal popovers."
+  },
+
+  "buttonContinue": {
+    "message": "Weiter",
+    "description": "Continue button on modal popovers and contextual menus."
+  },
+
+
+
+
+  "contextMenu_domain_copy2Clipboard": {
+    "message": "In Zwischenablage kopieren",
+    "description": "Option for the contextual menu that opens on a domain."
+  },
+
+  "contextMenu_domain_copy2File": {
+    "message": "In Datei speichern",
+    "description": "Option for the contextual menu that opens on a domain."
+  },
+
+  "contextMenu_domain_protect": {
+    "message": "Sperren",
+    "description": "Option for the contextual menu that opens on a domain."
+  },
+
+  "contextMenu_domain_unprotect": {
+    "message": "Entsperren",
+    "description": "Option for the contextual menu that opens on a domain."
+  },
+
+  "contextMenu_domain_delete": {
+    "message": "Löschen",
+    "description": "Option for the contextual menu that opens on a domain."
+  },
+
+  "contextMenu_domain_copy2container": {
+    "message": "In Container kopieren",
+    "description": "Option for the contextual menu that opens on a domain."
+  },
+
+
+
+
+  "container_all": {
+    "message": "Alle",
+    "description": "Name that matches for all the stores in the browser."
+  },
+
+  "container_default": {
+    "message": "Default",
+    "description": "Name of the default store in the browser."
+  },
+
+  "container_private": {
+    "message": "Private browsing",
+    "description": "Name of the Private browsing store."
   },
 
 
@@ -157,13 +238,23 @@
     "description": "Checkbox for search engine, used to query subdomains."
   },
 
+  "tooltipQueryContexts": {
+    "message": "Kontexte werden verwendet um gespeicherte Daten nach Online-Aktivitäten zu separieren, ohne die Browser History zu löschen, die Verbindung zu trennen und wiederzuverbinden, oder verschiedene Browser zu verwenden.",
+    "description": "Text for search engine describing the content of the drop-down list of stores."
+  },
+
   "tooltipRefresh": {
     "message": "Domainliste aktualisieren",
     "description": "Global button to refresh the interface."
   },
 
+  "tooltipAutoActualize": {
+    "message": "Cookies beobachten und Anzeige automatisch aktualisieren",
+    "description": "Checkbox to monitor cookies and refresh the interface."
+  },
+
   "tooltipADelete": {
-    "message": "All Cookies löschen",
+    "message": "Alle Cookies löschen",
     "description": "Button to delete all the cookies in the selected context."
   },
 
@@ -187,13 +278,28 @@
     "description": "Button to delete the current cookie."
   },
 
+  "tooltipCProtect": {
+    "message": "Lösch-Schutz<br>Wenn das Schloss geschlossen ist, wird die zukünftige Löschung des Cookies durch dieses Addon verhindert.",
+    "description": "Button to protect or unprotect the current cookie from deletion."
+  },
+
   "contributeContent": {
-    "message": "<div id='contribute-content'>Es gibt verschiedene Möglichkeiten, wie du zur Entwicklung beitragen kannst:<br><ul><li>Falls du spende willst, um die vielen Programmierstunden zu belohnen, benutze bitte dies Bitcoin-Addresse:<br><span class='btc-color'>15qduxA755YANqGcbd8VvBmm8DmR4rCg1i</span></li><li>Du kannst eine Bewertung auf <a target='_blank' href='https://addons.mozilla.org/firefox/addon/cookie-quick-manager/'>addons.mozilla.org</a> abgeben, um ihre Sichtbarkeit des Add-ons zu erhöhen.</li><li>Du kannst beim Überprüfen des Quellcodes im <a target='_blank' href='https://github.com/ysard/cookie-quick-manager'>GitHub-Verzeichnis</a> helfen.</li><li>Zeig es deinen Freunden!</li></ul></div>",
+    "message": "<div id='contribute-content'>Es gibt verschiedene Möglichkeiten, wie du zur Entwicklung beitragen kannst:<br><ul><li>Falls du Spenden willst, um die vielen Programmierstunden zu belohnen, benutze bitte diese Bitcoin-Addresse:<br><span class='btc-color'>15qduxA755YANqGcbd8VvBmm8DmR4rCg1i</span></li><li>Du kannst eine Bewertung auf <a target='_blank' href='https://addons.mozilla.org/firefox/addon/cookie-quick-manager/'>addons.mozilla.org</a> abgeben, um die Sichtbarkeit des Add-ons zu erhöhen.</li><li>Du kannst beim Überprüfen des Quellcodes im <a target='_blank' href='https://github.com/ysard/cookie-quick-manager'>GitHub-Verzeichnis</a> helfen.</li><li>Zeig es deinen Freunden!</li></ul></div>",
     "description": "How to contribute popover."
   },
 
 
 
+
+  "modalAlertTitle": {
+    "message": "Sind sie sicher, dass sie diese Cookies löschen möchten?",
+    "description": "Title on modal dialog window, when a user is about to delete all cookies from a context."
+  },
+
+  "modalAlertContent": {
+    "message": "Diese Aktion wird Cookies aus dem aktuellen Kontext löschen! Das heißt, nicht nur die in den Suchergebnissen oder die aktuell ausgewählten.",
+    "description": "Content on modal dialog window, when a user is about to delete all cookies from a context."
+  },
 
   "modalClipboardTitle": {
     "message": "Exportiere $cookie_number$ Cookie(s)",
@@ -351,6 +457,39 @@
   "oSearchDomain": {
     "message": "Domain suchen",
     "description": "Keyboard shortcut description: ctrl+F"
+  },
+
+  "oRestoreFile": {
+    "message": "Aus JSON Backup wiederherstellen",
+    "description": "Keyboard shortcut description: ctrl+O"
+  },
+
+  "oExportAll": {
+    "message": "Alle Cookies in Datei exportieren",
+    "description": "Keyboard shortcut description: ctrl+S"
+  },
+
+
+
+
+  "popupSearch": {
+    "message": "In Cookies suchen nach: ",
+    "description": "Popup menu: Search and edit cookies in the main interface of CQM"
+  },
+
+  "popupDeleteCurrentCookies": {
+    "message": "Aktuelles Cookie löschen",
+    "description": "Popup menu: Delete current cookies"
+  },
+
+  "popupDeleteCurrentLocalStorage": {
+    "message": "Aktuellen LocalStorage löschen",
+    "description": "Popup menu: Delete current LocalStorage"
+  },
+
+  "popupOptions": {
+    "message": "Optionen",
+    "description": "Popup menu: go to options page"
   }
 
 }
