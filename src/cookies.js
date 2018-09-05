@@ -202,10 +202,14 @@ $("#protect_button").click(function() {
     }, onError);
 });
 
-$("#delete_all_button").click(function() {
+$("#delete_all_button").click(
     // Remove all cookies
-    var promise = vAPI.get_all_cookies([$('#search_store').val()]);
-    delete_cookies(promise, "#delete_all_button span");
+    callback_delete_cookies
+);
+
+$("#ask_total_deletion_button").click(function() {
+    // Remove all cookies
+    display_deletion_alert ? $('#modal_alert').modal("show") : callback_delete_cookies("#ask_total_deletion_button span");
 });
 
 $("#toggle_b64").click(function() {
@@ -823,8 +827,10 @@ function get_stores() {
 
 function delete_cookies(promise, delete_button_selector) {
     // Delete all cookies in the promise
-    // Called when #delete_all_button is clicked,
-    // and when the domain deletion option in the context menu is clicked
+    // Called when #ask_total_deletion_button is clicked,
+    // and when the domain deletion option in the context menu is clicked.
+    // delete_button_selector can be undefined in the last case.
+
     let deletion_promise = vAPI.delete_cookies(promise);
     deletion_promise.then((number_of_remaining_cookies) => {
         // Supress red color, disable & reset text editing for the next cookie
@@ -833,7 +839,7 @@ function delete_cookies(promise, delete_button_selector) {
         // Reactivate the interface
         disable_cookie_details();
 
-        if (delete_button_selector == "#delete_all_button span")
+        if (delete_button_selector == "#ask_total_deletion_button span")
             actualizeDomains();
         else {
             // If there are protected cookies
@@ -863,7 +869,7 @@ function delete_cookies(promise, delete_button_selector) {
         disable_cookie_details();
         // On error: reload all the domains if multiple domains were concerned;
         // reload only the current domain if a single domain is concerned
-        if (delete_button_selector == "#delete_all_button span")
+        if (delete_button_selector == "#ask_total_deletion_button span")
             actualizeDomains();
         else {
             reset_cookie_details();
@@ -872,6 +878,16 @@ function delete_cookies(promise, delete_button_selector) {
             $('#domain-list').find('li.active').trigger('click', true);
         }
     });
+}
+
+function callback_delete_cookies(delete_button_selector) {
+    // Delete all cookies of the current context
+    // Called when a user clicks on 'delete_all_button' in the modal window,
+    // or directly on 'ask_total_deletion_button' in the UI if 'display_deletion_alert' is false.
+    // delete_button_selector can be undefined if #ask_total_deletion_button is not clicked
+
+    let promise = vAPI.get_all_cookies([$('#search_store').val()]);
+    delete_cookies(promise, delete_button_selector);
 }
 
 function no_cookie_alert(domNode) {
