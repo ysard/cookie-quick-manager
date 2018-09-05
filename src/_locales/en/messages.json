@@ -394,6 +394,11 @@
     "description": "Settings page: Checkbox"
   },
 
+  "oDisplay_deletion_alert": {
+    "message": " Display an alert before removing cookies from entire browsing context(s)",
+    "description": "Settings page: Checkbox"
+  },
+
   "oExport": {
     "message": "Export",
     "description": "Settings page: Section title"

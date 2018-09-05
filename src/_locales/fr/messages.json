@@ -393,6 +393,11 @@
     "description": "Settings page: Checkbox"
   },
 
+  "oDisplay_deletion_alert": {
+    "message": " Affiche une alerte avant la suppression des cookies de contexte(s) de navigation",
+    "description": "Settings page: Checkbox"
+  },
+
   "oExport": {
     "message": "Export",
     "description": "Settings page: Section title"

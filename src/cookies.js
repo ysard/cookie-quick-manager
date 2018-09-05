@@ -416,7 +416,7 @@ window.onresize = function(event) {
 
 browser.storage.onChanged.addListener(function (changes, area) {
     // Called when the local storage area is modified
-    // Here: we handle only 'protected_cookies' key.
+    // Here: we handle only 'protected_cookies', 'skin' and 'display_deletion_alert' keys.
     // We do that here because when a user imports a json file,
     // if the global option import_protected_cookies is true, modifications
     // are made in protected_cookies array.
@@ -428,6 +428,11 @@ browser.storage.onChanged.addListener(function (changes, area) {
     // Load/remove css skin
     if (changes['skin'] !== undefined)
         update_skin(changes.skin.newValue);
+
+    // Ability to show a modal alert
+    // when a user wants to delete all cookies from at least 1 context
+    if (changes['display_deletion_alert'] !== undefined)
+        display_deletion_alert = changes.display_deletion_alert.newValue;
 });
 
 $('#domain-list').focus(function() {
@@ -884,13 +889,15 @@ function no_cookie_alert(domNode) {
 }
 
 function get_options() {
-    // Get options from storage
-    // Init protected_cookies array in global context
+    // Get options from storage and import them in the global context
+    // Init protected_cookies array
     // Load css stylesheet
+    // Load display_deletion_alert flag
 
     let get_settings = browser.storage.local.get({
         protected_cookies: {},
         skin: 'default',
+        display_deletion_alert: true,
     });
     get_settings.then((items) => {
         console.log({storage_data: items});
@@ -901,12 +908,14 @@ function get_options() {
             protected_cookies = items.protected_cookies;
         else {
             // Init data structure
-            set_settings = browser.storage.local.set({"protected_cookies": {}});
+            let set_settings = browser.storage.local.set({"protected_cookies": {}});
             set_settings.then(null, onError);
         }
 
         if (items.skin != 'default')
             update_skin(items.skin);
+
+        display_deletion_alert = items.display_deletion_alert;
     });
 }
 
@@ -1436,6 +1445,7 @@ var cookies_onChangedListener = (function(changeInfo) {
 var $current_selected_list = $('#domain-list');
 var context_menu_elements;
 var protected_cookies;
+var display_deletion_alert;
 var addon_window_type;
 // Init dict of storeIds with iconURl and color as values
 var storesData = {};

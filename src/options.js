@@ -49,6 +49,10 @@
             // Delete all cookies when the browser restarts
             set_option({'open_in_new_tab': $(this).is(':checked')});
         });
+        $('#display_deletion_alert').change(function() {
+            // Delete all cookies when the browser restarts
+            set_option({'display_deletion_alert': $(this).is(':checked')});
+        });
         $('#template').change(function() {
             // Change template
             set_option({'template': $(this).val()});
@@ -122,6 +126,7 @@
             import_protected_cookies: false,
             skin: 'default',
             open_in_new_tab: false,
+            display_deletion_alert: true,
             template: 'JSON',
         });
         get_settings.then((items) => {
@@ -132,6 +137,7 @@
             $('#import_protected_cookies').prop('checked', items.import_protected_cookies);
             $('#skin').val(items.skin);
             $('#open_in_new_tab').prop('checked', items.open_in_new_tab);
+            $('#display_deletion_alert').prop('checked', items.display_deletion_alert);
             $('#template').val(items.template);
         });
     }
