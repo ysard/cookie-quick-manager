@@ -169,40 +169,37 @@ $("#delete_button").click(function() {
 
 $("#protect_button").click(function() {
     // Update the protect status of the current cookie
-    //let settings = browser.storage.local.get("protected_cookies");
-    //settings.then((items) => {
 
-        // Do nothing if no cookie is selected
-        let domain = $("#domain").val();
-        let name = $('#name').val();
-        if (name == '')
-            return;
+    // Do nothing if no cookie is selected
+    let domain = $("#domain").val();
+    let name = $('#name').val();
+    if (name == '')
+        return;
 
-        // Check domain
-        if (!(domain in protected_cookies))
-            protected_cookies[domain] = [];
-        // Check name
-        if (protected_cookies[domain].indexOf(name) === -1) {
-            // This cookie will be protected
-            //console.log({'protect: add': name});
-            protected_cookies[domain].push(name);
+    // Check domain
+    if (!(domain in protected_cookies))
+        protected_cookies[domain] = [];
+    // Check name
+    if (protected_cookies[domain].indexOf(name) === -1) {
+        // This cookie will be protected
+        //console.log({'protect: add': name});
+        protected_cookies[domain].push(name);
 
-            set_protect_lock_icon(true);
-        } else {
-            // This cookie will not be protected anymore
-            //console.log({'protect: rm': name});
-            protected_cookies[domain] = protected_cookies[domain].filter(item => ![name,].includes(item));
+        set_protect_lock_icon(true);
+    } else {
+        // This cookie will not be protected anymore
+        //console.log({'protect: rm': name});
+        protected_cookies[domain] = protected_cookies[domain].filter(item => ![name,].includes(item));
 
-            set_protect_lock_icon(false);
-        }
-        //console.log(protected_cookies);
-        // Set new protected_cookies on storage area
-        let set_settings = browser.storage.local.set({"protected_cookies": protected_cookies});
-        set_settings.then((ret) => {
-            // Simulate click on domain
-            $('#domain-list').find('li.active').click();
-        }, onError);
-    //});
+        set_protect_lock_icon(false);
+    }
+    //console.log(protected_cookies);
+    // Set new protected_cookies on storage area
+    let set_settings = browser.storage.local.set({"protected_cookies": protected_cookies});
+    set_settings.then((ret) => {
+        // Simulate click on domain
+        $('#domain-list').find('li.active').click();
+    }, onError);
 });
 
 $("#delete_all_button").click(function() {
