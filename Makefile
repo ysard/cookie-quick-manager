@@ -15,3 +15,9 @@ build: mk_sources
 clean:
 	@rm -rf build/
 	@echo "clean done"
+
+get_missing_DE_translations:
+	@diff src/_locales/de/messages.json src/_locales/en/messages.json | grep ": {"; [ $$? -eq 1 ]
+
+get_missing_FR_translations:
+	@diff src/_locales/fr/messages.json src/_locales/en/messages.json | grep ": {"; [ $$? -eq 1 ]
