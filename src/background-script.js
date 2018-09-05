@@ -54,8 +54,11 @@ function init_options() {
 
         // protected_cookies array
         // The array check is a workaround to fix previous bug e4e735f (an array instead of an object)
-        if (Array.isArray(items.protected_cookies))
-            items.protected_cookies = {};
+        if (Array.isArray(items.protected_cookies)) {
+            // Init data structure
+            let set_settings = browser.storage.local.set({"protected_cookies": {}});
+            set_settings.then(null, onError);
+        }
 
         // Program the deletion of all cookies (except for those which are protected)
         // BUG ?: We must set a delay on this function. Otherwise the API returns 0 cookie...
@@ -66,11 +69,6 @@ function init_options() {
                     deletion_promise.then(null, vAPI.onError);
                 });
             }, 2000);
-
-        // Init data structure
-        // TODO: write only if necessary
-        let set_settings = browser.storage.local.set(items);
-        set_settings.then(null, onError);
     });
 }
 
