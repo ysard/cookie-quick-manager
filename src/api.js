@@ -516,6 +516,23 @@ vAPI.getFirstPartyIsolateStatus = function(status) {
     });
 }
 
+vAPI.get_and_patch_protected_cookies = function(storage_items) {
+    // Wrapper used to patch the storage data key 'protected_cookies'
+    // Return the associative array of protected_cookies.
+    // Return an empty associative array if something happened
+
+    // The array check is a workaround to fix previous bug e4e735f (an array instead of an object)
+    if (!Array.isArray(storage_items.protected_cookies))
+        return storage_items.protected_cookies;
+    else {
+        // protected_cookies is an Array
+        // Init data structure
+        let set_settings = browser.storage.local.set({"protected_cookies": {}});
+        set_settings.then(null, onError);
+        return {};
+    }
+}
+
 /*********** Global variables ***********/
 
 vAPI.default_stores = [

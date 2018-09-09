@@ -31,8 +31,6 @@ browser.runtime.onInstalled.addListener(update_listener);
 
 
 /*********** Utils ***********/
-//var protected_cookies_counter = 0;
-var protected_cookies;
 
 function onError(error) {
     // Function called when a save/remove function has failed by throwing an exception.
@@ -52,13 +50,8 @@ function init_options() {
     get_settings.then((items) => {
         console.log({storage_data: items});
 
-        // protected_cookies array
-        // The array check is a workaround to fix previous bug e4e735f (an array instead of an object)
-        if (Array.isArray(items.protected_cookies)) {
-            // Init data structure
-            let set_settings = browser.storage.local.set({"protected_cookies": {}});
-            set_settings.then(null, onError);
-        }
+        // Load protected_cookies
+        protected_cookies = vAPI.get_and_patch_protected_cookies(items);
 
         // Program the deletion of all cookies (except for those which are protected)
         // BUG ?: We must set a delay on this function. Otherwise the API returns 0 cookie...
@@ -167,6 +160,8 @@ browser.storage.onChanged.addListener(function (changes, area) {
 //browser.runtime.onStartup.addListener(init_options);
 
 /*********** Global variables ***********/
+//var protected_cookies_counter = 0;
+var protected_cookies;
 
 init_options();
 // Set default color of the counter of protected cookies on the toolbar icon

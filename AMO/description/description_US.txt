@@ -1,7 +1,7 @@
 <strong>Overview</strong>
 
-Cookie Quick Manager: A complete manager for cookies used during browsing.
-It allows you to view, edit, create, delete, backup, restore cookies and search them by domain names; private browsing is also supported.
+Cookie Quick Manager: A complete manager for cookies accumulated during browsing.
+It allows you to view, edit, create, delete, backup, restore cookies and search them by domain names. Private browsing, First-Party Isolation, and Contextual Identities are also supported.
 
 Cookie Quick Manager is designed for developers, testers or people
 concerned about their privacy on the Internet.
@@ -10,14 +10,23 @@ This WebExtension is compatible with Firefox 57 and is inspired by addons like <
 
 <strong>Features</strong>
 
-- Search: A user can search for cookies of a domain and subdomains which depend on it.
-- Edit: All the attributes of a cookie can be modified: domain, path, name, value,
-expiration date, as well as secure and httponly flags.
-- Export: The export and import of a cookie or cookies from a domain in JSON or Netscape format is just as easy.
-- User friendly: Each parameter and functionality is briefly described when the mouse is over the element.
-- First-Party Isolation: Supported with some limitations from Firefox 59 (included) to Firefox 62 (not included),
-and without limitations on Firefox 62 (scheduled on September 2018).
-- Contexts: Contexts (also called containers, contextual identities, or stores) are supported. A user can copy cookies from a container to another.
+<ul>
+<li>User friendly: Clear and structured user interface. Each parameter and functionality is described when the mouse is over the element.</li>
+<li>Transparency and security: The source code is free (under GPLv3) and published on a public platform, allowing reviews and external contributions.</li>
+<li>Search: A user can search for cookies of a domain and subdomains which depend on it.</li>
+<li>Edit: All the attributes of a cookie can be modified: domain, path, name, value, expiration date, as well as secure and httponly flags.</li>
+<li>Delete: Remove the cookies of the current website in two clicks.</li>
+<li>Export: The export and import of a cookie or cookies from a domain in JSON or Netscape format is just as easy.</li>
+<li>First-Party Isolation: Supported with some limitations (due to API bugs) on Firefox 59, 60, and 61, and without limitations on Firefox 62 (scheduled on September 2018).</li>
+<li>Contexts: Contexts (also called Multi-Account Containers, or Contextual Identities) are supported. A user can copy cookies from a container to another or save a cookie in a specific context.</li>
+<li>Cookie protection: Delete cookies in one click except protected ones.</li>
+<li>Cleaning and privacy: Can delete all cookies at startup.</li>
+</ul>
+
+<strong>About cookie protection</strong>
+
+The protection of cookies is limited to the current addon actions, to the deletions that can be made by the sites themselves, or to the deletions made in the browser's "Cookies and Site Data" options.
+This means that if you choose the browser option to delete all cookies when it closes, the addon will be unable to restore them (the method used by the browser does not send the necessary signal to notify the addon). However, in the addon options, you can choose to delete all cookies (except protected cookies) when restarting the browser.
 
 <strong>Privacy</strong>
 
@@ -25,17 +34,20 @@ This addon does not store or leak any personal information.
 
 It requires the following permissions to operate:
 
-* Host permission for all urls: This allows you to edit the cookies of any visited site,
-* Cookies: Allows access to the browser's cookie store,
-* ActiveTab: Allows access to the currently consulted url, and its favicon if it exists.
-* Storage: Allows the storage of the following user settings:
+<ul>
+<li>Host permission for all urls: This allows you to edit the cookies of any visited site.</li>
+<li>Cookies: Allows access to the browser's cookie store.</li>
+<li>ActiveTab: Allows access to the currently consulted url, and its favicon if it exists.</li>
+<li>Storage: Allows the storage of the following user settings:
     - size of the windowed mode,
     - protected cookies (only the name of the domains),
     - the template used to import/export the cookies,
     - the skin.
-* Browsing data: Enables extensions to clear the data that is accumulated while the user is browsing (LocalStorage here).
-* Contextual Identities: Allows the addon to list the containers,
-* Privacy: Access and modify various privacy-related browser settings (the FirstPartyIsolation flag here).
+</li>
+<li>Browsing data: Enables extensions to clear the data that is accumulated while the user is browsing (LocalStorage here).</li>
+<li>Contextual Identities: Allows the addon to list the containers.</li>
+<li>Privacy: Access and modify various privacy-related browser settings (the FirstPartyIsolation flag here).</li>
+</ul>
 
 <strong>Support & source code</strong>
 

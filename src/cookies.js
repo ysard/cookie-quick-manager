@@ -918,19 +918,15 @@ function get_options() {
     get_settings.then((items) => {
         console.log({storage_data: items});
 
-        // protected_cookies array
-        // The array check is a workaround to fix previous bug e4e735f (an array instead of an object)
-        if (!Array.isArray(items.protected_cookies))
-            protected_cookies = items.protected_cookies;
-        else {
-            // Init data structure
-            let set_settings = browser.storage.local.set({"protected_cookies": {}});
-            set_settings.then(null, onError);
-        }
+        // Reload protected_cookies
+        protected_cookies = vAPI.get_and_patch_protected_cookies(items);
 
+        // Load/remove css skin
         if (items.skin != 'default')
             update_skin(items.skin);
 
+        // Ability to show a modal alert
+        // when a user wants to delete all cookies from at least 1 context
         display_deletion_alert = items.display_deletion_alert;
     });
 }
