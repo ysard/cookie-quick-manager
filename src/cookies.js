@@ -706,7 +706,10 @@ function filter_master_domains(domains) {
     let non_master_domains = [];
     unique_domains.forEach(function(domain){
         unique_domains.forEach(function(other_domain){
-            if (domain == other_domain)
+            // "":
+            // do not deal with cookies with an empty a domain name
+            // (cookies created from a local file:// page)
+            if (domain == other_domain || other_domain == "")
                 return;
             // recherche des domaines ne contenant pas d'autres domaines
             if (domain.indexOf(other_domain) !== -1) {
