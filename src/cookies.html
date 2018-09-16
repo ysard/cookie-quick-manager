@@ -156,12 +156,6 @@
       .top-buttons span:hover {
         color: red;
       }
-      .btn-dark:focus {
-         /* Add a border when buttons are focused by tab key
-            btn-dark doesn't have this distinction. */
-         border-color: #8c8c8c;
-      }
-
       /* ContextMenu */
       .context-menu-icon::before {
         /* blue to grey */
@@ -241,7 +235,7 @@
             <select tabindex="4" class="form-control" id="search_store"></select>
           </div>
           <!-- Refresh the view -->
-          <button tabindex="5" type="button" class="btn btn-dark navbar-left" id="actualize_button"
+          <button tabindex="5" type="button" class="btn btn-default navbar-left" id="actualize_button"
           data-toggle="tooltip" data-placement="bottom"
           title="Refresh the list of domains" data-i18n-title="tooltipRefresh"><span class="glyphicon glyphicon-refresh"></span></button>
           <div class="navbar-checkbox checkbox-inline navbar-left">
@@ -299,10 +293,10 @@
             </div>
             <div class="form-group row">
               <div id="toggle_buttons">
-                <button type="button" class="btn btn-dark" id="toggle_url"
+                <button type="button" class="btn btn-default" id="toggle_url"
                 data-html="true" data-toggle="tooltip"
                 title="URL decode<br>Click to activate/deactivate." data-i18n-title="tooltip_buttonUrl">URL</button>
-                <button type="button" class="btn btn-dark" id="toggle_b64"
+                <button type="button" class="btn btn-default" id="toggle_b64"
                 data-html="true" data-toggle="tooltip"
                 title="Base64 decode<br>Click to activate/deactivate." data-i18n-title="tooltip_buttonB64">B64</button>
               </div>
@@ -376,10 +370,10 @@
         <!-- Generic commands -->
         <div class="col-sm-8">
           <!-- Buttons -->
-          <button type="button" class="btn btn-dark" id="ask_total_deletion_button" data-toggle="tooltip"
+          <button type="button" class="btn btn-default" id="ask_total_deletion_button" data-toggle="tooltip"
           tooltip-title="Delete all the cookies of the selected context" data-i18n-title="tooltipADelete"><span class="glyphicon glyphicon-trash"></span></button>
           <div class="dropup dropup-custom">
-            <button type="button" class="btn btn-dark dropdown-toggle"
+            <button type="button" class="btn btn-default dropdown-toggle"
             data-toggle="dropdown" my-data-toogle="dropdown_and_tooltip" data-i18n-title="menu_tooltip_dropup_protect" tooltip-title="Protect/Unprotect all the cookies"><span class="glyphicon glyphicon-lock"></span><span class="caret"></span></button>
             <ul class="dropdown-menu">
               <li><a data-target="collapse" href="#" id="protect_all_button" data-toggle="modal" data-i18n-content="menu_protect_all">Protect all cookies</a></li>
@@ -387,7 +381,7 @@
             </ul>
           </div>
           <div class="dropup dropup-custom">
-            <button type="button" class="btn btn-dark dropdown-toggle"
+            <button type="button" class="btn btn-default dropdown-toggle"
             data-toggle="dropdown" my-data-toogle="dropdown_and_tooltip" data-i18n-title="menu_tooltip_dropup_export" tooltip-title="Export/Import"><span class="glyphicon glyphicon-folder-open"></span><span class="caret"></span></button>
             <ul class="dropdown-menu">
               <li class="dropdown-header" data-i18n-content="menuHeaderExport">Export:</li>
@@ -406,23 +400,23 @@
               </li>
             </ul>
           </div>
-          <button type="button" class="btn btn-dark" id="donate_button"
+          <button type="button" class="btn btn-default" id="donate_button"
           data-toggle="popover" data-placement="top" data-html="true"
           data-i18n-popover-content="contributeContent" my-data-toogle="dropdown_and_tooltip"><span class="glyphicon glyphicon-bitcoin"></span></button>
         </div>
 
         <!-- Specific commands for current cookie -->
         <div class="col-sm-4">
-          <button type="button" class="btn btn-dark" id="save_button"
+          <button type="button" class="btn btn-default" id="save_button"
           data-toggle="tooltip"
           title="Save the current cookie" data-i18n-title="tooltipSave"><span class="glyphicon glyphicon-floppy-disk"></span></button>
-          <button type="button" class="btn btn-dark" id="edit_button"
+          <button type="button" class="btn btn-default" id="edit_button"
           data-html="true" data-toggle="tooltip"
           title="Unlock the gray fields<br>Allow to create a new cookie by editing the current one as a template." data-i18n-title="tooltipEdit"><span class="glyphicon glyphicon-pencil"></span></button>
-          <button type="button" class="btn btn-dark" id="delete_button"
+          <button type="button" class="btn btn-default" id="delete_button"
           data-toggle="tooltip"
           title="Remove the current cookie" data-i18n-title="tooltipCDelete"><span class="glyphicon glyphicon-trash"></span></button>
-          <button type="button" class="btn btn-dark" id="protect_button"
+          <button type="button" class="btn btn-default" id="protect_button"
           data-html="true" data-toggle="tooltip"
           title="Erasure protection<br>When the padlock is closed, it means that a future deletion of this cookie by this addon will be refused." data-i18n-title="tooltipCProtect"><span class="glyphicon glyphicon-unlock"></span></button>
         </div>
