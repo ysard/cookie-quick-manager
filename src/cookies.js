@@ -1139,7 +1139,14 @@ function showCookiesList(event, refresh_domain_badges) {
                     li.className += " cookie-expired";
                 }
 
-                let content = document.createTextNode(cookie.name + "=" + cookie.value);
+                // Forge cookie content
+                // <b>cookie name</b>=cookie value
+                let content = document.createDocumentFragment();
+                let cookie_name_node = document.createElement('b');
+                cookie_name_node.append(cookie.name);
+                content.append(cookie_name_node);
+                //content.append(document.createElement('br'));
+                content.append("=" + cookie.value);
 
                 // Display badge if cookie comes from a special store
                 if (cookie.storeId != 'firefox-default') {
