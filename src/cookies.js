@@ -209,6 +209,7 @@ $("#delete_all_button").click(
 
 $("#ask_total_deletion_button").click(function() {
     // Remove all cookies
+    // Display the alert according to the setting
     display_deletion_alert ? $('#modal_alert').modal("show") : callback_delete_cookies("#ask_total_deletion_button span");
 });
 
@@ -1146,7 +1147,7 @@ function showCookiesList(event, refresh_domain_badges) {
                 cookie_name_node.append(cookie.name);
                 content.append(cookie_name_node);
                 //content.append(document.createElement('br'));
-                content.append("=" + cookie.value);
+                content.append(":" + cookie.value);
 
                 // Display badge if cookie comes from a special store
                 if (cookie.storeId != 'firefox-default') {
