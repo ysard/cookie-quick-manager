@@ -203,9 +203,29 @@ vAPI.get_all_cookies = function(storeIds) {
             // Merge all results of promises
             let cookies = Array.prototype.concat(...cookies_array);
 
-            if (cookies.length > 0)
-                resolve(cookies);
-            else
+            if (cookies.length > 0) {
+
+                // Filtering cookies
+                // Filtering on domains
+                // PS: this step is made before the filtering of names and values
+                // because it is less complex and removes much more items
+                let filtered_cookies = [];
+                if (vAPI.query_domain == "") {
+                    filtered_cookies = cookies;
+                } else {
+                    for (let cookie of cookies) {
+                        // Do not display domains different than the searched one
+                        if (cookie.domain.indexOf(vAPI.query_domain) === -1)
+                            continue;
+
+                        filtered_cookies.push(cookie);
+                    }
+                }
+                // Filtering on names and values
+                filtered_cookies = vAPI.filter_cookies(filtered_cookies, vAPI.query_names, vAPI.query_values);
+                console.log("get_all_cookies: filtering:", filtered_cookies.length);
+                resolve(filtered_cookies);
+            } else
                 reject("all_cookies-NoCookies");
         })
     });
@@ -503,24 +523,31 @@ vAPI.getCookiesFromSelectedDomain = function() {
             return Promise.all(promises);
         })
         .then((cookies_array) => {
-            console.log({cookie_array: cookies_array});
             // Merge all results of promises
             let cookies = Array.prototype.concat(...cookies_array);
 
             if (cookies.length > 0) {
-                // Build filtered cookies list
+
+                // Filtering cookies
+                // Filtering on domains
+                // PS: this step is made before the filtering of names and values
+                // because it is less complex and removes much more items
                 let filtered_cookies = [];
                 let query_subdomains = $('#query-subdomains').is(':checked');
-                for (let cookie of cookies) {
-                    if (!query_subdomains) {
+                if (query_subdomains) {
+                    filtered_cookies = cookies;
+                } else {
+                    // Sub domains are not wanted here
+                    for (let cookie of cookies) {
                         // Filter on exact domain (remove sub domains from the list)
                         // If current domain is not found in domains => go to next cookie
-                        if (domains.indexOf(cookie.domain) === -1)
-                            continue;
+                        if (domains.indexOf(cookie.domain) !== -1)
+                            filtered_cookies.push(cookie);
                     }
-                    // OK: send filtered cookies
-                    filtered_cookies.push(cookie);
                 }
+                // Filtering on names and values
+                filtered_cookies = vAPI.filter_cookies(filtered_cookies, vAPI.query_names, vAPI.query_values);
+                console.log("getCookiesFromSelectedDomain: filtering", filtered_cookies.length);
                 resolve(filtered_cookies);
             } else {
                 reject("SelectedDomain-NoCookies");
@@ -702,5 +729,9 @@ vAPI.date_format = "DD-MM-YYYY HH:mm:ss";
 // Optimal size of the windowed addon
 vAPI.optimal_window_width = 1095;
 vAPI.optimal_window_height = 585;
+
+vAPI.query_domain;
+vAPI.query_names;
+vAPI.query_values;
 
 })(this);
