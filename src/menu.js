@@ -217,8 +217,11 @@
                     browser.tabs.executeScript({
                         code: "(function (){return localStorage.length;})();"
                     }).then((ret) => {
+                        // Display the number of items
                         let content = document.createTextNode(" (" + ret[0] + ")");
                         a.appendChild(content);
+                    }, (err) => {
+                        console.log('init_ui: content script:', err);
                     });
                 }
 
