@@ -76,6 +76,19 @@
         /* bootstrap correction: Increase space between elements in the navbar */
         margin-left: 10px;
       }
+      .dropdown-toggle-split{
+        /* backport of BS4 class to reduce the horizontal size of the button */
+        padding: 6px 8px;
+      }
+      .search_filter_block {
+        /* position of items in the filter dropdown menu */
+        display: inline-block;
+      }
+      #search_filter {
+        /* position of items in the filter dropdown menu */
+        display: inline-block;
+        margin: 5px;
+      }
       #search_store {
         padding-left: 7px;
       }
@@ -125,7 +138,7 @@
       .popover {
         max-width: 500px;
       }
-      .btn .caret {
+      .dropup .btn .caret {
         position: absolute;
         top: 3px;
         right: calc(50% - 4px);
@@ -209,17 +222,28 @@
     <!-- Navbar -->
     <nav class="navbar navbar-default">
       <div class="container-fluid">
-        <!-- Search domain -->
         <div class="navbar-form">
+          <!-- Search domain -->
           <div class="input-group" style="float:left">
-            <input tabindex="1" type="text" class="form-control" name="search_domain" id="search_domain" placeholder="Search">
+            <input tabindex="1" type="text" class="form-control" name="search_domain" id="search_domain" placeholder="Search...">
             <div class="input-group-btn">
               <button tabindex="2" class="btn btn-default" type="submit" id="search_domain_submit"><span class="glyphicon glyphicon-search"></span></button>
+
+              <!-- Additional filter on names and values -->
+              <button tabindex="3" type="button" class="btn btn-default dropdown-toggle dropdown-toggle-split" data-toggle="dropdown"><span class="caret"></span></button>
+
+              <ul class="dropdown-menu">
+                <li class="dropdown-header">Filter by attribute</li>
+                <li class="search_filter_block">
+                  <input type="text" class="form-control" id="search_filter" placeholder="Filter term..."></li>
+                <li><a href="#" id="add_filter_name">in names</a></li>
+                <li><a href="#" id="add_filter_values">in values</a></li>
+              </ul>
             </div>
           </div>
           <!-- Sub-domains option -->
           <div class="navbar-checkbox checkbox-inline navbar-left">
-            <input tabindex="3" class="form-check-input" type="checkbox" id="query-subdomains">
+            <input tabindex="4" class="form-check-input" type="checkbox" id="query-subdomains">
             <label class="form-check-label" for="query-subdomains"
             data-toggle="tooltip" data-placement="bottom"
             title="Display also the cookies of the subdomains concerned by the selected domain"
@@ -232,14 +256,14 @@
             title="Contexts are used to separate storage data by online activities without having to clear the browsing history, disconnect and reconnect, or use different browsers."
             data-i18n-title="tooltipQueryContexts"
             data-i18n-content="selectQueryContexts">Context(s):</span>
-            <select tabindex="4" class="form-control" id="search_store"></select>
+            <select tabindex="5" class="form-control" id="search_store"></select>
           </div>
           <!-- Refresh the view -->
-          <button tabindex="5" type="button" class="btn btn-default navbar-left" id="actualize_button"
+          <button tabindex="6" type="button" class="btn btn-default navbar-left" id="actualize_button"
           data-toggle="tooltip" data-placement="bottom"
           title="Refresh the list of domains" data-i18n-title="tooltipRefresh"><span class="glyphicon glyphicon-refresh"></span></button>
           <div class="navbar-checkbox checkbox-inline navbar-left">
-            <input tabindex="6" class="form-check-input" type="checkbox" id="auto_actualize_checkbox" autocomplete="off">
+            <input tabindex="7" class="form-check-input" type="checkbox" id="auto_actualize_checkbox" autocomplete="off">
               <label class="form-check-label" for="auto_actualize_checkbox"
                 data-toggle="tooltip" data-placement="bottom"
                 title="Monitor cookies and auto-refresh the interface"
@@ -258,12 +282,12 @@
       <div id="list_and_details" class="row">
         <div class="list col-sm-4">
           <h2 data-i18n-content="domainsListTitle">Domains</h2>
-          <ul tabindex="7" id="domain-list" class="list-group"></ul>
+          <ul tabindex="8" id="domain-list" class="list-group"></ul>
         </div>
 
         <div class="list col-sm-4 central-col">
           <h2 data-i18n-content="cookiesListTitle">Cookies</h2>
-          <ul tabindex="8" id="cookie-list" class="list-group"></ul>
+          <ul tabindex="9" id="cookie-list" class="list-group"></ul>
         </div>
 
         <div class="col-sm-4">
