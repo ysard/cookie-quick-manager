@@ -53,6 +53,116 @@ vAPI.getHostUrl_from_UI = function() {
     return host_protocol + $('#domain').val() + $('#path').val();
 }
 
+vAPI.parse_search_query = function(search_query) {
+    /* Parse search queries like:
+     * 'domain1.com domain2.com :value:"value1" :name:"name1" :name:"name2" :value:"value2"'
+     * Set these 3 values in VAPI:
+     *      vAPI.query_domain = "domain1.com";
+     *      vAPI.query_names = ["name1", "name2];
+     *      vAPI.query_values = ["value1", "value2"];
+     * PS: A space separator is not mandatory between expressions
+     * PS: If multiple domains are present, for the moment we keep only the first one
+     */
+
+    function extract_terms(patterns) {
+        // Return a list of clean terms entered by the user: ["name1",] or ["value1",]
+        // Argument patterns is a list of matches: [":name:\"name1\"",] or [":value:\"value1\"",]
+        if (!patterns)
+            return [];
+        let re = /"(.*)"/;
+        let terms = [];
+        for (let pattern of patterns)
+            terms.push(pattern.match(re)[1]);
+        // Remove empty strings from the list of terms
+        return terms.filter(n => n);
+    }
+
+    function get_domains(name_patterns, value_patterns) {
+        // Remove patterns from the query and return remaining domains
+        if (name_patterns)
+            for (let pattern of name_patterns)
+                search_query = search_query.replace(pattern, '');
+
+        if (value_patterns)
+            for (let pattern of value_patterns)
+                search_query = search_query.replace(pattern, '');
+
+        // Remove empty strings from the residual query
+        let domains = search_query.split(' ').filter(n => n);
+        return (!domains.length) ? [''] : domains;
+    }
+
+    let name_patterns = search_query.match(/:name:"([^"]|\\")*"/g);
+    //console.log("parse_search_query: name_patterns:", name_patterns);
+    let names = extract_terms(name_patterns);
+    //console.log("parse_search_query: names:", names);
+
+    let value_patterns = search_query.match(/:value:"([^"]|\\")*"/g);
+    //console.log("parse_search_query: value_patterns:", value_patterns);
+    let values = extract_terms(value_patterns);
+    //console.log("parse_search_query: values:", values);
+
+    // Remove patterns from the query and get simple domains
+    let domains = get_domains(name_patterns, value_patterns);
+    //console.log("parse_search_query: domain: ", domains[0]);
+
+    // Keep only the first domain for now
+    vAPI.query_domain = domains[0];
+    vAPI.query_names = names;
+    vAPI.query_values = values;
+}
+
+vAPI.filter_cookies = function(cookies, names, values) {
+    /* Filter cookies on their names and values
+     * Return a cookie list satisfying the search conditions
+     *
+     * Multiple name filters are linked by OR operator.
+     * Multiple value filters are linked by OR operator.
+     * Groups of name filters are linked with groups of value filters by a AND operator.
+     *
+     * Ex: ("name1" OR "name2") AND ("value1", "value2")
+     *
+     * TODO: Transform this function in a promise that encapsulates get_all_cookies()
+     * and getCookiesFromSelectedDomain()
+     * => Move the filtering code in a separate place
+     */
+
+    // No filter => return the list of cookies unchanged
+    if (!names.length && !values.length)
+        return cookies;
+
+    //console.log("filter_cookies: cookie to filter", cookies.length);
+
+    let filtered_cookies = [];
+    let name_found = false;
+    let value_found = false;
+    for (let cookie of cookies) {
+
+        for (let name of names)
+            if (cookie.name.indexOf(name) !== -1)
+                // name is found => keep the cookie
+                name_found = true;
+
+        for (let value of values)
+            if (cookie.value.indexOf(value) !== -1)
+                // value is found => keep the cookie
+                value_found = true;
+
+        if ((value_found && name_found) || (        // value and name found in the same cookie
+                (value_found && !names.length) ||   // value found with no queried name
+                (name_found && !values.length)      // name found with no queried value
+            )
+        ) {
+            //console.log("filter_cookies: kept:", cookie.domain, cookie.name, cookie.value);
+            filtered_cookies.push(cookie);
+        }
+
+        name_found = false;
+        value_found = false;
+    }
+    return filtered_cookies;
+}
+
 vAPI.get_all_cookies = function(storeIds) {
     // Return a Promise with all cookies in all stores
     // Handle multiple stores:
