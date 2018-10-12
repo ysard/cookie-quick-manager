@@ -201,10 +201,7 @@ vAPI.get_all_cookies = function(storeIds) {
         })
         .then((cookies_array) => {
             // Merge all results of promises
-            let cookies = [];
-            for (let cookie_subset of cookies_array) {
-                cookies = cookies.concat(cookie_subset);
-            }
+            let cookies = Array.prototype.concat(...cookies_array);
 
             if (cookies.length > 0)
                 resolve(cookies);
@@ -508,10 +505,7 @@ vAPI.getCookiesFromSelectedDomain = function() {
         .then((cookies_array) => {
             console.log({cookie_array: cookies_array});
             // Merge all results of promises
-            let cookies = [];
-            for (let cookie_subset of cookies_array) {
-                cookies = cookies.concat(cookie_subset);
-            }
+            let cookies = Array.prototype.concat(...cookies_array);
 
             if (cookies.length > 0) {
                 // Build filtered cookies list
