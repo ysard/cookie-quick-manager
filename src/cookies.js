@@ -488,7 +488,7 @@ $('#domain-list').contextMenu({
             items: {
                 "copy": {name: browser.i18n.getMessage("contextMenu_domain_copy2Clipboard"), icon: "copy",
                     callback: function(itemKey, opt, rootMenu, originalEvent) {
-                        // Remove all cookies in the selected domain
+                        // Export to clipboard all cookies in the selected domain
                         let promise = vAPI.getCookiesFromSelectedDomain();
                         window.display_json_in_clipboard_area(promise);
                         $('#modal_clipboard').modal("show");
@@ -496,7 +496,7 @@ $('#domain-list').contextMenu({
                 },
                 "save": {name: browser.i18n.getMessage("contextMenu_domain_copy2File"), icon: "save",
                     callback: function(itemKey, opt, rootMenu, originalEvent) {
-                        // Get all cookies in the selected domain
+                        // Export to file all cookies in the selected domain
                         let promise = vAPI.getCookiesFromSelectedDomain();
                         promise.then((cookies) => {
                             // Make 1 json for each cookie and store it
@@ -510,7 +510,7 @@ $('#domain-list').contextMenu({
                 },
                 "protect": {name: browser.i18n.getMessage("contextMenu_domain_protect"), icon: "lock",
                     callback: function(itemKey, opt, rootMenu, originalEvent) {
-                        // Remove all cookies in the selected domain
+                        // Protect all cookies in the selected domain
                         let promise = vAPI.getCookiesFromSelectedDomain();
                         promise.then((cookies) => {
                             vAPI.set_cookie_protection(cookies, true).then(() => {
@@ -522,7 +522,7 @@ $('#domain-list').contextMenu({
                 },
                 "unprotect": {name: browser.i18n.getMessage("contextMenu_domain_unprotect"), icon: "unlock",
                     callback: function(itemKey, opt, rootMenu, originalEvent) {
-                        // Remove all cookies in the selected domain
+                        // Unprotect all cookies in the selected domain
                         let promise = vAPI.getCookiesFromSelectedDomain();
                         promise.then((cookies) => {
                             vAPI.set_cookie_protection(cookies, false).then(() => {
@@ -1014,6 +1014,9 @@ function showDomains(storeIds) {
     /* Show domains in a list.
      * Domains with private cookies have a private badge.
      * When user click on an element, an event is sent to query/display related cookies.
+     *
+     * PS: We don't search domains with the FF cookie API which is too rigid.
+     * Indeed, we want to search fragment of terms in domains names, not exact domains.
      */
     let searched_domain = $('#search_domain').val();
     let searched_store = $('#search_store').val();
@@ -1023,11 +1026,6 @@ function showDomains(storeIds) {
     // Filter on selected store
     if (searched_store != 'all')
         storeIds = [searched_store];
-
-    /* Strict domain search => too rigid
-    if (searched_domain != "") {
-        params['domain'] = searched_domain;
-    }*/
 
     vAPI.get_all_cookies(storeIds).then((cookies) => {
 
