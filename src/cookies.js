@@ -39,6 +39,14 @@ $('#search_domain').keypress(function(e) {
 });
 // Search box: handle button pressed
 $('#search_domain_submit').click(actualizeDomains);
+// Search box filter: names
+$('#add_filter_name').click(function() {
+    query_filter_callback(':name:');
+});
+// Search box filter: values
+$('#add_filter_values').click(function() {
+    query_filter_callback(':value:');
+});
 // Query subdomains status: handle check
 $('#query-subdomains').click(actualizeDomains);
 // Actualize button pressed
@@ -625,6 +633,21 @@ function firefox57_workaround_for_blank_panel() {
     });
 }
 
+function query_filter_callback(filter_token) {
+    /* Build a query to filter cookies and add these tokens to the search input field
+     * This function is called when a user clicks on #add_filter_name and #add_filter_values
+     */
+    let filter_value = $('#search_filter').val();
+    if (filter_value == '')
+        return;
+
+    // Build the pattern ':filter_token:"filter_value" '
+    // PS: a space is added at the end but is not mandatory for a correct parsing
+    $('#search_domain').get(0).value += filter_token + '"' + filter_value + '" ';
+    $('#search_filter').val('');
+    actualizeDomains();
+}
+
 function adjust_scrollbar($current) {
     // Set the scrollbar position when the user uses up/down keys to scroll from keyboard
     // => avoid to select an element which is hidden due to overflow
@@ -1018,7 +1041,11 @@ function showDomains(storeIds) {
      * PS: We don't search domains with the FF cookie API which is too rigid.
      * Indeed, we want to search fragment of terms in domains names, not exact domains.
      */
-    let searched_domain = $('#search_domain').val();
+
+    // Set vAPI.query_domain, vAPI.query_names, vAPI.query_values
+    // TODO move this ?? with filtering block in get_all_cookies
+    vAPI.parse_search_query($('#search_domain').val());
+
     let searched_store = $('#search_store').val();
     let $domainList = $('#domain-list');
     let fragment = document.createDocumentFragment();
@@ -1041,10 +1068,6 @@ function showDomains(storeIds) {
         //add an <li> item with the name and value of the cookie to the list
         domains_names.forEach(function(domain_name){
 
-            // Do not display domains different than the searched one
-            if (searched_domain != "" && domain_name.indexOf(searched_domain) === -1) {
-                return;
-            }
             // Count displayed domains
             display_count++;
 
