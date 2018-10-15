@@ -77,17 +77,23 @@
         margin-left: 10px;
       }
       .dropdown-toggle-split{
-        /* backport of BS4 class to reduce the horizontal size of the button */
+        /* backport of BS4 class to center the carret and reduce the horizontal size of the button */
         padding: 6px 8px;
+      }
+      #search_domain {
+        width: 250px;
       }
       .search_filter_block {
         /* position of items in the filter dropdown menu */
         display: inline-block;
+        width: 100%;
+        min-width: 250px;
       }
       #search_filter {
         /* position of items in the filter dropdown menu */
         display: inline-block;
-        margin: 5px;
+        margin: 4px 6px;
+        width: calc(100% - 12px);
       }
       #search_store {
         padding-left: 7px;
