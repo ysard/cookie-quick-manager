@@ -223,7 +223,7 @@ vAPI.get_all_cookies = function(storeIds) {
                 }
                 // Filtering on names and values
                 filtered_cookies = vAPI.filter_cookies(filtered_cookies, vAPI.query_names, vAPI.query_values);
-                console.log("get_all_cookies: filtering:", filtered_cookies.length);
+                //console.log("get_all_cookies: filtering:", filtered_cookies.length);
                 resolve(filtered_cookies);
             } else
                 reject("all_cookies-NoCookies");
@@ -245,7 +245,7 @@ vAPI.get_stores = function() {
 
             // Init stores with default stores
             let stores = vAPI.default_stores;
-            console.log({default_stores: vAPI.default_stores});
+            //console.log({default_stores: vAPI.default_stores});
 
             // On FF+=57 add containers
             if (contexts !== false)
@@ -256,7 +256,7 @@ vAPI.get_stores = function() {
             vAPI.storeIds = stores.map(function(store){
                 return store.cookieStoreId;
             });
-            console.log({Stores: stores});
+            //console.log({Stores: stores});
 
             resolve(stores);
 
@@ -276,20 +276,20 @@ vAPI.FPI_detection = function(promise) {
     return new Promise((resolves, rejects) => {
         // This promise will crash on FF 59-
         // The error is captured by the error callback.
-        console.log('Test availability of firstPartyIsolate API');
+        //console.log('Test availability of firstPartyIsolate API');
         resolves(browser.privacy.websites.firstPartyIsolate.get({}));
 
     })
     .then((got) => {
         // First Party Isolation is supported (FF 58+=)
-        console.log('firstPartyIsolate API IS available');
+        //console.log('firstPartyIsolate API IS available');
         // set FPI status to true or false
         vAPI.FPI = got.value;
         console.log({FPI_status: vAPI.FPI});
         return promise;
 
     }, (error) => {
-        console.log('firstPartyIsolate API is NOT available');
+        //console.log('firstPartyIsolate API is NOT available');
         // set FPI status
         vAPI.FPI = undefined;
         console.log({FPI_status: vAPI.FPI});
@@ -497,7 +497,7 @@ vAPI.getCookiesFromSelectedDomain = function() {
             if (version >= 62) {
                 // Add firstPartyDomain argument to getAll() function
                 for (let domain of domains) {
-                    console.log({current_domain: domain});
+                    //console.log("getCookiesFromSelectedDomain: domain:", domain);
                     for (let storeId of storeIds) {
                         promises.push(browser.cookies.getAll({domain: domain, storeId: storeId, firstPartyDomain: null}));
                     }
@@ -547,7 +547,7 @@ vAPI.getCookiesFromSelectedDomain = function() {
                 }
                 // Filtering on names and values
                 filtered_cookies = vAPI.filter_cookies(filtered_cookies, vAPI.query_names, vAPI.query_values);
-                console.log("getCookiesFromSelectedDomain: filtering", filtered_cookies.length);
+                //console.log("getCookiesFromSelectedDomain: filtering", filtered_cookies.length);
                 resolve(filtered_cookies);
             } else {
                 reject("SelectedDomain-NoCookies");
@@ -630,7 +630,7 @@ vAPI.getFirstPartyIsolateStatus = function(status) {
 
     var getting = browser.privacy.websites.firstPartyIsolate.get({});
     getting.then((got) => {
-        console.log({'got': got});
+        //console.log({'got': got});
 
         if ((got.levelOfControl === "controlled_by_this_extension") ||
             (got.levelOfControl === "controllable_by_this_extension")) {

@@ -120,10 +120,10 @@ $( "#save_button" ).click(function() {
     if (!$('#issession').is(':checked')) {
         var unix_timestamp = $('#expiration_date').data("DateTimePicker").date().unix();
         params['expirationDate'] = unix_timestamp;
-        console.log(new Date(unix_timestamp * 1000));
+        //console.log(new Date(unix_timestamp * 1000));
     }
     // Set cookie
-    console.log(params);
+    console.log("Built cookie:", params);
 
     vAPI.FPI_detection().then(() => {
 
@@ -190,13 +190,11 @@ $("#protect_button").click(function() {
     // Check name
     if (protected_cookies[domain].indexOf(name) === -1) {
         // This cookie will be protected
-        //console.log({'protect: add': name});
         protected_cookies[domain].push(name);
 
         set_protect_lock_icon(true);
     } else {
         // This cookie will not be protected anymore
-        //console.log({'protect: rm': name});
         protected_cookies[domain] = protected_cookies[domain].filter(item => ![name,].includes(item));
 
         set_protect_lock_icon(false);
@@ -479,12 +477,12 @@ $('#domain-list').contextMenu({
             callback: function(key, options) {
                 // WARNING: curious inversion: name of item is in options instead of key
                 // as described at: https://swisnl.github.io/jQuery-contextMenu/demo/sub-menus.html
-                console.log({
+                /*console.log({
                     clicked: true,
                     key: key,
                     options: options,
                     text: $(this).text()
-                });
+                });*/
 
                 let promise = vAPI.getCookiesFromSelectedDomain();
                 vAPI.copy_cookies_to_store(promise, options).then((ret) => {
@@ -943,7 +941,7 @@ function get_options() {
         display_deletion_alert: true,
     });
     get_settings.then((items) => {
-        console.log({storage_data: items});
+        //console.log({storage_data: items});
 
         // Reload protected_cookies
         protected_cookies = vAPI.get_and_patch_protected_cookies(items);
