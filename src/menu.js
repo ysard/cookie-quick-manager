@@ -79,7 +79,7 @@
             else if (id === "delete_current_localstorage") {
                 // Purge LocalStore for the current domain
                 // NOTE: subdomains will not be taken into account
-                let prom = browser.browsingData.removeLocalStorage({hostnames: [(new URL(current_tab.url)).hostname, ]});
+                let prom = browser.browsingData.removeLocalStorage({hostnames: [(new URL(current_tab.url)).hostname,]});
                 prom.then((ret) => {
                     // Force the closing of the window
                     window.close();
@@ -207,11 +207,12 @@
                 if (parseInt(version) >= 59)
                     params['firstPartyDomain'] = null;
 
-                // -> LocalStorage is not available on Firefox 56
-                if (parseInt(version) >= 57) {
-                    // Display the shortcut
+                // -> LocalStorage and indexedDB is not available on Firefox 56
+                // removalOptions.hostnames is available since FF 58
+                if (parseInt(version) >= 58) {
+                    // Display the shortcut for localstorage deletion
                     let a = document.querySelector('#delete_current_localstorage');
-                    a.style['display'] = 'inline-block';
+                    a.style['display'] = 'block';
 
                     // Get the number of localstorage items
                     browser.tabs.executeScript({

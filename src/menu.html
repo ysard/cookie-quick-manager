@@ -20,9 +20,8 @@
         margin-right: 5px;
         vertical-align: bottom;
     }
-    #delete_current_localstorage {
+    .hidden_item {
         display: None;
-        width: 100%;
     }
     </style>
   </head>
@@ -32,7 +31,7 @@
        <img class="favicon" src="icons/icon48.png" alt="addon favicon">Cookie Quick Manager</a>
       <a href="#" id="search_cookie_manager" data-i18n-content="popupSearch">Search cookie for: </a>
       <a href="#" id="delete_current_cookies" data-i18n-content="popupDeleteCurrentCookies"><img class="favicon" src="icons/forbidden48.png" alt="delete current cookies">Delete current cookies</a>
-      <a href="#" id="delete_current_localstorage" data-i18n-content="popupDeleteCurrentLocalStorage"><span class="favicon"></span>Delete current LocalStorage</a>
+      <a href="#" id="delete_current_localstorage" class="hidden_item" data-i18n-content="popupDeleteCurrentLocalStorage"><span class="favicon"></span>Delete current LocalStorage</a>
       <a href="#" id="options" data-i18n-content="popupOptions"><span class="favicon"></span>Options</a>
     </div>
     <script src="api.js"></script>
