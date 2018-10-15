@@ -239,11 +239,11 @@
               <button tabindex="3" type="button" class="btn btn-default dropdown-toggle dropdown-toggle-split" data-toggle="dropdown"><span class="caret"></span></button>
 
               <ul class="dropdown-menu">
-                <li class="dropdown-header">Filter by attribute</li>
+                <li class="dropdown-header" data-i18n-content="filterByAttributeHeader">Filter cookies</li>
                 <li class="search_filter_block">
-                  <input type="text" class="form-control" id="search_filter" placeholder="Filter term..."></li>
-                <li><a href="#" id="add_filter_name">in names</a></li>
-                <li><a href="#" id="add_filter_values">in values</a></li>
+                  <input type="text" class="form-control" id="search_filter" placeholder="Search a word in the cookie data"></li>
+                <li><a href="#" id="add_filter_name" title="Click to search for the term in the names of cookies" data-i18n-title="tooltipQueryFilterInNames" data-i18n-content="filterByAttributeNames">in names</a></li>
+                <li><a href="#" id="add_filter_values" title="Click to search for the term in the values of cookies" data-i18n-title="tooltipQueryFilterInValues" data-i18n-content="filterByAttributeValues">in values</a></li>
               </ul>
             </div>
           </div>

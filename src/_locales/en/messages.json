@@ -49,6 +49,21 @@
     "description": "Attribute of a cookie in the details panel."
   },
 
+  "filterByAttributeHeader": {
+    "message": "Advanced filtering of cookies",
+    "description": "Filter dropdown menu header."
+  },
+
+   "filterByAttributeNames": {
+    "message": "…in the names",
+    "description": "Filter dropdown menu item."
+  },
+
+   "filterByAttributeValues": {
+    "message": "…in the values",
+    "description": "Filter dropdown menu item."
+  },
+
   "checkboxQuerySubdomains": {
     "message": " Sub-domains",
     "description": "Checkbox for search engine, used to query subdomains."
@@ -231,6 +246,16 @@
   "tooltip_cIsSession": {
     "message": "Validity period<br>Check to force the cookie to expire at the end of the session.",
     "description": "Checkbox to change the isSession cookie flag."
+  },
+
+  "tooltipQueryFilterInNames": {
+    "message": "Click to search for the term in the names of cookies",
+    "description": "Description of the role of the item in the advanced filtering menu."
+  },
+
+  "tooltipQueryFilterInValues": {
+    "message": "Click to search for the term in the values of cookies",
+    "description": "Description of the role of the item in the advanced filtering menu."
   },
 
   "tooltipQuerySubdomains": {
