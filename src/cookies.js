@@ -31,7 +31,14 @@
 
 /*********** Events attached to UI elements ***********/
 // Search box: handle keyboard inputs
-$('#search_domain').on('input', actualizeDomains);
+$('#search_domain').on('input', function() {
+    // Do not trigger the search for less than 3 characters
+    let search_length = $('#search_domain').val().length;
+    if (search_length > 0 && search_length <= 3)
+        return;
+
+    actualizeDomains();
+});
 $('#search_domain').keypress(function(e) {
     // Enter key pressed
     if(e.which == 13)
