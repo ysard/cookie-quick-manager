@@ -703,6 +703,7 @@ vAPI.template_JSON = {
 \t"Send for": "{ISSECURE}",\n\
 \t"Send for raw": "{ISSECURE_RAW}",\n\
 \t"HTTP only raw": "{ISHTTPONLY_RAW}",\n\
+\t"SameSite raw": "{SAMESITE_RAW}",\n\
 \t"This domain only": "{ISDOMAIN}",\n\
 \t"This domain only raw": "{ISDOMAIN_RAW}",\n\
 \t"Store raw": "{STORE_RAW}",\n\

@@ -227,6 +227,11 @@ function build_cookie_dump() {
         return (issecure) ? "Encrypted connections only" : "Any type of connection";
     }
 
+    function get_samesite_status() {
+        let $samesite_val = $('#samesite').val();
+        return ($samesite_val != null) ? $samesite_val : "no_restriction";
+    }
+
     // Make a local copy of the template
     var template_temp = cookie_clipboard_template.template;
 
@@ -242,6 +247,7 @@ function build_cookie_dump() {
         '{ISSECURE}': get_secure_status(false),
         '{ISSECURE_RAW}': get_secure_status(true),
         '{ISHTTPONLY_RAW}': $('#httponly').is(':checked'),
+        '{SAMESITE_RAW}': get_samesite_status(),
         '{ISDOMAIN}': get_domain_status(false),
         '{ISDOMAIN_RAW}': get_domain_status(true),
         '{STORE_RAW}': $('#store').val(),
@@ -309,6 +315,7 @@ function build_domain_dump(cookie) {
         '{ISSECURE}': get_secure_status(false),
         '{ISSECURE_RAW}': get_secure_status(true),
         '{ISHTTPONLY_RAW}': cookie.httpOnly,
+        '{SAMESITE_RAW}': cookie.sameSite ? cookie.sameSite : "no_restriction",
         '{ISDOMAIN}': get_domain_status(false),
         '{ISDOMAIN_RAW}': cookie.hostOnly,
         '{STORE_RAW}': cookie.storeId,
@@ -373,10 +380,18 @@ function export_content_to_file(content) {
 
 function handleUploadedFile(content) {
     // Take a file content and dispatch it to the good parser
-    parseJSONFile(content);
+
+    browser.runtime.getBrowserInfo().then((browser_info) => {
+
+        // Detect Firefox version:
+        // -> sameSite attribute is available on Firefox 63+=
+        // {name: "Firefox", vendor: "Mozilla", version: "60.0.1", buildID: ""}
+        let firefox_version = parseInt(browser_info.version.split('.')[0]);
+        parseJSONFile(content, firefox_version);
+    });
 }
 
-function parseJSONFile(content) {
+function parseJSONFile(content, firefox_version) {
     // Parse json file and return a cookie object
 
     try {
@@ -413,6 +428,11 @@ function parseJSONFile(content) {
                 secure: (json_cookie["Send for raw"] === 'true'),
                 storeId: (json_cookie["Private raw"]  === 'true') ? 'firefox-private' : 'firefox-default',
             };
+
+            // -> sameSite attribute is available on Firefox 63+=
+            if (firefox_version >= 63 && json_cookie["SameSite raw"] !== undefined) {
+                params['sameSite'] = json_cookie["SameSite raw"];
+            }
 
             if (json_cookie["Store raw"] !== undefined) {
                 params['storeId'] = json_cookie["Store raw"];
