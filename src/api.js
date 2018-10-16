@@ -439,7 +439,7 @@ vAPI.add_cookies = function(new_cookies_promises, protection_status) {
                     console.log({"Not added": added_cookie});
                     reject("Cookie " + JSON.stringify(added_cookie) + " can't be saved");
                 }
-                console.log({"Added": added_cookie});
+                //console.log({"Added": added_cookie});
             }
 
             // Protect all cookies if asked in global settings

@@ -454,7 +454,6 @@ function parseJSONFile(content, firefox_version) {
                 params['firstPartyDomain'] = (json_cookie["First Party Domain"]) ? json_cookie["First Party Domain"] : "";
             }
 
-            console.log(params);
             promises.push(browser.cookies.set(params));
         }
 
