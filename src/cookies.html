@@ -350,13 +350,27 @@
                 </select>
               </div>
             </div>
-            <div class="form-group row">
-              <label class="col-sm-2 col-form-label" for="httponly"
-              data-html="true" data-toggle="tooltip" data-placement="left"
-              title="Theft protection<br>Check to force the cookie to be sent only over HTTP(S),<br> i.e. block JavaScript access like in XSS context." data-i18n-title="tooltip_cHttpOnly">httpOnly</label>
-              <div class="col-sm-10">
-                <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="checkbox" name="httponly" id="httponly">
+            <div class="row">
+              <div class="form-group">
+                <label class="col-sm-2 col-form-label" for="httponly"
+                data-html="true" data-toggle="tooltip" data-placement="left"
+                title="Theft protection<br>Check to force the cookie to be sent only over HTTP(S),<br> i.e. block JavaScript access like in XSS context." data-i18n-title="tooltip_cHttpOnly">httpOnly</label>
+                <div class="col-sm-4">
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" name="httponly" id="httponly">
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label id="select_samesite" class="col-sm-2 col-form-label" for="samesite"
+                data-html="true" data-toggle="tooltip" data-placement="left"
+                title="" data-i18n-title="tooltip_cSameSite">sameSite </label>
+                <div class="col-sm-4">
+                  <select class="form-control" id="samesite">
+                    <option value="no_restriction">No restriction</option>
+                    <option value="lax">Lax</option>
+                    <option value="strict">Strict</option>
+                  </select>
                 </div>
               </div>
             </div>

@@ -100,6 +100,12 @@ $( "#save_button" ).click(function() {
         secure: $('#issecure').is(':checked'),
         storeId: $('#store').val(),
     };
+
+    // Handle optional sameSite flag if supported
+    let $samesite_val = $('#samesite').val();
+    if ($samesite_val != null)
+        params['sameSite'] = $samesite_val;
+
     // If there is no leading dot => the cookie becomes a host-only cookie.
     // To make a host-only cookie, we must omit the domain
     // To make a subdomain cookie, we must specify the domain
@@ -1240,6 +1246,16 @@ function display_cookie_details(event) {
     $('#httponly').prop("checked", cookie.httpOnly);
     $('#issecure').prop("checked", cookie.secure);
     $('#issession').prop("checked", cookie.session);
+
+    // Handle optional sameSite flag if supported
+    let $samesite = $('#samesite')
+    $samesite.val(cookie.sameSite);
+    if (cookie.sameSite == null) {
+        // Mask select menu in case of sameSite cookie flag not supported
+        $samesite.closest('.form-group').hide();
+    } else {
+        $samesite.closest('.form-group').show();
+    }
 
     // If the cookie is not a session cookie: handle the expiration date
     if (!cookie.session) {

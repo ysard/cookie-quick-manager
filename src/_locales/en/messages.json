@@ -233,6 +233,11 @@
     "description": "Select menu to modify the context of the current cookie (private/default/etc.)."
   },
 
+  "tooltip_cSameSite": {
+    "message": "Partial protection against the risks associated with Cross-Site Request Forgery (CSRF) and Cross-Site Script Inclusion (XSSI) attacks.<br>The strict mode allows an application to warn the browser that the cookie should only be sent if the request originates from the website the cookie came from, and not from a third party website.",
+    "description": "Select menu to modify the sameSite cookie flag."
+  },
+
   "tooltip_cHttpOnly": {
     "message": "Theft protection<br>Check to force the cookie to be sent only over HTTP(S),<br> i.e. block JavaScript access like in XSS context.",
     "description": "Checkbox to change the httpOnly cookie flag."

@@ -389,6 +389,10 @@ vAPI.copy_cookies_to_store = function(promise, store_id) {
                     storeId: store_id,
                 };
 
+                // Handle optional sameSite flag if supported
+                if (cookie.sameSite != null)
+                    params['sameSite'] = cookie.sameSite;
+
                 // Session cookie has no expiration date
                 if (!cookie.session) {
                     // Refuse expired cookies
