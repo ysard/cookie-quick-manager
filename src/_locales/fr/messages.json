@@ -49,7 +49,7 @@
     "description": "Attribute of a cookie in the details panel."
   },
 
-   "filterByAttributeHeader": {
+  "filterByAttributeHeader": {
     "message": "Filtrage avancé des cookies",
     "description": "Filter dropdown menu header."
   },
