@@ -576,9 +576,14 @@ $('[data-toggle="popover"]').popover();
 $('[data-toggle="tooltip"]').tooltip(); //{placement: "right", trigger: "hover"});
 $('[my-data-toogle="dropdown_and_tooltip"]').each(function() {
     // Method to display tooltip AND dropdown/popover
-    // data-toggle="" as usual, do not call dropdown() here,
-    // but call only tooltip()
+    // data-toggle="popover or dropdown" as usual, do not call tooltip(),
+    // so we have to do it manually here.
     // https://stackoverflow.com/questions/24107002/bootstrap-3-popover-and-tooltip-on-the-same-element
+    // Basically:
+    // data-toggle="tooltip" + title="" + data-i18n-title=""
+    // => Use title for english languages; use data-i18n-title for supported languages
+    // data-toggle="popover or dropdown" + tooltip-title="" + data-i18n-title=""
+    // => Use tooltip-title for english languages; use data-i18n-title for supported languages
     $(this).tooltip({
         placement: "top",
         trigger: "hover",

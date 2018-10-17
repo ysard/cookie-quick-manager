@@ -64,8 +64,8 @@
         if (supported_locales.includes(browser.i18n.getUILanguage())) {
             insertI18nContentIntoDocument();
             insertI18nTitleIntoDocument();
-            insertI18nPopoverContentIntoDocument();
         }
+        insertI18nPopoverContentIntoDocument();
     }
 
     function insertI18nContentIntoDocument() {
