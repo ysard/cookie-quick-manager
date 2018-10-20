@@ -1115,13 +1115,6 @@ function showDomains(storeIds) {
         $domainList.empty();
         $domainList.append(fragment);
 
-        // Print no cookie alert if we filtered domains, and there are no more domains to display.
-        if (domains_displayed_count == 0) {
-            // No domain to display
-            throw Error("No domain to display");
-        }
-
-
         // Display the number of domains
         // TODO: display the number of cookies ?
         let column_title = document.querySelector('#list_and_details h2');
@@ -1133,6 +1126,12 @@ function showDomains(storeIds) {
             column_title.appendChild(document.createTextNode(" (" + domains_displayed_count + ")"));
         }
 
+        // Print no cookie alert if we filtered domains, and there are no more domains to display.
+        if (domains_displayed_count == 0) {
+            // No domain to display
+            throw Error("No domain to display");
+        }
+
         // Simulate click on the first domain in the list when the list is built
         $("#domain-list li").first().click();
 
@@ -1142,7 +1141,7 @@ function showDomains(storeIds) {
         // Also catch error if there is no domain to display
         console.log({"Error showDomains": error});
         // Reset lists and display the error message.
-        $cookieList = $('#cookie-list');
+        let $cookieList = $('#cookie-list');
         $domainList.empty();
         $cookieList.empty();
         no_cookie_alert($domainList[0]);
