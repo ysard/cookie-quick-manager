@@ -161,7 +161,8 @@ $( "#save_button" ).click(function() {
             // (because almost 1 new cookie is added, with maybe a new container)
             $('#domain-list').find('li.active').trigger('click', true);
         }
-    }, onError);
+    }, onError)
+    .catch(err => console.error(err));
 });
 
 $("#edit_button").click(function() {
@@ -213,7 +214,8 @@ $("#protect_button").click(function() {
     set_settings.then((ret) => {
         // Simulate click on domain
         $('#domain-list').find('li.active').click();
-    }, onError);
+    }, onError)
+    .catch(err => console.error(err));
 });
 
 $("#delete_all_button").click(
@@ -915,7 +917,8 @@ function delete_cookies(promise, delete_button_selector) {
             // (because almost 1 new cookie is added, with maybe a new container)
             $('#domain-list').find('li.active').trigger('click', true);
         }
-    });
+    })
+    .catch(err => console.error(err));
 }
 
 function callback_delete_cookies(delete_button_selector) {
@@ -1129,7 +1132,7 @@ function showDomains(storeIds) {
         // Print no cookie alert if we filtered domains, and there are no more domains to display.
         if (domains_displayed_count == 0) {
             // No domain to display
-            throw Error("No domain to display");
+            return Promise.reject("No domain to display");
         }
 
         // Simulate click on the first domain in the list when the list is built
@@ -1392,7 +1395,8 @@ function delete_current_cookie() {
                 update_selected_domain_badges();
             }
         }
-    }, onError);
+    }, onError)
+    .catch(err => console.error(err));
 }
 
 function update_selected_domain_badges() {
