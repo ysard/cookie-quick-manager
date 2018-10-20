@@ -1483,15 +1483,21 @@ var cookies_onChangedListener = (function(changeInfo) {
     // Listener which monitors the creation/deletion/modification of cookies
 
     let cookie_domain = $('#domain').val();
-    console.log({"Change event": {
+    /*console.log({"Change event": {
         domain_changed: changeInfo.cookie.domain,
         current_domain: cookie_domain,
-    }});
+    }});*/
 
+    // TODO: do not take care of the option "query subdomains"
     if (changeInfo.cookie.domain == cookie_domain) {
         // The same domain as the one selected is concerned
 
-        // Delete event or add event
+        // PS: Modification event emits an event with cause = "overwrite"
+        // AND secondarly an event with cause = explicit, so we do not need to handle it separately,
+        // except for performance reasons (avoid asking for cookies of the domain and update only the
+        // modified cookie...)
+
+        // Delete event or add event (and add event after overwrite event)
         if (changeInfo.cause == 'explicit') {
             // Simulate click on the same domain with recalculation of badges
             // (because almost 1 new cookie is added, with maybe a new container)
