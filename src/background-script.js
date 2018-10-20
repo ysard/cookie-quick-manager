@@ -19,6 +19,7 @@
  *  Home: https://github.com/ysard/cookie-quick-manager
  */
 /*********** Update patchs ***********/
+'use strict';
 
 function update_listener(details) {
     /* Fired when the extension is first installed, when the extension is updated

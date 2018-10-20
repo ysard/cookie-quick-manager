@@ -18,6 +18,8 @@
  *
  *  Home: https://github.com/ysard/cookie-quick-manager
  */
+'use strict';
+
 // IIFE - Immediately Invoked Function Expression
 (function(mycode) {
 
@@ -1142,7 +1144,7 @@ function showCookiesList(event, refresh_domain_badges) {
     var storeIds = event.data.storeIds*/
 
     // Display selected domain as active and reset previously selected domain
-    $that = $(this);
+    let $that = $(this);
     $that.parent().find('li').removeClass('active');
     $that.addClass('active');
 
@@ -1228,7 +1230,7 @@ function showCookiesList(event, refresh_domain_badges) {
 function display_cookie_details(event) {
 
     // Display selected cookie as active and reset previously selected cookie
-    $that = $(this);
+    let $that = $(this);
     $that.parent().find('li').removeClass('active');
     $that.addClass('active');
 

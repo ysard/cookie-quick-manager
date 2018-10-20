@@ -18,6 +18,8 @@
  *
  *  Home: https://github.com/ysard/cookie-quick-manager
  */
+'use strict';
+
 // IIFE - Immediately Invoked Function Expression
 (function(mycode) {
 

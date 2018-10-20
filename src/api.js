@@ -18,6 +18,8 @@
  *
  *  Home: https://github.com/ysard/cookie-quick-manager
  */
+'use strict';
+
 (function(self) {
 
 if ( self.vAPI === undefined ) {
