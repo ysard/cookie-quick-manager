@@ -1075,12 +1075,12 @@ function showDomains(storeIds) {
         // Sort domains names alphabetically
         var domains_names = Object.keys(domains);
         domains_names.sort();
-        var display_count = 0;
+        var domains_displayed_count = 0;
         //add an <li> item with the name and value of the cookie to the list
         domains_names.forEach(function(domain_name){
 
             // Count displayed domains
-            display_count++;
+            domains_displayed_count++;
 
             let li = document.createElement("li");
             li.className = "list-group-item";
@@ -1116,9 +1116,21 @@ function showDomains(storeIds) {
         $domainList.append(fragment);
 
         // Print no cookie alert if we filtered domains, and there are no more domains to display.
-        if (display_count == 0) {
+        if (domains_displayed_count == 0) {
             // No domain to display
             throw Error("No domain to display");
+        }
+
+
+        // Display the number of domains
+        // TODO: display the number of cookies ?
+        let column_title = document.querySelector('#list_and_details h2');
+        if (column_title.childNodes.length == 2) {
+            // Counter is already initialized
+            column_title.childNodes[1].textContent = " (" + domains_displayed_count + ")";
+        } else {
+            // Set the counter for the first time
+            column_title.appendChild(document.createTextNode(" (" + domains_displayed_count + ")"));
         }
 
         // Simulate click on the first domain in the list when the list is built
