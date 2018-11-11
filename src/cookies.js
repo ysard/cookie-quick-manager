@@ -392,7 +392,7 @@ $('#button_optimal_size').click(function() {
 
 $("#protect_all_button").click(function() {
     // Get all cookies for this store and protect them
-    let promise = vAPI.get_all_cookies([$('#search_store').val()]);
+    let promise = vAPI.filter_cookies(vAPI.get_all_cookies([$('#search_store').val()]));
     promise.then((cookies) => {
         vAPI.set_cookie_protection(cookies, true).then(() => {
             // Update the UI
@@ -403,7 +403,7 @@ $("#protect_all_button").click(function() {
 
 $("#unprotect_all_button").click(function() {
     // Get all cookies for this store and unprotect them
-    let promise = vAPI.get_all_cookies([$('#search_store').val()]);
+    let promise = vAPI.filter_cookies(vAPI.get_all_cookies([$('#search_store').val()]));
     promise.then((cookies) => {
         vAPI.set_cookie_protection(cookies, false).then(() => {
             // Update the UI
@@ -494,7 +494,7 @@ $('#domain-list').contextMenu({
                     text: $(this).text()
                 });*/
 
-                let promise = vAPI.getCookiesFromSelectedDomain();
+                let promise = vAPI.filter_cookies(vAPI.getCookiesFromSelectedDomain());
                 vAPI.copy_cookies_to_store(promise, options).then((ret) => {
                     // Simulate click on the same domain with recalculation of badges
                     // (because almost 1 new cookie is added, with maybe a new container)
@@ -505,7 +505,7 @@ $('#domain-list').contextMenu({
                 "copy": {name: browser.i18n.getMessage("contextMenu_domain_copy2Clipboard"), icon: "copy",
                     callback: function(itemKey, opt, rootMenu, originalEvent) {
                         // Export to clipboard all cookies in the selected domain
-                        let promise = vAPI.getCookiesFromSelectedDomain();
+                        let promise = vAPI.filter_cookies(vAPI.getCookiesFromSelectedDomain());
                         window.display_json_in_clipboard_area(promise);
                         $('#modal_clipboard').modal("show");
                     }
@@ -513,7 +513,7 @@ $('#domain-list').contextMenu({
                 "save": {name: browser.i18n.getMessage("contextMenu_domain_copy2File"), icon: "save",
                     callback: function(itemKey, opt, rootMenu, originalEvent) {
                         // Export to file all cookies in the selected domain
-                        let promise = vAPI.getCookiesFromSelectedDomain();
+                        let promise = vAPI.filter_cookies(vAPI.getCookiesFromSelectedDomain());
                         promise.then((cookies) => {
                             // Make 1 json for each cookie and store it
                             // Merge and display templates
@@ -527,7 +527,7 @@ $('#domain-list').contextMenu({
                 "protect": {name: browser.i18n.getMessage("contextMenu_domain_protect"), icon: "lock",
                     callback: function(itemKey, opt, rootMenu, originalEvent) {
                         // Protect all cookies in the selected domain
-                        let promise = vAPI.getCookiesFromSelectedDomain();
+                        let promise = vAPI.filter_cookies(vAPI.getCookiesFromSelectedDomain());
                         promise.then((cookies) => {
                             vAPI.set_cookie_protection(cookies, true).then(() => {
                                 // Update the UI
@@ -539,7 +539,7 @@ $('#domain-list').contextMenu({
                 "unprotect": {name: browser.i18n.getMessage("contextMenu_domain_unprotect"), icon: "unlock",
                     callback: function(itemKey, opt, rootMenu, originalEvent) {
                         // Unprotect all cookies in the selected domain
-                        let promise = vAPI.getCookiesFromSelectedDomain();
+                        let promise = vAPI.filter_cookies(vAPI.getCookiesFromSelectedDomain());
                         promise.then((cookies) => {
                             vAPI.set_cookie_protection(cookies, false).then(() => {
                                 // Update the UI
@@ -552,7 +552,7 @@ $('#domain-list').contextMenu({
                     callback: function(itemKey, opt, rootMenu, originalEvent) {
                         // Remove all cookies in the selected domain
                         // TODO #delete_domain_button n'existe plus
-                        delete_cookies(vAPI.getCookiesFromSelectedDomain(), "#delete_domain_button span");
+                        delete_cookies(vAPI.filter_cookies(vAPI.getCookiesFromSelectedDomain()), "#delete_domain_button span");
                     }
                 },
                 "contexts_selector": context_menu_elements,
@@ -1068,7 +1068,7 @@ function showDomains(storeIds) {
     if (searched_store != 'all')
         storeIds = [searched_store];
 
-    vAPI.get_all_cookies(storeIds).then((cookies) => {
+    vAPI.filter_cookies(vAPI.get_all_cookies(storeIds)).then((cookies) => {
 
         // Get dict of domains with number of cookies + cookieStore ids
         var domains = uniqueDomains(cookies);
@@ -1165,7 +1165,7 @@ function showCookiesList(event, refresh_domain_badges) {
     // Get 1 promise for each cookie store
     // Each promise stores all associated cookies
     // NOTE: On FF62- and FF59+=, the promise simply returns the content of vAPI.get_all_cookies(storeIds)
-    let promise = vAPI.getCookiesFromSelectedDomain();
+    let promise = vAPI.filter_cookies(vAPI.getCookiesFromSelectedDomain());
     // Merge all promises
     promise.then((cookies) => {
 

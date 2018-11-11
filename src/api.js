@@ -114,55 +114,62 @@ vAPI.parse_search_query = function(search_query) {
     vAPI.query_values = values;
 }
 
-vAPI.filter_cookies = function(cookies, names, values) {
-    /* Filter cookies on their names and values
+vAPI.filter_cookies = function(promise) {
+    /* Promise to filter cookies on their names and values
      * Return a cookie list satisfying the search conditions
+     *
+     * This promise is used with get_all_cookies()
+     * and getCookiesFromSelectedDomain()
+     *
+     * This promise uses vAPI.query_names and vAPI.query_values set by vAPI.parse_search_query
      *
      * Multiple name filters are linked by OR operator.
      * Multiple value filters are linked by OR operator.
      * Groups of name filters are linked with groups of value filters by a AND operator.
      *
      * Ex: ("name1" OR "name2") AND ("value1", "value2")
-     *
-     * TODO: Transform this function in a promise that encapsulates get_all_cookies()
-     * and getCookiesFromSelectedDomain()
-     * => Move the filtering code in a separate place
      */
 
     // No filter => return the list of cookies unchanged
-    if (!names.length && !values.length)
-        return cookies;
+    if (!vAPI.query_names.length && !vAPI.query_values.length)
+        return promise;
 
-    //console.log("filter_cookies: cookie to filter", cookies.length);
+    return new Promise((resolve, reject) => {
+        promise.then((cookies) => {
 
-    let filtered_cookies = [];
-    let name_found = false;
-    let value_found = false;
-    for (let cookie of cookies) {
+            //console.log("filter_cookies: cookie to filter", cookies.length);
 
-        for (let name of names)
-            if (cookie.name.indexOf(name) !== -1)
-                // name is found => keep the cookie
-                name_found = true;
+            let filtered_cookies = [];
+            let name_found = false;
+            let value_found = false;
+            for (let cookie of cookies) {
 
-        for (let value of values)
-            if (cookie.value.indexOf(value) !== -1)
-                // value is found => keep the cookie
-                value_found = true;
+                for (let name of vAPI.query_names)
+                    if (cookie.name.indexOf(name) !== -1)
+                        // name is found => keep the cookie
+                        name_found = true;
 
-        if ((value_found && name_found) || (        // value and name found in the same cookie
-                (value_found && !names.length) ||   // value found with no queried name
-                (name_found && !values.length)      // name found with no queried value
-            )
-        ) {
-            //console.log("filter_cookies: kept:", cookie.domain, cookie.name, cookie.value);
-            filtered_cookies.push(cookie);
-        }
+                for (let value of vAPI.query_values)
+                    if (cookie.value.indexOf(value) !== -1)
+                        // value is found => keep the cookie
+                        value_found = true;
 
-        name_found = false;
-        value_found = false;
-    }
-    return filtered_cookies;
+                if ((value_found && name_found) || (                 // value and name found in the same cookie
+                        (value_found && !vAPI.query_names.length) || // value found with no queried name
+                        (name_found && !vAPI.query_values.length)    // name found with no queried value
+                    )
+                ) {
+                    //console.log("filter_cookies: kept:", cookie.domain, cookie.name, cookie.value);
+                    filtered_cookies.push(cookie);
+                }
+
+                name_found = false;
+                value_found = false;
+            }
+            resolve(filtered_cookies);
+        })
+        .catch(err => console.error(err));
+    });
 }
 
 vAPI.get_all_cookies = function(storeIds) {
@@ -223,9 +230,7 @@ vAPI.get_all_cookies = function(storeIds) {
                         filtered_cookies.push(cookie);
                     }
                 }
-                // Filtering on names and values
-                filtered_cookies = vAPI.filter_cookies(filtered_cookies, vAPI.query_names, vAPI.query_values);
-                //console.log("get_all_cookies: filtering:", filtered_cookies.length);
+                //console.log("get_all_cookies: nb:", filtered_cookies.length);
                 resolve(filtered_cookies);
             } else
                 reject("all_cookies-NoCookies");
@@ -551,9 +556,7 @@ vAPI.getCookiesFromSelectedDomain = function() {
                             filtered_cookies.push(cookie);
                     }
                 }
-                // Filtering on names and values
-                filtered_cookies = vAPI.filter_cookies(filtered_cookies, vAPI.query_names, vAPI.query_values);
-                //console.log("getCookiesFromSelectedDomain: filtering", filtered_cookies.length);
+                //console.log("getCookiesFromSelectedDomain: nb", filtered_cookies.length);
                 resolve(filtered_cookies);
             } else {
                 reject("SelectedDomain-NoCookies");

@@ -49,7 +49,7 @@ $("#file_cookie_export").click(function() {
 
 $("#file_domain_export").click(function() {
     // Build 1 json template for each cookie for the selected domain
-    let promise = vAPI.getCookiesFromSelectedDomain();
+    let promise = vAPI.filter_cookies(vAPI.getCookiesFromSelectedDomain());
     promise.then((cookies) => {
         // Make 1 json for each cookie and store it
         // Merge and display templates
@@ -63,7 +63,7 @@ $("#file_domain_export").click(function() {
 
 $("#file_all_export").click(function() {
     // Build 1 json template for each cookie in all stores
-    let promise = vAPI.get_all_cookies([$('#search_store').val()]);
+    let promise = vAPI.filter_cookies(vAPI.get_all_cookies([$('#search_store').val()]));
     promise.then((cookies) => {
         export_content_to_file_wrapper(cookies);
     });
@@ -79,13 +79,13 @@ $("#clipboard_cookie_export").click(function() {
 
 $("#clipboard_domain_export").click(function() {
     // Build 1 json template for each cookie for the selected domain
-    let promise = vAPI.getCookiesFromSelectedDomain();
+    let promise = vAPI.filter_cookies(vAPI.getCookiesFromSelectedDomain());
     display_json_in_clipboard_area(promise);
 });
 
 $("#clipboard_all_export").click(function() {
     // Build 1 json template for each cookie in all stores
-    let promise = vAPI.get_all_cookies([$('#search_store').val()]);
+    let promise = vAPI.filter_cookies(vAPI.get_all_cookies([$('#search_store').val()]));
     display_json_in_clipboard_area(promise);
 });
 
