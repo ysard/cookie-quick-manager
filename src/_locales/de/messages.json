@@ -419,6 +419,11 @@
     "description": "Settings page: Checkbox"
   },
 
+  "oDisplay_deletion_alert": {
+    "message": " Zeigen Sie eine Warnung an, bevor Sie Cookies aus dem gesamten Browserkontext entfernen (Schaltfläche \"Alle löschen\")",
+    "description": "Settings page: Checkbox"
+  },
+
   "oExport": {
     "message": "Exportieren",
     "description": "Settings page: Section title"

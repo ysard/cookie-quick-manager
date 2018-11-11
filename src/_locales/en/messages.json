@@ -425,7 +425,7 @@
   },
 
   "oDisplay_deletion_alert": {
-    "message": " Display an alert before removing cookies from entire browsing context(s)",
+    "message": " Display an alert before removing cookies from entire browsing context(s) (\"Delete all\" button)",
     "description": "Settings page: Checkbox"
   },
 
