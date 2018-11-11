@@ -496,6 +496,10 @@
 
 
 
+  "popupSimple": {
+    "message": "Verwalten Sie alle Cookies",
+    "description": "Popup menu: Display the main interface of CQM"
+  },
 
   "popupSearch": {
     "message": "In Cookies suchen nach: ",

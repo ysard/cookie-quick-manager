@@ -156,6 +156,8 @@
     function set_translations() {
         // Set translations after the insertion of favicons and numbers of cookies/items
         // set_translations replace specific childNodes in a predefined position
+        // PS: Be careful not to skip a line in the html code so as not to change the index
+        // of the text element to be modified.
 
         // Workaround used to speed-up the load of UI for non supported locales
         let supported_locales = ['fr', 'de'];
