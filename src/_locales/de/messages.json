@@ -504,12 +504,12 @@
 
   "popupDeleteCurrentCookies": {
     "message": "Aktuelles Cookie löschen",
-    "description": "Popup menu: Delete current cookies"
+    "description": "Popup menu: Delete current Site Cookies"
   },
 
   "popupDeleteCurrentLocalStorage": {
     "message": "Aktuellen LocalStorage löschen",
-    "description": "Popup menu: Delete current LocalStorage"
+    "description": "Popup menu: Delete current Site LocalStorage"
   },
 
   "popupOptions": {
