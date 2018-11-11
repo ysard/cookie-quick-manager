@@ -49,8 +49,6 @@ function init_options() {
         delete_all_on_restart: false,
     });
     get_settings.then((items) => {
-        console.log({storage_data: items});
-
         // Load protected_cookies
         protected_cookies = vAPI.get_and_patch_protected_cookies(items);
 
@@ -59,8 +57,8 @@ function init_options() {
         if (items.delete_all_on_restart)
             setTimeout(function() {
                 vAPI.get_stores().then((stores) => {
-                    let deletion_promise = vAPI.delete_cookies(vAPI.get_all_cookies());
-                    deletion_promise.then(null, vAPI.onError);
+                    vAPI.delete_cookies(vAPI.get_all_cookies())
+                    .catch(vAPI.onError);
                 });
             }, 2000);
     });

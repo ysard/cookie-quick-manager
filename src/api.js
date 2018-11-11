@@ -220,6 +220,8 @@ vAPI.get_all_cookies = function(storeIds) {
                 // because it is less complex and removes much more items
                 let filtered_cookies = [];
                 if (vAPI.query_domain == "") {
+                    // vAPI.query_domain is empty: get_all_cookies() is called from background script
+                    // in case of deletion on boot or there is no domain searched.
                     filtered_cookies = cookies;
                 } else {
                     for (let cookie of cookies) {
@@ -235,6 +237,7 @@ vAPI.get_all_cookies = function(storeIds) {
             } else
                 reject("all_cookies-NoCookies");
         })
+        .catch(err => console.error(err));
     });
 }
 
@@ -740,7 +743,7 @@ vAPI.date_format = "DD-MM-YYYY HH:mm:ss";
 vAPI.optimal_window_width = 1095;
 vAPI.optimal_window_height = 585;
 
-vAPI.query_domain;
+vAPI.query_domain = "";
 vAPI.query_names;
 vAPI.query_values;
 
