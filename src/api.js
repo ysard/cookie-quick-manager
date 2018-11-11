@@ -295,14 +295,14 @@ vAPI.FPI_detection = function(promise) {
         //console.log('firstPartyIsolate API IS available');
         // set FPI status to true or false
         vAPI.FPI = got.value;
-        console.log({FPI_status: vAPI.FPI});
+        //console.log({FPI_status: vAPI.FPI});
         return promise;
 
     }, (error) => {
         //console.log('firstPartyIsolate API is NOT available');
         // set FPI status
         vAPI.FPI = undefined;
-        console.log({FPI_status: vAPI.FPI});
+        //console.log({FPI_status: vAPI.FPI});
         return promise;
     });
 }

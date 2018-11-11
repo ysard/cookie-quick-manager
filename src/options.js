@@ -114,7 +114,7 @@
 
     /*********** Utils ***********/
     function set_option(option_object) {
-        console.log({set_option: option_object});
+        //console.log({set_option: option_object});
         let set_settings = browser.storage.local.set(option_object);
         set_settings.then(null, (error) => {
             console.log(`set_option_error: ${error}`);
@@ -132,7 +132,7 @@
             template: 'JSON',
         });
         get_settings.then((items) => {
-            console.log({storage_data: items});
+            //console.log({storage_data: items});
 
             // Update the interface
             $('#delete_all_on_restart').prop('checked', items.delete_all_on_restart);

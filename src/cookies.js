@@ -1384,16 +1384,16 @@ function delete_current_cookie() {
             // then the next domain, and finally the previous domain.
             if(!select_ideal_remaining_element($('#cookie-list').find('li.active'))) {
                 // No cookie to display: Search clicked domain and remove it
-                console.log("No more cookies");
+                //console.log("No more cookies");
 
                 if(!select_ideal_remaining_element($('#domain-list').find('li.active'))) {
                     // No domain to display, reset the UI
-                    console.log("No more domains");
+                    //console.log("No more domains");
                     actualizeDomains();
                 }
             } else {
                 // Just update the badges according to the stores used by the remaining cookies
-                console.log("Some remaining cookies");
+                //console.log("Some remaining cookies");
                 update_selected_domain_badges();
             }
         }
