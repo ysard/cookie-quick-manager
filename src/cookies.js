@@ -299,6 +299,8 @@ $(document).keydown(function(event){
             $("#import_file").click();
         } else if (key == 83) { // S => export all cookies, save file
             $("#file_all_export").click();
+        } else if (key == 68) { // D => delete all cookies
+            $("#ask_total_deletion_button").click();
         } else {
             return;
         }
