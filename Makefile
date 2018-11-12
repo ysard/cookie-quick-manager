@@ -10,7 +10,7 @@ lint: mk_sources
 	$(WEB-EXT) lint --source-dir=build
 
 build: mk_sources
-	$(WEB-EXT) build --source-dir=build --artifacts-dir=dist
+	$(WEB-EXT) build --source-dir=build --artifacts-dir=dist --overwrite-dest
 
 clean:
 	@rm -rf build/
