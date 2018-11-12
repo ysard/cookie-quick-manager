@@ -41,7 +41,7 @@
         });
         $('#fpi_status').change(function() {
             // Set the FPI option
-            vAPI.getFirstPartyIsolateStatus($(this).is(':checked'));
+            vAPI.setFirstPartyIsolateStatus($(this).is(':checked'));
         });
         $('#prevent_protected_cookies_deletion').change(function() {
             // Prevent protected cookies deletion from websites

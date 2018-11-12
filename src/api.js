@@ -640,7 +640,7 @@ vAPI.set_cookie_protection = function(cookies, protect_flag) {
     });
 }
 
-vAPI.getFirstPartyIsolateStatus = function(status) {
+vAPI.setFirstPartyIsolateStatus = function(status) {
     // Set firstPartyIsolate status
 
     var getting = browser.privacy.websites.firstPartyIsolate.get({});
