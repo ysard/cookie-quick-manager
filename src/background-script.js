@@ -47,10 +47,14 @@ function init_options() {
     let get_settings = browser.storage.local.get({
         protected_cookies: {},
         delete_all_on_restart: false,
+        prevent_protected_cookies_deletion: true,
     });
     get_settings.then((items) => {
         // Load protected_cookies
         protected_cookies = vAPI.get_and_patch_protected_cookies(items);
+
+        // Load the flag to prevent protected cookies deletion by websites
+        prevent_protected_cookies_deletion = items.prevent_protected_cookies_deletion;
 
         // Program the deletion of all cookies (except for those which are protected)
         // BUG ?: We must set a delay on this function. Otherwise the API returns 0 cookie...
@@ -69,11 +73,16 @@ browser.cookies.onChanged.addListener(function(changeInfo) {
     /* Callback when the cookie store is updated
      * PS: not called when you try to overwrite the exact same cookie.
      *
-     * Modification event:
+     * Update of an expired cookie:
+     * Object { removed: true, cookie: Object, cause: "expired" }
+     * Object { removed: false, cookie: Object, cause: "explicit" }
+     *
+     * Update of a valid cookie:
      * Object { removed: true, cookie: Object, cause: "overwrite" }
      * Object { removed: false, cookie: Object, cause: "explicit" }
      *
-     * Delete event:
+     * Delete event (when a past date is set or cookie.remove() is called):
+     * PS: It seems to be impossible to remove an expired coookie by setting a past date.
      * Object {removed: true, cookie: Object, cause: "explicit" }
      *
      * Add event:
@@ -104,9 +113,9 @@ browser.cookies.onChanged.addListener(function(changeInfo) {
      *    //showCookiesList(event);
      *    }
      */
-    //console.log(changeInfo);
 
-    if (changeInfo.removed && changeInfo.cause == 'explicit') {
+    // Do not protect the cookie if website protection is not enabed
+    if (prevent_protected_cookies_deletion && changeInfo.removed && changeInfo.cause == 'explicit') {
 
         // If the deleted cookie is not in protected_cookies array: do nothing
         if (protected_cookies[changeInfo.cookie.domain] === undefined ||
@@ -145,7 +154,7 @@ browser.cookies.onChanged.addListener(function(changeInfo) {
 
 browser.storage.onChanged.addListener(function (changes, area) {
     // Called when the local storage area is modified
-    // Here: we handle only 'protected_cookies' key.
+    // Here: we handle only 'protected_cookies' and 'prevent_protected_cookies_deletion' keys.
     // We do that here because we have to know if a cookie must be
     // protected or not from deletion when there is a deletion event.
 
@@ -154,6 +163,9 @@ browser.storage.onChanged.addListener(function (changes, area) {
     if (changes['protected_cookies'] !== undefined)
         protected_cookies = changes.protected_cookies.newValue;
 
+    if (changes['prevent_protected_cookies_deletion'] !== undefined)
+        prevent_protected_cookies_deletion = changes.prevent_protected_cookies_deletion.newValue;
+
 });
 
 //browser.runtime.onStartup.addListener(init_options);
@@ -161,6 +173,7 @@ browser.storage.onChanged.addListener(function (changes, area) {
 /*********** Global variables ***********/
 //var protected_cookies_counter = 0;
 var protected_cookies;
+var prevent_protected_cookies_deletion;
 
 init_options();
 // Set default color of the counter of protected cookies on the toolbar icon

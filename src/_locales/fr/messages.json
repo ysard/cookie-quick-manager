@@ -403,6 +403,11 @@
     "description": "Settings page: Checkbox"
   },
 
+  "oPrevent_protected_cookies_deletion": {
+    "message": " Empêcher les sites de supprimer des cookies protégés, même s'ils sont expirés",
+    "description": "Settings page: Checkbox"
+  },
+
   "oAppearance": {
     "message": "Apparence",
     "description": "Settings page: Section title"
@@ -419,7 +424,7 @@
   },
 
   "oOpen_in_new_tab": {
-    "message": " Ouvrir Cookie Quick Manager dans un nouvel onglet",
+    "message": " Toujours ouvrir Cookie Quick Manager dans un nouvel onglet",
     "description": "Settings page: Checkbox"
   },
 

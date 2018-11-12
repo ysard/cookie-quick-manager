@@ -1338,6 +1338,7 @@ function set_protect_lock_icon(status) {
 function delete_current_cookie() {
     /* Remove a cookie displayed on details zone
      * NOTE: Remove inexistant cookie: Removed: null
+     * NOTE: This function does not try to delete protected cookie
      */
 
     // DO NOT delete protected cookie

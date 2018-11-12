@@ -399,6 +399,11 @@
     "description": "Settings page: Checkbox"
   },
 
+  "oPrevent_protected_cookies_deletion": {
+    "message": " Verhindern, dass Websites geschützte Cookies löschen, auch wenn diese abgelaufen sind",
+    "description": "Settings page: Checkbox"
+  },
+
   "oAppearance": {
     "message": "Design",
     "description": "Settings page: Section title"

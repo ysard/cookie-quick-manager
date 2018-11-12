@@ -43,6 +43,10 @@
             // Set the FPI option
             vAPI.getFirstPartyIsolateStatus($(this).is(':checked'));
         });
+        $('#prevent_protected_cookies_deletion').change(function() {
+            // Prevent protected cookies deletion from websites
+            set_option({'prevent_protected_cookies_deletion': $(this).is(':checked')});
+        });
         $('#skin').change(function() {
             // Change skin
             set_option({'skin': $(this).val()});
@@ -126,6 +130,7 @@
         let get_settings = browser.storage.local.get({
             delete_all_on_restart: false,
             import_protected_cookies: false,
+            prevent_protected_cookies_deletion: true,
             skin: 'default',
             open_in_new_tab: false,
             display_deletion_alert: true,
@@ -137,6 +142,7 @@
             // Update the interface
             $('#delete_all_on_restart').prop('checked', items.delete_all_on_restart);
             $('#import_protected_cookies').prop('checked', items.import_protected_cookies);
+            $('#prevent_protected_cookies_deletion').prop('checked', items.prevent_protected_cookies_deletion);
             $('#skin').val(items.skin);
             $('#open_in_new_tab').prop('checked', items.open_in_new_tab);
             $('#display_deletion_alert').prop('checked', items.display_deletion_alert);

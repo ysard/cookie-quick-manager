@@ -404,6 +404,11 @@
     "description": "Settings page: Checkbox"
   },
 
+  "oPrevent_protected_cookies_deletion": {
+    "message": " Prevent sites from clearing protected cookies, even if they are expired",
+    "description": "Settings page: Checkbox"
+  },
+
   "oAppearance": {
     "message": "Appearance",
     "description": "Settings page: Section title"

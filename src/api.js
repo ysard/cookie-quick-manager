@@ -316,6 +316,7 @@ vAPI.delete_cookies = function(promise) {
     // This presence of this property gives the status of the FPI support.
     // The promise returns the number of remaining cookies (not deleted because
     // they are protected against deletion)
+    // NOTE: This function does not try to delete protected cookie
 
     return new Promise((resolve, reject) => {
 
