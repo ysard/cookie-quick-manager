@@ -1178,6 +1178,22 @@ function showCookiesList(event, refresh_domain_badges) {
     $that.parent().find('li').removeClass('active');
     $that.addClass('active');
 
+
+    function no_more_cookies_in_selected_domain() {
+        // No cookie to display: Search clicked domain and remove it
+        // Print no cookie alert if we filtered subdomains, and there are no more cookies to display.
+        $that.parent().find('li.active').remove();
+        if ($that.parent().find('li').length == 0) {
+            // No domain to display, reset the UI
+            actualizeDomains();
+        } else {
+            // Reset the cookie list and display the error message.
+            let $cookieList = $('#cookie-list');
+            $cookieList.empty();
+            no_cookie_alert($cookieList[0]);
+        }
+    }
+
     // Get 1 promise for each cookie store
     // Each promise stores all associated cookies
     // NOTE: On FF62- and FF59+=, the promise simply returns the content of vAPI.get_all_cookies(storeIds)
@@ -1247,13 +1263,16 @@ function showCookiesList(event, refresh_domain_badges) {
             $("#cookie-list li").first().click();
 
         } else {
-            // No cookie to display: Search clicked domain and remove it
+            // No cookie to display: Search the clicked domain and remove it
             // Print no cookie alert if we filtered subdomains, and there are no more cookies to display.
-            $that.parent().find('li.active').remove();
-            no_cookie_alert($cookieList[0]);
+            no_more_cookies_in_selected_domain();
         }
     }).catch((error) => {
+        // No cookie to display: Search the clicked domain and remove it
+        // Print no cookie alert if we filtered subdomains, and there are no more cookies to display.
+        // We are here when auto-actualize is enabled and when a cookie is deleted by a website
         console.log({"Error showCookiesList": error});
+        no_more_cookies_in_selected_domain();
     });
 }
 
