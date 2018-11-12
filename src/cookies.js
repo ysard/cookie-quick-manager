@@ -62,10 +62,19 @@ $("#actualize_button").click(function() {
 });
 $("#auto_actualize_checkbox").click(function() {
     // Toggle the listener which monitors the creation/deletion/modification of cookies
-    if (browser.cookies.onChanged.hasListener(cookies_onChangedListener))
+    // and memorize the checkbox status.
+    let set_settings;
+
+    if (browser.cookies.onChanged.hasListener(cookies_onChangedListener)) {
         browser.cookies.onChanged.removeListener(cookies_onChangedListener);
-    else
+        set_settings = browser.storage.local.set({auto_actualize_checkbox: false});
+    } else {
         browser.cookies.onChanged.addListener(cookies_onChangedListener);
+        set_settings = browser.storage.local.set({auto_actualize_checkbox: true});
+    }
+    set_settings.then(null, (error) => {
+        console.log(`set_option_error: ${error}`);
+    });
 });
 $( "#save_button" ).click(function() {
     /* Save a cookie displayed on details zone
@@ -957,9 +966,14 @@ function get_options() {
         protected_cookies: {},
         skin: 'default',
         display_deletion_alert: true,
+        auto_actualize_checkbox: false,
     });
     get_settings.then((items) => {
         //console.log({storage_data: items});
+
+        // Set auto-actualize checkbox status
+        if (items.auto_actualize_checkbox)
+            $("#auto_actualize_checkbox").click();
 
         // Reload protected_cookies
         protected_cookies = vAPI.get_and_patch_protected_cookies(items);
