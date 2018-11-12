@@ -220,8 +220,10 @@ vAPI.get_all_cookies = function(storeIds) {
                 // because it is less complex and removes much more items
                 let filtered_cookies = [];
                 if (vAPI.query_domain == "") {
-                    // vAPI.query_domain is empty: get_all_cookies() is called from background script
-                    // in case of deletion on boot or there is no domain searched.
+                    // vAPI.query_domain is empty:
+                    // - get_all_cookies() is called from background script
+                    // in case of deletion on boot
+                    // - there is no searched domain
                     filtered_cookies = cookies;
                 } else {
                     for (let cookie of cookies) {
