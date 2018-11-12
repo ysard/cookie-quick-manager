@@ -425,7 +425,7 @@
   },
 
   "oOpen_in_new_tab": {
-    "message": " Open Cookie Quick Manager in new tab",
+    "message": " Always open Cookie Quick Manager in new tab",
     "description": "Settings page: Checkbox"
   },
 
