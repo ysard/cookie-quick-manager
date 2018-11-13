@@ -1,30 +1,31 @@
 <strong>Présentation</strong>
 
 Cookie Quick Manager : Un gestionnaire complet pour les cookies créés en cours de navigation.
-Il permet notamment de visualiser, éditer, créer, supprimer, sauvegarder, restaurer et rechercher les cookies par noms de domaines; la navigation privée, l'isolement de la première partie, et les contextes de navigation sont également supportés.
+Il permet notamment de visualiser, éditer, créer, supprimer, sauvegarder, restaurer, protéger et rechercher les cookies par noms de domaines. Les contextes de navigation tels que la navigation privée, l'isolement de la première partie, le flag SameSite sont également supportés.
+De plus, le localstorage de la page consultée peut être effacé (voir en dessous).
 
 Cookie Quick Manager est destiné aux développeurs, aux testeurs ou aux personnes soucieuses du respect de leur vie privée sur Internet.
 
 Cette WebExtension est compatible avec Firefox 57 et s'inspire des addons <a href="https://addons.mozilla.org/fr/firefox/addon/cookies-manager-plus/">Cookies Manager+</a> et <a href="https://addons.mozilla.org/fr/firefox/addon/cookie-manager/">Advanced Cookie Manager</a> dont le développement a été arrêté à cause de l'abandon du support des extensions "Legacy".
 
+
 <strong>Fonctionnalités</strong>
 
 <ul>
 <li>Ergonomie : Interface structurée. Chaque paramètre ou fonctionnalité est décrit au survol de la souris.</li>
-<li>Transparence et sécurité : Le code source est libre (sous licence GPLv3) et publié sur une plateforme publique, autorisant les relectures et les contributions externes.</li>
+<li>Transparence et sécurité : Le code source est libre (sous licence GPLv3) et <strong>publié sur une plateforme publique</strong>, autorisant les relectures et les contributions externes.</li>
 <li>Recherche : Un utilisateur peut rechercher les cookies d'un domaine et des sous-domaines qui en dépendent.</li>
 <li>Édition : Tous les attributs d'un cookie peuvent être modifiés : domaine, chemin, nom, valeur, date d'expiration ainsi que les flags secure et httponly.</li>
-<li>Suppression : Autorise la supression des cookies de n'importe quel site consulté en deux clics.</li>
+<li>Suppression : Autorise la suppression des cookies de n'importe quel site consulté en deux clics.</li>
 <li>Export : L'exportation et l'importation d'un cookie ou des cookies d'un domaine au format JSON ou Netscape est tout aussi facile.</li>
 <li>Isolement de la première partie (First-Party Isolation) : Supporté avec limitations (dues à des bugs de l'API) pour Firefox 59, 60 et 61; et supporté sans limitations à partir de Firefox 62 (prévue pour septembre 2018).</li>
-<li>Contextes : Les contextes de navigation (aussi appelés Multi-Account Containers, ou Contextual Identities) sont supportés. Un utilisateur peut par exemple copier des cookies d'un contexte vers un autre ou sauvegarder un cookie dans un contexte spécifique.</li>
-<li>Protection des cookies : Supression des cookies non protégés en un clic.</li>
-<li>Nettoyage et vie privée : Supression possible des cookies au démarrage du navigateur.</li>
+<li>Contextes de navigation/containers : Les contextes de navigation (aussi appelés Multi-Account Containers, ou Contextual Identities) sont supportés. Un utilisateur peut par exemple chercher et afficher les cookies d'un contexte, ou encore copier des cookies d'un contexte vers un autre, ou bien sauvegarder un cookie dans un contexte spécifique.</li>
+<li>SameSite : Le flag SameSite est supporté. Il s'agit d'une protection partielle contre les risques liés aux attaques de type CSRF (Cross-Site Request Forgery) et XSSI (Cross-Site Script Inclusion), implémentée depuis Firefox 63.</li>
+<li>Protection des cookies : Supression des cookies non protégés en un clic. Cette option peut également empêcher la suppression de cookies par les sites eux-mêmes.</li>
+<li>Nettoyage et vie privée : Suppression possible des cookies au démarrage du navigateur.</li>
+<li>LocalStorage: Les clés/valeurs de la page consultée peuvent être effacées en un clic.</li>
 </ul>
 
-<strong>À propos de la protection des cookies</strong>
-
-La protection des cookies est limitée aux actions de l'addon, aux suppressions automatiques réalisées par les sites eux-mêmes, ou aux suppressions réalisées dans la section "Cookies et données de sites" des préférences du navigateur. Cela veut dire que l'option officielle de suppression des cookies à la fermeture du navigateur est incompatible avec l'addon. Néanmoins, il existe une option dans l'addon pours supprimer tous les cookies (sauf les cookies protégés) au démarrage du navigateur.
 
 <strong>Vie privée & droits</strong>
 
@@ -47,9 +48,30 @@ Il requiert les droits suivants pour fonctionner :
 <li>Privacy : Autorise l'accès et la modification de paramètres liés à la vie privée (gestion de l'option FirstPartyIsolation).</li>
 </ul>
 
+
+<strong>À propos de la protection des cookies</strong>
+
+La protection des cookies est limitée aux actions de l'addon, aux suppressions automatiques réalisées par les sites eux-mêmes, ou aux suppressions réalisées dans la section "Cookies et données de sites" des préférences du navigateur. Cela veut dire que l'option de suppression des cookies à la fermeture du navigateur, intégrée à Firefox est incompatible. Néanmoins, cette option est réimplémentée dans cet addon dans le but de pouvoir conserver seulement les cookies protégés au démarrage du navigateur.
+
+
+<strong>Qu'est-ce que "Supprimer le LocalStorage de la page" dans le menu contextuel ?</strong>
+
+Cet élément permet à un utilisateur de supprimer les clés LocalStorage de la page affichée.
+
+LocalStorage est une fonctionnalité assez récente de HTML5 qui permet aux développeurs de créer des données dans votre navigateur en utilisant JavaScript. Les cookies ne sont qu'un type de stockage, parmi d'autres.
+
+Vous trouverez également le terme "SessionStorage", un LocalStorage où les données sont stockées temporairement (supprimées au redémarrage du navigateur); l'important est que LocalStorage est persistant et effacé uniquement à la discrétion des sites Web visités.
+Vous pouvez effacer tout le magasin LocalStorage en suivant la procédure décrite dans la <a href="https://support.mozilla.org/fr/kb/effacer-les-cookies-pour-supprimer-les-information#w_supprimer-tous-les-cookies">documentation de Firefox</a>, et en sélectionnant "Données de site hors ligne".
+
+Du point de vue de la vie privée et de la sécurité:
+
+Ce type de données persistantes (même après la suppression du cache) a été inventé pour stocker de petites informations permettant le fonctionnement d’applications en ligne, mais permet également la mise en place de nouvelles méthodes précises de suivi grâce à la mémorisation de données privées ou d'identification.
+
+
 <strong>Support & code source</strong>
 
-L'extension est en plein développement avec l'arrivée de Firefox Quantum; les questions, rapports de bugs et demandes de fonctionnalités sont ouvertes sur le <a href="https://github.com/ysard/cookie-quick-manager/issues">dépôt GitHub</a> (Anglais).
+L'extension est toujours en développement avec l'arrivée de Firefox Quantum; les questions, rapports de bugs et demandes de fonctionnalités sont ouvertes sur le <a href="https://github.com/ysard/cookie-quick-manager/issues">dépôt GitHub</a> (Anglais).
+
 
 <strong>Licence</strong>
 
