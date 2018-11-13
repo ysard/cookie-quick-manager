@@ -8,8 +8,7 @@ Cookie Quick Manager wurde sowohl für Entwickler und Tester kreiert, als auch f
 Dieses Add-on ist mit Firefox 57 kompatible und wurde inspiriet von Add-ons wie <a href="https://addons.mozilla.org/fr/firefox/addon/cookies-manager-plus/">Cookies Manager+</a>
 und <a href="https://addons.mozilla.org/firefox/addon/cookie-manager/">Advanced Cookie Manager</a>, deren Entwicklung durch die Umstellung des Erweiterungen-Systems eingestellt.
 
-<strong>Warning: For lack of translation up to date, for a more complete description, please consult the page written in English:
-<a href="https://addons.mozilla.org/en/firefox/addon/cookie-quick-manager/">Cookie Quick Manager</a>.</strong>
+<strong>Warning: Due to the lack of translation up to date, for a more complete description, please consult the page written in English: <a href="https://addons.mozilla.org/en/firefox/addon/cookie-quick-manager/">Cookie Quick Manager</a>.</strong>
 
 
 <strong>Funktionsumfang</strong>
