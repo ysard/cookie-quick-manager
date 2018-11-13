@@ -403,24 +403,40 @@ $('#button_optimal_size').click(function() {
 
 $("#protect_all_button").click(function() {
     // Get all cookies for this store and protect them
-    let promise = vAPI.filter_cookies(vAPI.get_all_cookies([$('#search_store').val()]));
-    promise.then((cookies) => {
-        vAPI.set_cookie_protection(cookies, true).then(() => {
-            // Update the UI
-            $('#domain-list').find('li.active').click();
-        });
-    });
+    set_cookie_protection(
+        vAPI.get_all_cookies([$('#search_store').val()]),
+        true,
+        $('#domain-list').find('li.active')
+    );
 });
 
 $("#unprotect_all_button").click(function() {
     // Get all cookies for this store and unprotect them
-    let promise = vAPI.filter_cookies(vAPI.get_all_cookies([$('#search_store').val()]));
-    promise.then((cookies) => {
-        vAPI.set_cookie_protection(cookies, false).then(() => {
-            // Update the UI
-            $('#domain-list').find('li.active').click();
-        });
-    });
+    set_cookie_protection(
+        vAPI.get_all_cookies([$('#search_store').val()]),
+        false,
+        $('#domain-list').find('li.active')
+    );
+});
+
+$("#protect_session_button").click(function() {
+    // Get all session cookies for this store and protect them
+    set_cookie_protection(
+        vAPI.get_all_cookies([$('#search_store').val()]),
+        true,
+        $('#domain-list').find('li.active'),
+        true
+    );
+});
+
+$("#unprotect_session_button").click(function() {
+    // Get all session cookies for this store and unprotect them
+    set_cookie_protection(
+        vAPI.get_all_cookies([$('#search_store').val()]),
+        false,
+        $('#domain-list').find('li.active'),
+        true
+    );
 });
 
 $('#button_options_page').click(function() {
@@ -537,26 +553,48 @@ $('#domain-list').contextMenu({
                 },
                 "protect": {name: browser.i18n.getMessage("contextMenu_domain_protect"), icon: "lock",
                     callback: function(itemKey, opt, rootMenu, originalEvent) {
-                        // Protect all cookies in the selected domain
-                        let promise = vAPI.filter_cookies(vAPI.getCookiesFromSelectedDomain());
-                        promise.then((cookies) => {
-                            vAPI.set_cookie_protection(cookies, true).then(() => {
-                                // Update the UI
-                                $(this).click();
-                            });
-                        });
+                        // Protect all cookies in the selected domain and update the UI
+                        // by clicking on the current domain
+                        set_cookie_protection(
+                            vAPI.getCookiesFromSelectedDomain(),
+                            true,
+                            $(this)
+                        );
+                    }
+                },
+                "protect_session": {name: browser.i18n.getMessage("contextMenu_domain_protect_session"), icon: "lock",
+                    callback: function(itemKey, opt, rootMenu, originalEvent) {
+                        // Protect all cookies in the selected domain and update the UI
+                        // by clicking on the current domain
+                        set_cookie_protection(
+                            vAPI.getCookiesFromSelectedDomain(),
+                            true,
+                            $(this),
+                            true
+                        );
                     }
                 },
                 "unprotect": {name: browser.i18n.getMessage("contextMenu_domain_unprotect"), icon: "unlock",
                     callback: function(itemKey, opt, rootMenu, originalEvent) {
-                        // Unprotect all cookies in the selected domain
-                        let promise = vAPI.filter_cookies(vAPI.getCookiesFromSelectedDomain());
-                        promise.then((cookies) => {
-                            vAPI.set_cookie_protection(cookies, false).then(() => {
-                                // Update the UI
-                                $(this).click();
-                            });
-                        });
+                        // Unprotect all cookies in the selected domain and update the UI
+                        // by clicking on the current domain
+                        set_cookie_protection(
+                            vAPI.getCookiesFromSelectedDomain(),
+                            false,
+                            $(this)
+                        );
+                    }
+                },
+                "unprotect_session": {name: browser.i18n.getMessage("contextMenu_domain_unprotect_session"), icon: "unlock",
+                    callback: function(itemKey, opt, rootMenu, originalEvent) {
+                        // Unprotect all cookies in the selected domain and update the UI
+                        // by clicking on the current domain
+                        set_cookie_protection(
+                            vAPI.getCookiesFromSelectedDomain(),
+                            false,
+                            $(this),
+                            false
+                        );
                     }
                 },
                 "delete": {name: browser.i18n.getMessage("contextMenu_domain_delete"), icon: "trash",
@@ -1038,6 +1076,28 @@ function isExpired(expirationDate) {
     // Get Unix timestamp (seconds)
     let current_date = new Date(); // milliseconds
     return (current_date / 1000 > expirationDate);
+}
+
+function set_cookie_protection(cookies_promise, protect_flag, clickable_element, session_cookies) {
+    // Protect the given cookies and update the UI by clicking on the given element
+    // cookies_promise: promise that returns cookies
+    // protect_flag: boolean to protect/unprotect cookies
+    // clickable_element: after the protection, a click event is triggered on this element
+    // session_cookies: only modify protection of session cookies from the given promise
+    let promise = vAPI.filter_cookies(cookies_promise);
+    promise.then((cookies) => {
+
+        // Get only session cookies if session_cookies is set to true
+        if (session_cookies)
+            cookies = vAPI.get_session_cookies(cookies);
+
+        return vAPI.set_cookie_protection(cookies, protect_flag);
+    })
+    .then(() => {
+        // Update the UI
+        clickable_element.click();
+    })
+    .catch(err => console.error(err));
 }
 
 function setDefaultDomain() {

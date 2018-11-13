@@ -84,8 +84,18 @@
     "description": "Dropdown menu option."
   },
 
+  "menu_protect_session": {
+    "message": "Protéger tous les cookies de session",
+    "description": "Dropdown menu option."
+  },
+
   "menu_unprotect_all": {
     "message": "Déprotéger tous les cookies",
+    "description": "Dropdown menu option."
+  },
+
+  "menu_unprotect_session": {
+    "message": "Déprotéger tous les cookies de session",
     "description": "Dropdown menu option."
   },
 
@@ -174,6 +184,16 @@
 
   "contextMenu_domain_unprotect": {
     "message": "Déprotéger",
+    "description": "Option for the contextual menu that opens on a domain."
+  },
+
+  "contextMenu_domain_protect_session": {
+    "message": "Protéger les cookies de session",
+    "description": "Option for the contextual menu that opens on a domain."
+  },
+
+  "contextMenu_domain_unprotect_session": {
+    "message": "Déprotéger les cookies de session",
     "description": "Option for the contextual menu that opens on a domain."
   },
 

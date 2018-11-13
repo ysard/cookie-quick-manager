@@ -679,6 +679,18 @@ vAPI.get_and_patch_protected_cookies = function(storage_items) {
     }
 }
 
+vAPI.get_session_cookies = function(cookies) {
+    // Return only session cookies from an array of cookies
+
+    let session_cookies = [];
+    for (let cookie of cookies) {
+        if (cookie.session)
+            session_cookies.push(cookie);
+    }
+    console.log("get_session_cookies:", session_cookies.length);
+    return session_cookies;
+}
+
 /*********** Global variables ***********/
 
 vAPI.default_stores = [
