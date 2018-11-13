@@ -13,7 +13,7 @@ Cette WebExtension est compatible avec Firefox 57 et s'inspire des addons <a hre
 
 <ul>
 <li>Ergonomie : Interface structurée. Chaque paramètre ou fonctionnalité est décrit au survol de la souris.</li>
-<li>Transparence et sécurité : Le code source est libre (sous licence GPLv3) et <strong>publié sur une plateforme publique</strong>, autorisant les relectures et les contributions externes.</li>
+<li>Transparence et sécurité : Le code source est libre (sous licence GPLv3) et <strong>publié sur une plateforme publique, seul moyen autorisant les relectures et les contributions externes.</strong></li>
 <li>Recherche : Un utilisateur peut rechercher les cookies d'un domaine et des sous-domaines qui en dépendent.</li>
 <li>Édition : Tous les attributs d'un cookie peuvent être modifiés : domaine, chemin, nom, valeur, date d'expiration ainsi que les flags secure et httponly.</li>
 <li>Suppression : Autorise la suppression des cookies de n'importe quel site consulté en deux clics.</li>
@@ -21,8 +21,9 @@ Cette WebExtension est compatible avec Firefox 57 et s'inspire des addons <a hre
 <li>Isolement de la première partie (First-Party Isolation) : Supporté avec limitations (dues à des bugs de l'API) pour Firefox 59, 60 et 61; et supporté sans limitations à partir de Firefox 62 (prévue pour septembre 2018).</li>
 <li>Contextes de navigation/containers : Les contextes de navigation (aussi appelés Multi-Account Containers, ou Contextual Identities) sont supportés. Un utilisateur peut par exemple chercher et afficher les cookies d'un contexte, ou encore copier des cookies d'un contexte vers un autre, ou bien sauvegarder un cookie dans un contexte spécifique.</li>
 <li>SameSite : Le flag SameSite est supporté. Il s'agit d'une protection partielle contre les risques liés aux attaques de type CSRF (Cross-Site Request Forgery) et XSSI (Cross-Site Script Inclusion), implémentée depuis Firefox 63.</li>
-<li>Protection des cookies : Supression des cookies non protégés en un clic. Cette option peut également empêcher la suppression de cookies par les sites eux-mêmes.</li>
-<li>Nettoyage et vie privée : Suppression possible des cookies au démarrage du navigateur.</li>
+<li>Protection des cookies : Supression des cookies non protégés en deux clics, depuis la page consultée. Une option peut également empêcher la suppression de cookies par les sites eux-mêmes.</li>
+<li>Protection des cookies de session : Les cookies de session peuvent être protégés en deux clics afin d'empêcher une déconnexion accidentelle des sites consultés.</li>
+<li>Nettoyage et vie privée : Suppression automatique possible des cookies au démarrage du navigateur.</li>
 <li>LocalStorage: Les clés/valeurs de la page consultée peuvent être effacées en un clic.</li>
 </ul>
 

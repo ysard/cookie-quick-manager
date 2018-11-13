@@ -14,7 +14,7 @@ This WebExtension is compatible with Firefox 57 and is inspired by addons like <
 
 <ul>
 <li>User friendly: Clear and structured user interface. Each parameter and functionality is described when the mouse is over the element.</li>
-<li>Transparency and security: The source code is free (under GPLv3) and <strong>published on a public platform</strong>, allowing reviews and external contributions.</li>
+<li>Transparency and security: The source code is free (under GPLv3) and <strong>published on a public platform, the only way to allow reviews and external contributions.</strong></li>
 <li>Search: A user can search for cookies of a domain and subdomains which depend on it.</li>
 <li>Edit: All the attributes of a cookie can be modified: domain, path, name, value, expiration date, as well as secure and httponly flags.</li>
 <li>Delete: Remove the cookies of the current website in two clicks.</li>
@@ -22,8 +22,9 @@ This WebExtension is compatible with Firefox 57 and is inspired by addons like <
 <li>First-Party Isolation: Supported with some limitations (due to API bugs) on Firefox 59, 60, and 61, and without limitations on Firefox 62 (scheduled on September 2018).</li>
 <li>Contexts: Contexts (also called Multi-Account Containers, or Contextual Identities) are supported. A user can search and display cookies inside a container, or copy cookies from a container to another, or save a cookie in a specific context.</li>
 <li>SameSite: The SameSite flag is supported. This is a partial protection against the risks associated with Cross-Site Request Forgery (CSRF) and Cross-Site Script Inclusion (XSSI) attacks, implemented since Firefox 63.</li>
-<li>Cookie protection: Delete cookies in one click except protected ones. This option can also prevent cookies from being deleted by the sites themselves.</li>
-<li>Cleaning and privacy: Can delete all cookies at startup.</li>
+<li>Cookie protection: Delete cookies except protected ones, with two clicks at anytime from the website you are viewing. An option can also prevent cookies from being deleted by the sites themselves.</li>
+<li>Protection of session cookies: Session cookies can be protected in two clicks to prevent accidental logout from websites after cleaning normal cookies.</li>
+<li>Cleaning and privacy: Can automatically delete all cookies at startup.</li>
 <li>LocalStorage: Keys/values of the page viewed can be deleted.</li>
 </ul>
 
