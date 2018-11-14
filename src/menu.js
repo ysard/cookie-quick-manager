@@ -227,6 +227,9 @@
                         a.appendChild(content);
                     }, (err) => {
                         console.log('init_ui: content script:', err);
+                        // Display the number of items
+                        let content = document.createTextNode(" (0)");
+                        a.appendChild(content);
                     });
                 }
 
