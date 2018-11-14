@@ -691,6 +691,22 @@ vAPI.get_session_cookies = function(cookies) {
     return session_cookies;
 }
 
+vAPI.ask_permission = function(permission_name) {
+    // Ask the given permission to the browser
+    // PS: Due to restrictions, this function must be called from a user input handler
+    browser.permissions.request({permissions: [permission_name]})
+    .then((response) => {
+        console.log("ask_permission:", permission_name, response);
+    })
+    .catch(err => console.error(err));
+}
+
+vAPI.remove_permission = function(permission_name) {
+    // Remove a permission
+    browser.permissions.remove({permissions: [permission_name]})
+    .catch(err => console.error(err));
+}
+
 /*********** Global variables ***********/
 
 vAPI.default_stores = [

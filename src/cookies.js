@@ -535,6 +535,7 @@ $('#domain-list').contextMenu({
                         let promise = vAPI.filter_cookies(vAPI.getCookiesFromSelectedDomain());
                         window.display_json_in_clipboard_area(promise);
                         $('#modal_clipboard').modal("show");
+                        vAPI.ask_permission('clipboardWrite');
                     }
                 },
                 "save": {name: browser.i18n.getMessage("contextMenu_domain_copy2File"), icon: "save",

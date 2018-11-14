@@ -7,6 +7,7 @@
   "version": "0.3rc6",
   "default_locale": "en",
   "permissions": ["cookies","<all_urls>","activeTab", "storage", "browsingData", "contextualIdentities", "privacy"],
+  "optional_permissions": ["clipboardWrite"],
   "browser_action": {
     "browser_style": true,
     "default_title": "Cookie Quick Manager",
