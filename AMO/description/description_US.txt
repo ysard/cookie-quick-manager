@@ -36,7 +36,7 @@ This addon does not store or leak any personal information.
 It requires the following permissions to operate:
 
 <ul>
-<li>Host permission for all urls: This allows you to edit the cookies of any visited site.</li>
+<li>Host permission for all urls: This allows you to edit the cookies and to delete the Localstorage of any site visited.</li>
 <li>Cookies: Allows access to the browser's cookie store.</li>
 <li>ActiveTab: Allows access to the currently consulted url, and its favicon if it exists.</li>
 <li>Storage: Allows the storage of the following user settings:
@@ -48,6 +48,7 @@ It requires the following permissions to operate:
 <li>Browsing data: Enables extensions to clear the data that is accumulated while the user is browsing (LocalStorage here).</li>
 <li>Contextual Identities: Allows the addon to list the containers.</li>
 <li>Privacy: Access and modify various privacy-related browser settings (the FirstPartyIsolation flag here).</li>
+<li>ClipboardWrite (optional): Allows the export of cookies to the clipboard from Firefox 63.</li>
 </ul>
 
 

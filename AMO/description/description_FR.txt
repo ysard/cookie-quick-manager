@@ -35,7 +35,7 @@ Cet addon ne stocke et ne fait fuiter aucune information personnelle.
 Il requiert les droits suivants pour fonctionner :
 
 <ul>
-<li>Host permission for all urls : Cela permet d'éditer les cookies de n'importe quel site consulté.</li>
+<li>Host permission for all urls : Cela permet d'éditer les cookies et de supprimer le LocalStorage de n'importe quel site consulté.</li>
 <li>Cookies : Autorise l'accès à la base de données des cookies du navigateur.</li>
 <li>ActiveTab : Autorise l'accès à l'url consultée ainsi qu'à sa favicon si elle existe.</li>
 <li>Storage : Autorise le stockage des paramètres utilisateur suivants :
@@ -47,6 +47,7 @@ Il requiert les droits suivants pour fonctionner :
 <li>Browsing data : Autorise l'addon à effacer les données accumulées lors de la navigation (la base de données LocalStorage ici).</li>
 <li>Contextual Identities : Autorise l'addon à lister les contextes de navigation.</li>
 <li>Privacy : Autorise l'accès et la modification de paramètres liés à la vie privée (gestion de l'option FirstPartyIsolation).</li>
+<li>ClipboardWrite (optionel) : Autorise l'export des cookies dans le presse-papier à partir de Firefox 63.</li>
 </ul>
 
 
