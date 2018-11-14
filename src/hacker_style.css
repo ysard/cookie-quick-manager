@@ -2,7 +2,7 @@
  * for h2 tags
  */
 #domain-list, #cookie-list {
-    height: 365px;
+    height: calc(100% - 75px);
 }
 #value {
     /* -41px */
