@@ -114,6 +114,7 @@
         // Load options from storage and update the interface
         get_options();
         display_features_depending_on_browser_version();
+        display_features_depending_on_OS();
     });
 
     /*********** Utils ***********/
@@ -151,7 +152,7 @@
     }
 
     function display_features_depending_on_browser_version() {
-        // Display features according to the capactities of the browser
+        // Display features according to the capacities of the browser
 
         // First-Party Isolation
         vAPI.FPI_detection(browser.runtime.getBrowserInfo()).then((browser_info) => {
@@ -170,6 +171,20 @@
                 // Display FPI status
                 $('#fpi_status').prop('checked', vAPI.FPI);
             }
+        });
+    }
+
+    function display_features_depending_on_OS() {
+        // Display features according to the capacities of the OS
+
+        let gettingInfo = browser.runtime.getPlatformInfo();
+        gettingInfo.then((info) => {
+            // On Android, the addon must be opened in a new tab
+            if (info.os == 'android')
+                $('#open_in_new_tab').parent().hide();
+        })
+        .catch((error) => {
+            console.log(`display_features_depending_on_OS: ${error}`);
         });
     }
 
