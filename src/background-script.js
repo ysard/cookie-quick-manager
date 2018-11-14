@@ -25,7 +25,18 @@ function update_listener(details) {
     /* Fired when the extension is first installed, when the extension is updated
      * to a new version, and when the browser is updated to a new version.
      */
-    console.log({update_addon: details});
+    //console.log({update_addon: details});
+
+    // Detect the current platform
+    let gettingInfo = browser.runtime.getPlatformInfo();
+    gettingInfo.then((info) => {
+        // On Android, the addon must be opened in a new tab
+        if (info.os == 'android')
+            return browser.storage.local.set({open_in_new_tab: true});
+    })
+    .catch((error) => {
+        console.log(`set_option_error: ${error}`);
+    });
 }
 
 browser.runtime.onInstalled.addListener(update_listener);
