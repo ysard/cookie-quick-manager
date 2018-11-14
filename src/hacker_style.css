@@ -82,3 +82,12 @@ h2 {
     top: -2px;
     color: #48d298;
 }
+
+@media only screen and (max-width: 768px) {
+    #domain-list, #cookie-list {
+        height: 200px; /* +50px */
+    }
+    .row .col-sm-8 {
+        top: 465px; /* +90px */
+    }
+}

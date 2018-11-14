@@ -2,6 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
     <link rel="stylesheet" href="static/css/bootstrap.min.css">
     <link rel="stylesheet" href="static/css/bootstrap-datetimepicker.min.css">
     <link rel="stylesheet" href="static/js/jquery.contextMenu.min.css">
@@ -75,6 +76,10 @@
       .navbar-left {
         /* bootstrap correction: Increase space between elements in the navbar */
         margin-left: 10px;
+      }
+      .navbar-form .input-group {
+        /* Fix the position of additional buttons next to the domain search input */
+        float: left;
       }
       .dropdown-toggle-split{
         /* backport of BS4 class to center the carret and reduce the horizontal size of the button */
@@ -221,6 +226,48 @@
         .col-sm-4 button {
             margin-top: 3px;
         }
+        /* Fix the position of additional search buttons next to the search input */
+        .navbar-form .input-group {
+            float: none;
+            width: 100%;
+        }
+        .navbar-form .input-group-btn {
+            display: inline-block;
+        }
+        #search_domain {
+            widsth: 210px; /* workaround: complex to move buttons on the left */
+            width: calc(100% - 63px);
+        }
+        /* Space adjustment with context select box */
+        #actualize_button {
+            margin-top: 5px;
+        }
+        /* Move domains related buttons under the domains list */
+        #domain-list {
+            margin-bottom: 54px; /* 20 (normal padding) + 34 (buttons height) */
+        }
+        .row .col-sm-8 {
+            position: absolute;
+            top: 375px;
+            z-index: 2;
+        }
+        /* Add some space after the last element of the page */
+        body {
+            margin-bottom: 5px;
+        }
+        /* Cookie details: flags: Fix positions of checkbox and labels on the same line
+        even during mous hover and tooltip display */
+        div.row:nth-child(7) > div:nth-child(1) label,
+        div.form-group:nth-child(8) label,
+        div.form-group:nth-child(9) label {
+            width: 100px;
+        }
+        div.row:nth-child(7) > div:nth-child(1),
+        div.form-group:nth-child(8),
+        div.form-group:nth-child(9) {
+            display: flex;
+            justify-content: flex-start;
+        }
       }
     </style>
   </head>
@@ -230,7 +277,7 @@
       <div class="container-fluid">
         <div class="navbar-form">
           <!-- Search domain -->
-          <div class="input-group" style="float:left">
+          <div class="input-group">
             <input tabindex="1" type="text" class="form-control" name="search_domain" id="search_domain" placeholder="Search a domain...">
             <div class="input-group-btn">
               <button tabindex="2" class="btn btn-default" type="submit" id="search_domain_submit"><span class="glyphicon glyphicon-search"></span></button>
@@ -238,7 +285,7 @@
               <!-- Additional filter on names and values -->
               <button tabindex="3" type="button" class="btn btn-default dropdown-toggle dropdown-toggle-split" data-toggle="dropdown"><span class="caret"></span></button>
 
-              <ul class="dropdown-menu">
+              <ul class="dropdown-menu dropdown-menu-right">
                 <li class="dropdown-header" data-i18n-content="filterByAttributeHeader">Filter cookies</li>
                 <li class="search_filter_block">
                   <input type="text" class="form-control" id="search_filter" placeholder="Search a word in the cookie data"></li>
@@ -301,7 +348,7 @@
           <form id="cookie-details">
             <div class="form-group row">
               <label for="domain" class="col-sm-2 col-form-label"
-              data-toggle="tooltip" data-placement="left"
+              data-toggle="tooltip" data-placement="auto left"
               title="A host-only cookie, applies only to the current domain. Other cookies also apply to subdomains, and their domain has a leading point." data-i18n-title="tooltip_cDomain" data-i18n-content="cDomain">Domain </label>
               <div class="col-sm-10">
                 <input type="text" class="form-control" name="domain" id="domain" readonly>
@@ -309,7 +356,7 @@
             </div>
             <div class="form-group row">
               <label for="fpi-domain" class="col-sm-2 col-form-label"
-              data-toggle="tooltip" data-placement="left"
+              data-toggle="tooltip" data-placement="auto left"
               title="First-Party Isolation prevents third party trackers from using cookies to identify the user across different websites (see options)." data-i18n-title="tooltip_cFpiDomain" data-i18n-content="cFpiDomain">First-Party </label>
               <div class="col-sm-10">
                 <input type="text" class="form-control" name="fpi-domain" id="fpi-domain" readonly>
@@ -343,7 +390,7 @@
             </div>
             <div class="form-group row">
               <label id="select_store" class="col-sm-2 col-form-label" for="store"
-              data-html="true" data-toggle="tooltip" data-placement="left"
+              data-html="true" data-toggle="tooltip" data-placement="auto left"
               title="Browsing context<br>Select a context to make sure that the cookie is accessible in it." data-i18n-title="tooltip_cStore" data-i18n-content="cStore">Context </label>
               <div class="col-sm-10">
                 <select class="form-control" id="store">
@@ -354,7 +401,7 @@
             <div class="row">
               <div class="form-group">
                 <label class="col-sm-2 col-form-label" for="httponly"
-                data-html="true" data-toggle="tooltip" data-placement="left"
+                data-html="true" data-toggle="tooltip" data-placement="auto left"
                 title="Theft protection<br>Check to force the cookie to be sent only over HTTP(S),<br> i.e. block JavaScript access like in XSS context." data-i18n-title="tooltip_cHttpOnly">httpOnly</label>
                 <div class="col-sm-4">
                   <div class="form-check form-check-inline">
@@ -364,7 +411,7 @@
               </div>
               <div class="form-group">
                 <label id="select_samesite" class="col-sm-2 col-form-label" for="samesite"
-                data-html="true" data-toggle="tooltip" data-placement="left"
+                data-html="true" data-toggle="tooltip" data-placement="auto left"
                 title="Partial protection against the risks associated with Cross-Site Request Forgery (CSRF) and Cross-Site Script Inclusion (XSSI) attacks.<br>The strict mode allows an application to warn the browser that the cookie should only be sent if the request originates from the website the cookie came from, and not from a third party website." data-i18n-title="tooltip_cSameSite">sameSite </label>
                 <div class="col-sm-4">
                   <select class="form-control" id="samesite">
@@ -377,7 +424,7 @@
             </div>
             <div class="form-group row">
               <label class="col-sm-2 col-form-label" for="issecure"
-              data-html="true" data-toggle="tooltip" data-placement="left"
+              data-html="true" data-toggle="tooltip" data-placement="auto left"
               title="Theft protection<br>Check to force the cookie to be sent only over secure channels like HTTPS." data-i18n-title="tooltip_cIsSecure">isSecure</label>
               <div class="col-sm-10">
                 <div class="form-check form-check-inline">
@@ -388,7 +435,7 @@
             <!-- Session related block: checkbox + datetimepicker -->
             <div class="form-group row">
               <label class="col-sm-2 col-form-label" for="issession"
-              data-html="true" data-toggle="tooltip" data-placement="left"
+              data-html="true" data-toggle="tooltip" data-placement="auto left"
               title="Validity period<br>Check to force the cookie to expire at the end of the session." data-i18n-title="tooltip_cIsSession">isSession</label>
               <div class="col-sm-10">
                 <div class="form-check form-check-inline">
