@@ -772,7 +772,7 @@ vAPI.date_format = "DD-MM-YYYY HH:mm:ss";
 
 // Optimal size of the windowed addon
 vAPI.optimal_window_width = 1095;
-vAPI.optimal_window_height = 585;
+vAPI.optimal_window_height = 595;
 
 vAPI.query_domain = "";
 vAPI.query_names;

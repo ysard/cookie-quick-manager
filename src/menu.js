@@ -135,8 +135,8 @@
             // => force default values
             // 768 is the smallest width to avoid the break of the ui
             if (items.addonSize !== undefined && items.addonSize.width >= 768 && items.addonSize.height >= height) {
-            height = items.addonSize.height;
-            width = items.addonSize.width;
+                height = items.addonSize.height;
+                width = items.addonSize.width;
             }
             //console.log({h:height, w:width});
             //console.log({h:items.addonSize.height, w:items.addonSize.width});
