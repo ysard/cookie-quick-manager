@@ -9,14 +9,16 @@ concerned about their privacy on the Internet.
 
 This WebExtension is compatible with Firefox 57 and is inspired by addons like <a href="https://addons.mozilla.org/fr/firefox/addon/cookies-manager-plus/">Cookies Manager+</a> and <a href="https://addons.mozilla.org/fr/firefox/addon/cookie-manager/">Advanced Cookie Manager</a> whose development has been discontinued due to the withdrawal of the support for "Legacy" extensions.
 
+<strong>November 2018: Cookie Quick Manager is now available on Android!</strong>
 
 <strong>Features</strong>
 
 <ul>
 <li>User friendly: Clear and structured user interface. Each parameter and functionality is described when the mouse is over the element.</li>
+<li>Windowed and tab mode: Choose the opening in a tab to get a wider view.</li>
 <li>Transparency and security: The source code is free (under GPLv3) and <strong>published on a public platform, the only way to allow reviews and external contributions.</strong></li>
 <li>Search: A user can search for cookies of a domain and subdomains which depend on it.</li>
-<li>Edit: All the attributes of a cookie can be modified: domain, path, name, value, expiration date, as well as secure and httponly flags.</li>
+<li>Edit/Create: All the attributes of a cookie can be modified: domain, path, name, value, expiration date, as well as secure and httponly flags.</li>
 <li>Delete: Remove the cookies of the current website in two clicks.</li>
 <li>Export: The export and import of a cookie or cookies from a domain in JSON or Netscape format is just as easy.</li>
 <li>First-Party Isolation: Supported with some limitations (due to API bugs) on Firefox 59, 60, and 61, and without limitations on Firefox 62 (scheduled on September 2018).</li>

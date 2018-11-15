@@ -8,14 +8,16 @@ Cookie Quick Manager est destiné aux développeurs, aux testeurs ou aux personn
 
 Cette WebExtension est compatible avec Firefox 57 et s'inspire des addons <a href="https://addons.mozilla.org/fr/firefox/addon/cookies-manager-plus/">Cookies Manager+</a> et <a href="https://addons.mozilla.org/fr/firefox/addon/cookie-manager/">Advanced Cookie Manager</a> dont le développement a été arrêté à cause de l'abandon du support des extensions "Legacy".
 
+<strong>Novembre 2018: Cookie Quick Manager est maintenant disponible sur Android !</strong>
 
 <strong>Fonctionnalités</strong>
 
 <ul>
 <li>Ergonomie : Interface structurée. Chaque paramètre ou fonctionnalité est décrit au survol de la souris.</li>
+<li>Modes fenêtré et onglet : Choisissez l'ouverture dans un onglet pour bénéficier d'une vue plus large.</li>
 <li>Transparence et sécurité : Le code source est libre (sous licence GPLv3) et <strong>publié sur une plateforme publique, seul moyen autorisant les relectures et les contributions externes.</strong></li>
 <li>Recherche : Un utilisateur peut rechercher les cookies d'un domaine et des sous-domaines qui en dépendent.</li>
-<li>Édition : Tous les attributs d'un cookie peuvent être modifiés : domaine, chemin, nom, valeur, date d'expiration ainsi que les flags secure et httponly.</li>
+<li>Édition/Création : Tous les attributs d'un cookie peuvent être modifiés : domaine, chemin, nom, valeur, date d'expiration ainsi que les flags secure et httponly.</li>
 <li>Suppression : Autorise la suppression des cookies de n'importe quel site consulté en deux clics.</li>
 <li>Export : L'exportation et l'importation d'un cookie ou des cookies d'un domaine au format JSON ou Netscape est tout aussi facile.</li>
 <li>Isolement de la première partie (First-Party Isolation) : Supporté avec limitations (dues à des bugs de l'API) pour Firefox 59, 60 et 61; et supporté sans limitations à partir de Firefox 62 (prévue pour septembre 2018).</li>
