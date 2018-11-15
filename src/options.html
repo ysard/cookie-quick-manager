@@ -46,7 +46,7 @@
       #skin, #template {
         width: 200px;
       }
-      #your_data {
+      #paragraph {
         padding-left: 30px;
       }
       button {
@@ -77,6 +77,13 @@
       kbd {
         font-weight: 700;
       }
+      #protected-cookie-tree {
+        width: 350px;
+        margin-top: 20px;
+      }
+      #protected-cookie-tree .list-group-item {
+        padding: 5px 15px;
+      }
       #changelog span {
         padding-left: 20px;
       }
@@ -87,6 +94,7 @@
       <h2 id="addon-name">Cookies Quick Manager</h2>
       <ul id="dynamic-tab" class="nav nav-tabs">
         <li class="active"><a data-toggle="tab" href="#parameters" data-i18n-content="oSettings">Settings</a></li>
+        <li><a data-toggle="tab" href="#my-protected-cookies" data-i18n-content="oMyProtectedCookies">My protected cookies</a></li>
         <li><a data-toggle="tab" href="#shortcuts" data-i18n-content="oShortcuts">Shortcuts</a></li>
         <li><a data-toggle="tab" href="#about" data-i18n-content="oAbout">About</a></li>
       </ul>
@@ -166,18 +174,27 @@
 
             </div>
             <h2 data-i18n-content="oYourData">Your data</h2>
-            <div id="your_data">
+            <div id="paragraph">
               <p>
                 <button type="button" id="backupUserDataButton" data-i18n-content="aboutBackupButton">Backup user data to a file</button>
                 <button type="button" id="restoreUserDataButton" data-i18n-content="aboutRestoreButton">Restore user data from a file</button>
                 <input id="restoreFilePicker" accept=".json" style="display:none;" type="file">
               </p>
-              <p style="margin-left: 2em;" data-i18n-content="aboutOr">
-                Or, you can...</p>
+              <p data-i18n-content="aboutOr">Or, you can...</p>
               <p><button type="button" id="resetUserDataButton" data-i18n-content="aboutResetButton">Go back to default settings</button></p>
             </div>
           </form>
         </div>
+
+        <div id="my-protected-cookies" class="tab-pane">
+          <h2 data-i18n-content="oManagementOfProtectedCookies">Management of protected cookies</h2>
+          <div id="paragraph">
+            <p data-i18n-content="oManagementOfProtectedCookiesText">Here you can view all of protected cookies and delete them if you wish.</p>
+            <button type="button" id="unprotectSelectedCookies" data-i18n-content="unprotectSelectedCookiesButton">Unprotect selected cookies</button>
+            <div id="protected-cookie-tree"></div>
+          </div>
+        </div>
+
         <div id="about" class="tab-pane">
           <ul>
             <li><a href="https://github.com/ysard/cookie-quick-manager/" data-i18n-content="oLicense">Source code (Under GPLv3 license)</a></li>
@@ -321,6 +338,7 @@
     </div>
     <script src="static/js/jquery-3.3.1.min.js"></script>
     <script src="static/js/bootstrap.min.js"></script>
+    <script src="static/js/bootstrap-treeview-1.2.0.min.js"></script>
     <script src="api.js"></script>
     <script src="options.js"></script>
     <script src="internationalization.js"></script>

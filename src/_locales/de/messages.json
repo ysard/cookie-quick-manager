@@ -374,6 +374,11 @@
     "description": "Tab title"
   },
 
+  "oMyProtectedCookies": {
+    "message": "Meine geschützten Cookies",
+    "description": "Tab title"
+  },
+
   "oShortcuts": {
     "message": "Tastaturkürzel",
     "description": "Tab title"
@@ -462,6 +467,26 @@
   "aboutResetButton": {
     "message": "Standardeinstellung wiederherstellen",
     "description": "Settings page: Reset settings"
+  },
+
+  "oManagementOfProtectedCookies": {
+    "message": "Verwaltung von geschützten Cookies",
+    "description": "My protected cookies page: title"
+  },
+
+  "oManagementOfProtectedCookiesText": {
+    "message": "Hier können Sie alle geschützten Cookies anzeigen und löschen, wenn Sie dies wünschen.",
+    "description": "My protected cookies page: text"
+  },
+
+  "unprotectSelectedCookiesButton": {
+    "message": "Ungeschützt ausgewählte Cookies",
+    "description": "My protected cookies page: Unprotect selected cookies button"
+  },
+
+  "oNoProtectedCookiesAlert": {
+    "message": "Sie haben derzeit keinen geschützten Cookie.",
+    "description": "My protected cookies page: Alert when there is no data to display"
   },
 
   "oLicense": {

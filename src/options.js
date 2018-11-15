@@ -111,10 +111,56 @@
             $('#fpi_info').toggle();
         });
 
+        $("#unprotectSelectedCookies").click(function(event) {
+            let protected_cookies = {};
+
+            // Get unchecked cookies in unchecked domains
+            for (let unchecked_item of $('#protected-cookie-tree').treeview('getUnchecked')) {
+
+                // Remove leafs
+                if (!unchecked_item.nodes)
+                    continue;
+
+                // If a domain is unchecked, it's because none of his children are checked
+                let unchecked_items = [];
+                for (let node of unchecked_item.nodes)
+                    unchecked_items.push(node.text);
+
+                protected_cookies[unchecked_item.text] = unchecked_items;
+            }
+
+            // Get unchecked cookies in checked domains
+            for (let checked_item of $('#protected-cookie-tree').treeview('getChecked')) {
+
+                // Remove leafs
+                if (!checked_item.nodes)
+                    continue;
+
+                let unchecked_items = [];
+                for (let node of checked_item.nodes) {
+                    // If a domain is checked, maybe there is at least one child unchecked
+                    if (!node.state.checked)
+                        unchecked_items.push(node.text);
+                }
+
+                if (unchecked_items.length)
+                    protected_cookies[checked_item.text] = unchecked_items;
+            }
+
+            console.log("protected", protected_cookies);
+
+            // Set new protected_cookies on storage area
+            browser.storage.local.set({"protected_cookies": protected_cookies});
+            // Update the treeview
+            build_treeview();
+
+        });
+
         // Load options from storage and update the interface
         get_options();
         display_features_depending_on_browser_version();
         display_features_depending_on_OS();
+        build_treeview();
     });
 
     /*********** Utils ***********/
@@ -198,8 +244,104 @@
         a.href = details.url;
         a.setAttribute('download', details.filename || '');
         a.dispatchEvent(new MouseEvent('click'));
-    };
+    }
+
+
+    function build_treeview() {
+        // Build a treeview by getting protected cookies and initializing the treeview object.
+
+        let get_settings = browser.storage.local.get({
+            protected_cookies: {},
+        });
+        get_settings.then((items) => {
+
+            // Build tree object
+            var tree = [];
+            for (let domain in items.protected_cookies) {
+                let cookies_names = items.protected_cookies[domain];
+
+                // Build parent node
+                let node = {};
+                node.text = domain;
+                node.tags = [cookies_names.length];
+
+                // Build leafs with cookies names
+                let nodes = [];
+                cookies_names.forEach((cookie_name) => {
+                    nodes.push({text: cookie_name});
+                });
+
+                // Add nodes to parent
+                node['nodes'] = nodes;
+                // Add parent to tree
+                tree.push(node);
+            }
+            //console.log(tree);
+
+            if (!tree.length) {
+                $protected_cookie_tree.html('<i>' + browser.i18n.getMessage('oNoProtectedCookiesAlert') + '</i>');
+                return;
+            }
+
+            // Init treeview
+            init_treeview(tree);
+
+        })
+        .catch(err => console.error(err));
+    }
+
+    function init_treeview(tree) {
+
+        $protected_cookie_tree.treeview({
+            data: tree,
+            showIcon: false,
+            showCheckbox: true,
+            showTags: true,
+            showBorder: false,
+            onNodeChecked: function(event, node) {
+                //console.log(node.text + ' was checked');
+                if (!node.nodes) {
+                    // Leaf: check the parent node
+                    let parent_node = $protected_cookie_tree.treeview('getParent', node);
+                    $protected_cookie_tree.treeview('checkNode', [ parent_node.nodeId, { silent: true } ]);
+                    return;
+                }
+                // Parent node: check all leafs
+                for (let child_node of node.nodes) {
+                    //Triggers nodeChecked event; pass silent to suppress events.
+                    $protected_cookie_tree.treeview('checkNode', [ child_node.nodeId, { silent: true } ]);
+                }
+            },
+            onNodeUnchecked: function (event, node) {
+                //console.log(node.text + ' was unchecked');
+                if (!node.nodes) {
+                    // Leaf
+                    // Check if siblings are unchecked too
+                    // If there is no checked node, we uncheck the parent one.
+                    let sibling_nodes = $protected_cookie_tree.treeview('getSiblings', node);
+                    let checked_siblings_count = 0;
+                    for (let sibling_node of sibling_nodes) {
+                        if (sibling_node.state.checked)
+                            checked_siblings_count++;
+                    }
+
+                    if (!checked_siblings_count) {
+                        // No checked leafs
+                        let parent_node = $protected_cookie_tree.treeview('getParent', node);
+                        $protected_cookie_tree.treeview('uncheckNode', [ parent_node.nodeId, { silent: true } ]);
+                    }
+                    return;
+                }
+                // Parent node: uncheck all leafs
+                for (let child_node of node.nodes) {
+                    //Triggers nodeChecked event; pass silent to suppress events.
+                    $protected_cookie_tree.treeview('uncheckNode', [ child_node.nodeId, { silent: true } ]);
+                }
+            }
+        });
+    }
 
     /*********** Global variables ***********/
 
+    var $protected_cookie_tree = $('#protected-cookie-tree');
 }));
