@@ -147,7 +147,7 @@
                     protected_cookies[checked_item.text] = unchecked_items;
             }
 
-            console.log("protected", protected_cookies);
+            //console.log("protected", protected_cookies);
 
             // Set new protected_cookies on storage area
             browser.storage.local.set({"protected_cookies": protected_cookies});
@@ -156,11 +156,15 @@
 
         });
 
+        $('#my-protected-cookies-toggle').click(function(event) {
+            // Lazy load of treeview
+            build_treeview();
+        });
+
         // Load options from storage and update the interface
         get_options();
         display_features_depending_on_browser_version();
         display_features_depending_on_OS();
-        build_treeview();
     });
 
     /*********** Utils ***********/
@@ -280,6 +284,7 @@
 
             if (!tree.length) {
                 $protected_cookie_tree.html('<i>' + browser.i18n.getMessage('oNoProtectedCookiesAlert') + '</i>');
+                $('#unprotectSelectedCookies').hide();
                 return;
             }
 
