@@ -1084,7 +1084,7 @@ function set_cookie_protection(cookies_promise, protect_flag, clickable_element,
     // cookies_promise: promise that returns cookies
     // protect_flag: boolean to protect/unprotect cookies
     // clickable_element: after the protection, a click event is triggered on this element
-    // session_cookies: only modify protection of session cookies from the given promise
+    // session_cookies (optional): if true, only modify protection of session cookies in the given promise
     let promise = vAPI.filter_cookies(cookies_promise);
     promise.then((cookies) => {
 
