@@ -1,7 +1,7 @@
 /*
  *  Cookie Quick Manager: An addon to manage (view, search, create, edit,
  *  remove, backup, restore) cookies on Firefox.
- *  Copyright (C) 2017-2018 Ysard
+ *  Copyright (C) 2017-2019 Ysard
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
