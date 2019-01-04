@@ -523,6 +523,21 @@
     "description": "About page: Link for GitHub issues"
   },
 
+  "oThanks": {
+    "message": "Remerciements :",
+    "description": "About page: List of thanks"
+  },
+
+  "oTranslations": {
+    "message": "Traductions :",
+    "description": "About page: List of contributors for translations"
+  },
+
+  "oExternalDependencies": {
+    "message": "Dépendances externes (compatibles GPLv3) :",
+    "description": "About page: List of external dependencies"
+  },
+
   "oSwitchDomains": {
     "message": "Passer à la liste des domaines",
     "description": "Keyboard shortcut description: ctrl+left"
