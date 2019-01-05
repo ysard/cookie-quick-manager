@@ -76,7 +76,7 @@ $("#auto_actualize_checkbox").click(function() {
         console.log(`set_option_error: ${error}`);
     });
 });
-$( "#save_button" ).click(function() {
+$("#save_button").click(function() {
     /* Save a cookie displayed on details zone
      * ---
      * NOTE: If the expirationDate is set in the past and the cookie was not expired,
@@ -388,6 +388,25 @@ $('#expiration_date').on("dp.change", function(event) {
     } else {
         $('#expiration_date input').removeClass("cookie-expired");
     }
+    // Check if oldDate is not null (initialization just after actualization/refresh of the UI)
+    if (event.oldDate) {
+        // Inform the user that the cookie needs to be saved.
+        set_save_button_highlight();
+    }
+});
+
+$('#cookie-details input[type=text], #value').keydown(function() {
+    // Changes in (activated) input fields
+    if(!$(this).prop('readonly')) {
+        // Inform the user that the cookie needs to be saved.
+        set_save_button_highlight();
+    }
+});
+
+$('#cookie-details input[type=checkbox], #store, #samesite').change(function() {
+    // Changes in checkbox and select status
+    // Inform the user that the cookie needs to be saved.
+    set_save_button_highlight();
 });
 
 $('#button_optimal_size').click(function() {
@@ -1052,6 +1071,7 @@ function onError(error) {
 
 function reset_cookie_details() {
     // Reset cookie details to default
+    // Called after an actualization of the interface, after deleting or saving cookies
     // Suppression of all values in text inputs and textarea
     $("#cookie-details input[type=text]").each(function() {
         $(this).val("");
@@ -1060,6 +1080,26 @@ function reset_cookie_details() {
     $("#issession").prop("checked", true);
     $('#expiration_date').closest('.form-group').hide();
     $("#edit_button").removeClass("down");
+    remove_save_button_highlight();
+}
+
+function remove_save_button_highlight() {
+    // Mask tooltip and remove the color on the icon of #save_button
+    let $save_button = $("#save_button");
+    $save_button.removeClass("save-needed");
+    $save_button.tooltip("hide");
+}
+
+function set_save_button_highlight() {
+    // Changes in cookie details => inform the user that the cookie needs to be saved.
+    // Called when changes are made on: #expiration_date, #cookie-details input[type=text], #value,
+    // #cookie-details input[type=checkbox], #store, #samesite
+    // Show tooltip and set the color on the icon of #save_button
+    let $save_button = $("#save_button");
+    if (!$save_button.is('[aria-describedby]')) {
+        $save_button.tooltip("show");
+        $save_button.addClass("save-needed");
+    }
 }
 
 function actualizeDomains() {
@@ -1352,6 +1392,9 @@ function display_cookie_details(event) {
     $("#toggle_url").removeClass("down");
     $("#toggle_b64").removeClass("down");
 
+    // Reset save button if highlighted
+    remove_save_button_highlight();
+
     // Fill the fields
     $('#domain').val(cookie.domain);
     $('#fpi-domain').val(cookie.firstPartyDomain);
@@ -1396,6 +1439,8 @@ function display_cookie_details(event) {
         //$('#myDatepicker').data("DateTimePicker").clear();
         $expiration_date.data("DateTimePicker").date(moment(new Date ).add(1, 'days').format(vAPI.date_format));
     }
+    // Reset save button if highlighted
+    remove_save_button_highlight();
 
     // If the cookie is not in protected_cookies array: display lock icon
     // otherwise, display unlock icon
