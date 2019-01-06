@@ -561,6 +561,11 @@
     "description": "Popup menu: Delete current Site Cookies"
   },
 
+  "popupDeleteContextCookies": {
+    "message": "Cookies aus dem Kontext löschen",
+    "description": "Popup menu: Delete current Context Cookies"
+  },
+
   "popupDeleteCurrentLocalStorage": {
     "message": "Aktuellen LocalStorage löschen",
     "description": "Popup menu: Delete current Site LocalStorage"

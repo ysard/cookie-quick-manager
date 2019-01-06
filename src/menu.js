@@ -56,26 +56,19 @@
 
             else if (id === "delete_current_cookies") {
                 // Delete all cookies for the current domain & store
-                browser.runtime.getBrowserInfo().then((browser_info) => {
-                    // TODO: reuse params from initialization: avoid getBrowserInfo() call
-                    let params = {
-                        url: current_tab.url,
-                        storeId: current_tab.cookieStoreId,
-                    }
+                let params = {
+                    url: current_tab.url,
+                    storeId: current_tab.cookieStoreId,
+                }
+                delete_cookies(params);
+            }
 
-                    // Detect Firefox version:
-                    // -> firstPartyDomain argument is available on Firefox 59+=
-                    // {name: "Firefox", vendor: "Mozilla", version: "60.0.1", buildID: ""}
-                    let version = browser_info.version.split('.')[0];
-                    if (parseInt(version) >= 59)
-                        params['firstPartyDomain'] = null;
-
-                    return vAPI.delete_cookies(browser.cookies.getAll(params));
-                })
-                .then((ret) => {
-                    // Force the closing of the window
-                    window.close();
-                });
+            else if (id === "delete_context_cookies") {
+                // Delete all cookies for the current store
+                let params = {
+                    storeId: current_tab.cookieStoreId,
+                }
+                delete_cookies(params);
             }
 
             else if (id === "delete_current_localstorage") {
@@ -105,6 +98,26 @@
     }, false);
 
     /*********** Utils ***********/
+
+    function delete_cookies(params) {
+        // Delete cookies according the given filter
+        browser.runtime.getBrowserInfo().then((browser_info) => {
+            // TODO: reuse params from initialization: avoid getBrowserInfo() call
+
+            // Detect Firefox version:
+            // -> firstPartyDomain argument is available on Firefox 59+=
+            // {name: "Firefox", vendor: "Mozilla", version: "60.0.1", buildID: ""}
+            let version = browser_info.version.split('.')[0];
+            if (parseInt(version) >= 59)
+                params['firstPartyDomain'] = null;
+
+            return vAPI.delete_cookies(browser.cookies.getAll(params));
+        })
+        .then((ret) => {
+            // Force the closing of the window
+            window.close();
+        });
+    }
 
     function getActiveTab() {
         //get active tab to run an callback function.
@@ -198,18 +211,10 @@
             // Display a shortcut to delete all cookies for the current domain & store
             // Display a shortcut to delete LocalStorage
             browser.runtime.getBrowserInfo().then((browser_info) => {
-                let params = {
-                    url: current_tab.url,
-                    storeId: current_tab.cookieStoreId,
-                }
 
                 // Detect Firefox version:
                 // {name: "Firefox", vendor: "Mozilla", version: "60.0.1", buildID: ""}
                 let version = browser_info.version.split('.')[0];
-
-                // -> firstPartyDomain argument is available on Firefox 59+=
-                if (parseInt(version) >= 59)
-                    params['firstPartyDomain'] = null;
 
                 // -> LocalStorage and indexedDB is not available on Firefox 56
                 // removalOptions.hostnames is available since FF 58
@@ -233,13 +238,39 @@
                     });
                 }
 
-                return browser.cookies.getAll(params);
+                /////////////////////////////////////////////////////////////////
+
+                let params_current_cookies = {
+                    url: current_tab.url,
+                    storeId: current_tab.cookieStoreId,
+                }
+                let params_context_cookies = {
+                    storeId: current_tab.cookieStoreId,
+                }
+
+                // -> firstPartyDomain argument is available on Firefox 59+=
+                if (parseInt(version) >= 59) {
+                    params_current_cookies['firstPartyDomain'] = null;
+                    params_context_cookies['firstPartyDomain'] = null;
+                }
+
+                // Merge all promises
+                return Promise.all([
+                    browser.cookies.getAll(params_current_cookies),
+                    browser.cookies.getAll(params_context_cookies)]
+                );
             })
-            .then((cookies) => {
-                // Display the number of cookies
+            .then((cookies_array) => {
+                // Display the number of cookies for the current site
                 let a = document.querySelector('#delete_current_cookies');
                 // text content is a child node, at the 4rd pos
-                let content = document.createTextNode(" (" + cookies.length + ")");
+                let content = document.createTextNode(" (" + cookies_array[0].length + ")");
+                a.appendChild(content);
+
+                // Display the number of cookies in the current context
+                a = document.querySelector('#delete_context_cookies');
+                // text content is a child node, at the 4rd pos
+                content = document.createTextNode(" (" + cookies_array[1].length + ")");
                 a.appendChild(content);
             })
             .then((ret) => {
