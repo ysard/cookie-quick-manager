@@ -696,11 +696,12 @@ function firefox57_workaround_for_blank_panel() {
     browser.windows.getCurrent().then((currentWindow) => {
         // PS: innerHeight has always a value of 1 pixel less than currentWindow.height
         var updateInfo = {
-            width: window.innerWidth,
-            height: window.innerHeight + 2, // 2 pixel more than original size...
+            width: currentWindow.width,
+            height: currentWindow.height + 2, // 2 pixel more than original size...
         };
         /*
          console.log({
+            updateInfo: updateInfo,
             current_height: currentWindow.height,
             current_width: currentWindow.width,
             inner_height: window.innerHeight,
