@@ -63,16 +63,17 @@ $("#actualize_button").click(function() {
 $("#auto_actualize_checkbox").click(function() {
     // Toggle the listener which monitors the creation/deletion/modification of cookies
     // and memorize the checkbox status.
-    let set_settings;
+    let auto_actualize_status;
 
     if (browser.cookies.onChanged.hasListener(cookies_onChangedListener)) {
         browser.cookies.onChanged.removeListener(cookies_onChangedListener);
-        set_settings = browser.storage.local.set({auto_actualize_checkbox: false});
+        auto_actualize_status = false;
     } else {
         browser.cookies.onChanged.addListener(cookies_onChangedListener);
-        set_settings = browser.storage.local.set({auto_actualize_checkbox: true});
+        auto_actualize_status = true;
     }
-    set_settings.then(null, (error) => {
+    browser.storage.local.set({auto_actualize_checkbox: auto_actualize_status})
+    .then(null, (error) => {
         console.log(`set_option_error: ${error}`);
     });
 });
@@ -219,8 +220,8 @@ $("#protect_button").click(function() {
     }
     //console.log(protected_cookies);
     // Set new protected_cookies on storage area
-    let set_settings = browser.storage.local.set({"protected_cookies": protected_cookies});
-    set_settings.then((ret) => {
+    browser.storage.local.set({"protected_cookies": protected_cookies})
+    .then((ret) => {
         // Simulate click on domain
         $('#domain-list').find('li.active').click();
     }, onError)
@@ -475,8 +476,8 @@ window.onresize = function(event) {
         width: window.innerWidth,
         height: window.innerHeight
     };
-    let set_settings = browser.storage.local.set({addonSize});
-    set_settings.then(null, (error) => {
+    browser.storage.local.set({addonSize})
+    .then(null, (error) => {
         console.log(`Error_resizing: ${error}`);
     });
 };
