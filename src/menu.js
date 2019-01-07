@@ -36,7 +36,7 @@
         document.addEventListener("click", (e) => {
             let id = e.target.id;
 
-            if (id === "search_cookie_manager") {
+            if (id == "search_cookie_manager") {
                 // Search cookies for a domain: Send current url
                 let createData = {
                     type: "panel",
@@ -45,7 +45,7 @@
                 createWindow(createData);
             }
 
-            else if (id === "simple_cookie_manager") {
+            else if (id == "simple_cookie_manager") {
                 // Just launch the addon: Send empty url
                 let createData = {
                     type: "panel",
@@ -54,7 +54,7 @@
                 createWindow(createData);
             }
 
-            else if (id === "delete_current_cookies") {
+            else if (id == "delete_current_cookies") {
                 // Delete all cookies for the current domain & store
                 let params = {
                     url: current_tab.url,
@@ -63,7 +63,7 @@
                 delete_cookies(params);
             }
 
-            else if (id === "delete_context_cookies") {
+            else if (id == "delete_context_cookies") {
                 // Delete all cookies for the current store
                 let params = {
                     storeId: current_tab.cookieStoreId,
@@ -71,7 +71,7 @@
                 delete_cookies(params);
             }
 
-            else if (id === "delete_current_localstorage") {
+            else if (id == "delete_current_localstorage") {
                 // Purge LocalStore for the current domain
                 // NOTE: subdomains will not be taken into account
                 let prom = browser.browsingData.removeLocalStorage({hostnames: [(new URL(current_tab.url)).hostname,]});
@@ -81,14 +81,14 @@
                 });
             }
 
-            else if (id === "options") {
+            else if (id == "options") {
                 // Open Options Page
                 browser.runtime.openOptionsPage();
                 // Force the closing of the window
                 window.close();
             }
-
-            e.preventDefault();
+            // Allow propagation of the click event from childs to <a>:
+            // do not do: e.preventDefault();
         });
 
         /*********** Initializations ***********/
@@ -167,22 +167,13 @@
     }
 
     function set_translations() {
-        // Set translations after the insertion of favicons and numbers of cookies/items
-        // set_translations replace specific childNodes in a predefined position
-        // PS: Be careful not to skip a line in the html code so as not to change the index
-        // of the text element to be modified.
+        // Set translations
+        let i18nElements = document.querySelectorAll('[data-i18n-content]');
 
-        // Workaround used to speed-up the load of UI for non supported locales
-        let supported_locales = ['fr', 'de'];
-        if (supported_locales.includes(browser.i18n.getUILanguage())) {
-
-            let i18nElements = document.querySelectorAll('[data-i18n-content]');
-
-            i18nElements.forEach(function (i18nElement) {
-
-                let i18nMessageName = i18nElement.getAttribute('data-i18n-content');
-                i18nElement.childNodes[1].textContent = browser.i18n.getMessage(i18nMessageName);
-            });
+        for (var i=0, n=i18nElements.length; i < n; ++i){
+            i18nElements[i].textContent = browser.i18n.getMessage(
+                i18nElements[i].getAttribute('data-i18n-content')
+            );
         }
     }
 
@@ -191,6 +182,9 @@
         // Set the searched domain and its icon
         // Display the option to delete LocalStorage
         // Display the number of cookies and items in LocalStorage
+        // Set translations
+
+        set_translations();
 
         getActiveTab().then((tabs) => {
             // Set the global var with current tab
@@ -214,14 +208,13 @@
 
                 // Detect Firefox version:
                 // {name: "Firefox", vendor: "Mozilla", version: "60.0.1", buildID: ""}
-                let version = browser_info.version.split('.')[0];
+                let version = parseInt(browser_info.version.split('.')[0]);
 
                 // -> LocalStorage and indexedDB is not available on Firefox 56
                 // removalOptions.hostnames is available since FF 58
-                if (parseInt(version) >= 58) {
+                if (version >= 58) {
                     // Display the shortcut for localstorage deletion
                     let a = document.querySelector('#delete_current_localstorage');
-                    a.style['display'] = 'block';
 
                     // Get the number of localstorage items
                     browser.tabs.executeScript({
@@ -236,6 +229,9 @@
                         let content = document.createTextNode(" (0)");
                         a.appendChild(content);
                     });
+                } else {
+                    let a = document.querySelector('#delete_current_localstorage');
+                    a.style['display'] = 'None';
                 }
 
                 /////////////////////////////////////////////////////////////////
@@ -249,7 +245,7 @@
                 }
 
                 // -> firstPartyDomain argument is available on Firefox 59+=
-                if (parseInt(version) >= 59) {
+                if (version >= 59) {
                     params_current_cookies['firstPartyDomain'] = null;
                     params_context_cookies['firstPartyDomain'] = null;
                 }
@@ -263,20 +259,17 @@
             .then((cookies_array) => {
                 // Display the number of cookies for the current site
                 let a = document.querySelector('#delete_current_cookies');
-                // text content is a child node, at the 4rd pos
+                // text content is a child node, at the 2nd pos
                 let content = document.createTextNode(" (" + cookies_array[0].length + ")");
                 a.appendChild(content);
 
                 // Display the number of cookies in the current context
                 a = document.querySelector('#delete_context_cookies');
-                // text content is a child node, at the 4rd pos
-                content = document.createTextNode(" (" + cookies_array[1].length + ")");
+                // text content is a child node, at the 2nd pos
+                // Truncate number of cookie greater than 99 (which could cause a resizing of the window)
+                let displayed_length = (cookies_array[1].length < 100) ? " (" + cookies_array[1].length + ")": " (99+)"
+                content = document.createTextNode(displayed_length);
                 a.appendChild(content);
-            })
-            .then((ret) => {
-                // Set translations after the insertion of favicons and numbers of cookies/items
-                // set_translations replace specific childNodes in a predefined position
-                set_translations();
             });
         });
 

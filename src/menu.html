@@ -4,11 +4,17 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
     <style>
+    body {
+        height: 157px;
+        min-width: 300px;
+        overflow: hidden;
+    }
     a, a:visited{
         padding: 5px 10px;
         display: block;
         text-decoration: none;
         color: black;
+        width: inherit;
     }
     a:hover {
         box-shadow:0px 1px 1px gray inset;
@@ -21,18 +27,16 @@
         margin-right: 5px;
         vertical-align: bottom;
     }
-    .hidden_item {
-        display: None;
-    }
     </style>
   </head>
   <body>
     <div class="panel">
-      <a href="#" id="simple_cookie_manager" data-i18n-content="popupSimple"><img class="favicon" src="icons/icon48.png">Manage all Cookies</a>
-      <a href="#" id="search_cookie_manager" data-i18n-content="popupSearch">Search Cookies for: </a>
-      <a href="#" id="delete_current_cookies" data-i18n-content="popupDeleteCurrentCookies"><img class="favicon" src="icons/forbidden48.png">Delete current Site Cookies</a>
-      <a href="#" id="delete_current_localstorage" class="hidden_item" data-i18n-content="popupDeleteCurrentLocalStorage"><span class="favicon"></span>Delete current Site LocalStorage</a>
-      <a href="#" id="options" data-i18n-content="popupOptions"><span class="favicon"></span>Options</a>
+      <a href="#" id="simple_cookie_manager"><img class="favicon" src="icons/icon48.png"><span data-i18n-content="popupSimple"><span></a>
+      <a href="#" id="search_cookie_manager"><span data-i18n-content="popupSearch"><span></a>
+      <a href="#" id="delete_current_cookies"><img class="favicon" src="icons/forbidden48.png"><span data-i18n-content="popupDeleteCurrentCookies"><span></a>
+      <a href="#" id="delete_context_cookies"><img class="favicon" src="icons/forbidden48.png"><span data-i18n-content="popupDeleteContextCookies"><span></a>
+      <a href="#" id="delete_current_localstorage"><span class="favicon"></span><span data-i18n-content="popupDeleteCurrentLocalStorage"><span></a>
+      <a href="#" id="options"><span class="favicon"></span><span data-i18n-content="popupOptions"><span></a>
     </div>
     <script src="api.js"></script>
     <script src="menu.js"></script>
