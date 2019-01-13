@@ -1,0 +1,89 @@
+body {
+  color: white;
+  background: black;
+  min-height: 400px;
+  font-size: 1.5em;
+}
+#shortcuts {
+  max-width: 510px;
+}
+#addon-name {
+  display: inline-block;
+  margin-top: 10px;
+  vertical-align: top;
+  font-weight: bold;
+}
+#dynamic-tab {
+  display: inline-block;
+  background: #303030;
+}
+h2 {
+  font-size: larger;
+  margin-bottom: 5px;
+  margin-top: 5px;
+  margin-right: 15px;
+}
+.form-control {
+  color: white;
+  background: #202020;
+}
+.form-group {
+  /* Reduce space between input lines in cookie details */
+  margin-bottom: 5px;
+  margin-left: 30px;
+}
+form label {
+  font-weight: normal;
+}
+form input {
+  vertical-align: bottom;
+}
+#select_skin, #select_template {
+  padding-left: 0;
+}
+#skin, #template {
+  width: 200px;
+}
+#paragraph {
+  padding-left: 30px;
+}
+button {
+  /* black theme fix */
+  color: buttonText;
+  background: #303030;
+}
+/* Fix checkbox vertical alignement with label */
+input[type="checkbox"] {
+  vertical-align: text-bottom;
+}
+.ask_info {
+  padding-left: 15px;
+  cursor: pointer;
+  opacity: 0.4;
+}
+.ask_info:hover {
+  opacity: 1;
+}
+.info {
+  margin-left: 15px;
+  padding: 5px;
+  max-width: 450px;
+  font-size: 0.85em;
+  font-style: italic;
+  background-color: black;
+  display: none;
+}
+kbd {
+  font-weight: 700;
+}
+#protected-cookie-tree {
+  width: 350px;
+  margin-top: 20px;
+}
+#protected-cookie-tree .list-group-item {
+  padding: 5px 15px;
+  background: #202020;
+}
+#changelog span {
+  padding-left: 20px;
+}
