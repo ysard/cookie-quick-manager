@@ -9,8 +9,18 @@
     height: 125px;
 }
 /* Customization */
+
+*  {
+    /* BB181218:
+       !important was inserted to fix conext menus, with the
+       unfortunate result that to over-ride it, I needed to
+       then include !important foreverwhere else's background */
+    background: black !important;
+    color: white;
+}
+
 h2 {
-    background: #12b36f;
+    background: #303030 !important;
     padding: 10px;
     text-transform: uppercase;
     font-weight: 600;
@@ -21,8 +31,9 @@ h2 {
 
 .list-group-item {
     /*padding: 7px 17px;*/
+    background: black;
     color: #727272;
-    border-color: #efefef;
+    border-color: #808080;
 }
 .list-group-item:first-child{
     border-radius: 0;
@@ -31,56 +42,56 @@ h2 {
 .list-group-item.active:focus,
 .list-group-item.active:hover,
 #search_domain_submit{
-    background-color: #48d298;
-    border-color: #48d298;
+    background-color: #303030;
+    border-color: #505050;
 }
 .list-group-item > .badge{
     border-radius: 0;
 }
 .list-group-item > .badge{
-    background-color: #48d298;
+    background-color: #404040;
 }
 .list-group-item.active > .badge, .nav-pills > .active > a > .badge {
     color: white;
-    background-color: #12b36f;
+    background-color: #606060;
 }
 .form-control {
     border-radius: 0;
     box-shadow: inherit;
-    background: #f9f9f9;
+    background: black;
     border-color: #e6e6e6;
 }
 .btn-default,
 .input-group-addon,
 .open > .dropdown-toggle.btn-default{ /*fix grey bg color during the click*/
     border-radius: 0px;
-    background-color: #48d298;
+    background-color: #505050;
     color: white;
-    border-color: #48d298;
+    border-color: #d0d0d0;
 }
 .btn-default:hover,
 .dropup > .dropdown-toggle.btn-default:hover{ /*fix grey bg color during the click*/
-    background-color: #12b36f;
-    border-color: #2fad78;
+    background-color: #303030;
+    border-color: #808080;
     color: white;
 }
 .btn-default:focus,
 .open > .dropdown-toggle.btn-default:focus{
     /* Add a border when buttons are focused by tab key */
-    border-color: #15774e;
+    border-color: #808080;
     color: white;
-    background-color: #2fad78;
+    background-color: #404040;
 }
 .btn-default:active:focus {
     /*fix grey bg color during the click*/
-    background-color: #2fad78;
+    background-color: #808080;
 }
 .glyphicon{
     color: white;
 }
 .top-buttons .glyphicon{
     top: -2px;
-    color: #48d298;
+    color: #808080;
 }
 
 @media only screen and (max-width: 768px) {
