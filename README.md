@@ -1,3 +1,32 @@
+This is a fork of the
+[[https://github.com/ysard/cookie-quick-manager][cookie-quick-manager]]
+git repository, awaiting an accepted pull-request, and providing the
+following changes from the upstream original:
+
+* An option for a dark theme
+
+* Renaming the 'hacker-style' theme to plain 'green'
+
+* Javascript for dynamic updating of the themes
+
+* Removing hard-coded css from html files, and combining themm into an
+  individual theme file.
+
+* Minor css label changes, and additions, to handle conflicts among
+  the css of the individual html files.
+
+To use this repository without registering it as a Mozilla add-on:
+
+* navigate to the `src` folder
+
+* perform `aa="$HOME/Downloads/foo.xpi" ; rm "$aa" ; zip -r "$aa" *`
+
+* open a firefox tab _about:debugging_
+
+* enable debugging and load the temporary extension
+
+Following is the README.md of the upstream version of the repository:
+
 # Overview
 
 Cookie Quick Manager: A complete manager for cookies accumulated during browsing.
