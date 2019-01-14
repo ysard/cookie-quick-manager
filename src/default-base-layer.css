@@ -17,7 +17,7 @@
   padding-left: 0px;
   padding-right: 0px;
 }
-h2 {
+#list-header {
   font-size: larger;
   margin-bottom: 5px;
   margin-top: 5px;
@@ -249,8 +249,8 @@ form input {
   }
   /* Add some space after the last element of the page */
   body {
-    color: white;
-    background: black;
+    color: black;
+    background: white;
     font-size: 1.5em;
     margin-bottom: 5px;
   }
@@ -269,18 +269,11 @@ form input {
   }
 }
 button {
-  /* black theme fix */
   color: buttonText;
-  background: #303030;
 }
 
 
 /* This following section had orginally been 'options.css' */
-/* body {
-  color: white;
-  background: black;
-  font-size: 1.5em;
-} */
 #shortcuts {
   max-width: 510px;
 }
@@ -292,17 +285,12 @@ button {
 }
 #dynamic-tab {
   display: inline-block;
-  background: #303030;
 }
 h2 {
   font-size: larger;
   margin-bottom: 5px;
   margin-top: 5px;
   margin-right: 15px;
-}
-.form-control {
-  color: white;
-  background: #202020;
 }
 .form-group {
   /* Reduce space between input lines in cookie details */
@@ -325,11 +313,6 @@ form input {
 #paragraph {
   padding-left: 30px;
 }
-button {
-  /* black theme fix */
-  color: buttonText;
-  background: #303030;
-}
 /* Fix checkbox vertical alignement with label */
 input[type="checkbox"] {
   vertical-align: text-bottom;
@@ -348,7 +331,7 @@ input[type="checkbox"] {
   max-width: 450px;
   font-size: 0.85em;
   font-style: italic;
-  background-color: black;
+  background-color: #F8F8F8;
   display: none;
 }
 kbd {
@@ -360,7 +343,6 @@ kbd {
 }
 #protected-cookie-tree .list-group-item {
   padding: 5px 15px;
-  background: #202020;
 }
 #changelog span {
   padding-left: 20px;
@@ -370,26 +352,18 @@ kbd {
 
 
 /* This following section had orginally been 'menu.css' */
-/* body {
-  color: white;
-  background: black;
-  font-size: 1.5em;
-} */
 .panel {
-    background: black;
-    color: white;
     font-size: 0.6em;
-    min-height: 16px;
 }
 a, a:visited{
     padding: 5px 10px;
     display: block;
     text-decoration: none;
-    color: white;
+    color: black;
 }
 a:hover {
     box-shadow:0px 1px 1px gray inset;
-    background-color: #404040;
+    background-color: rgb(245, 244, 243);
 }
 .favicon {
     display: inline-block;

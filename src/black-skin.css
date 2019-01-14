@@ -1,0 +1,132 @@
+body {
+  color: white;
+  background:black;
+}
+button {
+  background: #303030;
+}
+#dynamic-tab {
+  background: #303030;
+}
+.form-control {
+  color: white;
+  background: #202020;
+}
+.info {
+  background-color: black;
+}
+#protected-cookie-tree .list-group-item {
+  background: #202020;
+}
+/* Following section is for menu.html */
+.panel {
+    background: black;
+    color: white;
+    font-size: 0.6em;
+    min-height: 16px;
+}
+a, a:visited{
+    color: white; */
+}
+a:hover {
+    background-color: #404040;
+}
+/* Preceding section is for menu.html */
+
+
+
+
+/* Reduce height of elements due to the augmentation of the padding
+ * for h2 tags
+ */
+#domain-list, #cookie-list {
+    height: calc(100% - 75px);
+}
+#value {
+    /* -41px */
+    height: 125px;
+}
+/* Customization */
+
+*  {
+    /* BB181218:
+       !important was inserted to fix context menus, with the
+       unfortunate result that to over-ride it, I needed to
+       then include !important foreverwhere else's background */
+    background: black !important;
+    color: white;
+}
+
+.list-group-item {
+    /*padding: 7px 17px;*/
+    background: black;
+    color: #727272;
+    border-color: #808080;
+}
+.list-group-item:first-child{
+    border-radius: 0;
+}
+.list-group-item.active,
+.list-group-item.active:focus,
+.list-group-item.active:hover,
+#search_domain_submit{
+    background-color: #303030;
+    border-color: #505050;
+}
+.list-group-item > .badge{
+    border-radius: 0;
+}
+.list-group-item > .badge{
+    background-color: #404040;
+}
+.list-group-item.active > .badge, .nav-pills > .active > a > .badge {
+    color: white;
+    background-color: #606060;
+}
+.form-control {
+    border-radius: 0;
+    box-shadow: inherit;
+    background: black;
+    border-color: #e6e6e6;
+}
+.btn-default,
+.input-group-addon,
+.open > .dropdown-toggle.btn-default{ /*fix grey bg color during the click*/
+    border-radius: 0px;
+    background-color: #505050;
+    color: white;
+    border-color: #d0d0d0;
+}
+.btn-default:hover,
+.dropup > .dropdown-toggle.btn-default:hover{ /*fix grey bg color during the click*/
+    background-color: #303030;
+    border-color: #808080;
+    color: white;
+}
+.btn-default:focus,
+.open > .dropdown-toggle.btn-default:focus{
+    /* Add a border when buttons are focused by tab key */
+    border-color: #808080;
+    color: white;
+    background-color: #404040;
+}
+.btn-default:active:focus {
+    /*fix grey bg color during the click*/
+    background-color: #808080;
+}
+.glyphicon{
+    color: white;
+}
+.top-buttons .glyphicon{
+    top: -2px;
+    color: #808080;
+}
+
+@media only screen and (max-width: 768px) {
+    #domain-list, #cookie-list {
+        height: 200px; /* +50px */
+    }
+    .row .col-sm-8 {
+        top: 465px; /* +90px */
+    }
+}

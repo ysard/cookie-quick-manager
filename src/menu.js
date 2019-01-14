@@ -184,6 +184,14 @@
         // Display the number of cookies and items in LocalStorage
         // Set translations
 
+        let get_settings = browser.storage.local.get({
+            skin: 'default',
+        });
+        get_settings.then((items) => {
+            $('#skin').val(items.skin);
+            update_skin(items.skin);
+        });
+
         set_translations();
 
         getActiveTab().then((tabs) => {
@@ -275,8 +283,26 @@
 
     }
 
+    function update_skin(skin) {
+        // Update skin if skin != 'default'
+        // if skin == 'default' => remove the css stylesheet
+        if (skin == 'default')
+            $('#custom_theme').remove();
+        else
+            $('<link>')
+            .appendTo('head')
+            .attr({
+                id: 'custom_theme',
+                type: 'text/css',
+                rel: 'stylesheet',
+                href: skin + '.css'
+        });
+    }
+
+
+
     /*********** Global variables ***********/
 
     var current_tab;
 
-}));
+}))
