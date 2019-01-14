@@ -1,5 +1,5 @@
 This is a fork of the
-[[https://github.com/ysard/cookie-quick-manager][cookie-quick-manager]]
+[https://github.com/ysard/cookie-quick-manager](cookie-quick-manager)
 git repository, awaiting an accepted pull-request, and providing the
 following changes from the upstream original:
 
