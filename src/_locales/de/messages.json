@@ -309,10 +309,9 @@
   },
 
   "contributeContent": {
-    "message": "<div id='contribute-content'>Es gibt verschiedene Möglichkeiten, wie du zur Entwicklung beitragen kannst:<br><ul><li>Falls du Spenden willst, um die vielen Programmierstunden zu belohnen, benutze bitte diese Bitcoin-Addresse:<br><span class='btc-color'>15qduxA755YANqGcbd8VvBmm8DmR4rCg1i</span></li><li>Du kannst eine Bewertung auf <a target='_blank' href='https://addons.mozilla.org/firefox/addon/cookie-quick-manager/'>addons.mozilla.org</a> abgeben, um die Sichtbarkeit des Add-ons zu erhöhen.</li><li>Du kannst beim Überprüfen des Quellcodes im <a target='_blank' href='https://github.com/ysard/cookie-quick-manager'>GitHub-Verzeichnis</a> helfen.</li><li>Zeig es deinen Freunden!</li></ul></div>",
+    "message": "<div id='contribute-content'>Es gibt verschiedene Möglichkeiten, wie du zur Entwicklung beitragen kannst:<br><ul><li>Falls du Spenden willst, um die vielen Programmierstunden zu belohnen, benutze bitte diese Bitcoin-Addresse:<br><span class='btc-color'>15qduxA755YANqGcbd8VvBmm8DmR4rCg1i</span>,<br>oder die Liberapay Recurrent-Spendenplattform:<br><a target='_blank' href='https://liberapay.com/Ysard/donate'><img src='icons/donate.svg'></a></li><li>Du kannst eine Bewertung auf <a target='_blank' href='https://addons.mozilla.org/firefox/addon/cookie-quick-manager/'>addons.mozilla.org</a> abgeben, um die Sichtbarkeit des Add-ons zu erhöhen.</li><li>Du kannst beim Überprüfen des Quellcodes im <a target='_blank' href='https://github.com/ysard/cookie-quick-manager'>GitHub-Verzeichnis</a> helfen.</li><li>Zeig es deinen Freunden!</li></ul></div>",
     "description": "How to contribute popover."
   },
-
 
 
 
