@@ -33,63 +33,79 @@
 
         /*********** Events attached to UI elements ***********/
 
-        document.addEventListener("click", (e) => {
-            let id = e.target.id;
+        var menu_links = document.getElementsByTagName('a');
+        for(var i = 0, len = menu_links.length; i < len; i++) {
+
+            let element = menu_links[i];
+            let id = element.id;
 
             if (id == "search_cookie_manager") {
-                // Search cookies for a domain: Send current url
-                let createData = {
-                    type: "panel",
-                    url: "cookies.html?parent_url=" + encodeURIComponent(current_tab.url),
-                };
-                createWindow(createData);
+                element.onclick = function () {
+                    // Search cookies for a domain: Send current url
+                    let createData = {
+                        type: "panel",
+                        url: "cookies.html?parent_url=" + encodeURIComponent(current_tab.url),
+                    };
+                    createWindow(createData);
+                }
             }
 
             else if (id == "simple_cookie_manager") {
-                // Just launch the addon: Send empty url
-                let createData = {
-                    type: "panel",
-                    url: "cookies.html?parent_url=",
-                };
-                createWindow(createData);
+                element.onclick = function () {
+                    // Just launch the addon: Send empty url
+                    let createData = {
+                        type: "panel",
+                        url: "cookies.html?parent_url=",
+                    };
+                    createWindow(createData);
+                }
             }
 
             else if (id == "delete_current_cookies") {
-                // Delete all cookies for the current domain & store
-                let params = {
-                    url: current_tab.url,
-                    storeId: current_tab.cookieStoreId,
+                element.onclick = function () {
+                    // Delete all cookies for the current domain & store
+                    // Note: delete_cookies() closes the window
+                    let params = {
+                        url: current_tab.url,
+                        storeId: 40,//current_tab.cookieStoreId,
+                    }
+                    delete_cookies(params);
                 }
-                delete_cookies(params);
             }
 
             else if (id == "delete_context_cookies") {
-                // Delete all cookies for the current store
-                let params = {
-                    storeId: current_tab.cookieStoreId,
+                element.onclick = function () {
+                    // Delete all cookies for the current store
+                    // Note: delete_cookies() closes the window
+                    let params = {
+                        storeId: current_tab.cookieStoreId,
+                    }
+                    delete_cookies(params);
                 }
-                delete_cookies(params);
             }
 
             else if (id == "delete_current_localstorage") {
-                // Purge LocalStore for the current domain
-                // NOTE: subdomains will not be taken into account
-                let prom = browser.browsingData.removeLocalStorage({hostnames: [(new URL(current_tab.url)).hostname,]});
-                prom.then((ret) => {
-                    // Force the closing of the window
-                    window.close();
-                });
+                element.onclick = function () {
+                    // Purge LocalStore for the current domain
+                    // NOTE: subdomains will not be taken into account
+                    let prom = browser.browsingData.removeLocalStorage({hostnames: [(new URL(current_tab.url)).hostname,]});
+                    prom.then((ret) => {
+                        // Force the closing of the window
+                        window.close();
+                    });
+                }
             }
 
             else if (id == "options") {
-                // Open Options Page
-                browser.runtime.openOptionsPage();
-                // Force the closing of the window
-                window.close();
+                console.log('1 fois');
+                element.onclick = function () {
+                    // Open Options Page
+                    browser.runtime.openOptionsPage();
+                    // Force the closing of the window
+                    window.close();
+                }
             }
-            // Allow propagation of the click event from childs to <a>:
-            // do not do: e.preventDefault();
-        });
+        }
 
         /*********** Initializations ***********/
 
