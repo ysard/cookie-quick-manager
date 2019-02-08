@@ -67,7 +67,7 @@
                     // Note: delete_cookies() closes the window
                     let params = {
                         url: current_tab.url,
-                        storeId: 40,//current_tab.cookieStoreId,
+                        storeId: current_tab.cookieStoreId,
                     }
                     delete_cookies(params);
                 }
