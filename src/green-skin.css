@@ -9,7 +9,7 @@
     height: 125px;
 }
 /* Customization */
-h2 {
+#list-header {
     background: #12b36f;
     padding: 10px;
     text-transform: uppercase;
@@ -18,7 +18,6 @@ h2 {
     margin: 15px 0;
     color: white;
 }
-
 .list-group-item {
     /*padding: 7px 17px;*/
     color: #727272;

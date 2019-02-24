@@ -1586,9 +1586,8 @@ function update_skin(skin) {
     // Update skin if skin != 'default'
     // if skin == 'default' => remove the css stylesheet
 
-    if (skin == 'default')
-        $('#custom_theme').remove();
-    else
+    $('#custom_theme').remove();
+    if (skin != 'default')
         $('<link>')
         .appendTo('head')
         .attr({
