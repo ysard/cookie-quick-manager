@@ -275,9 +275,17 @@ vAPI.get_stores = function() {
             let stores = vAPI.storesAllowed;
             //console.log({storesAllowed: vAPI.storesAllowed});
 
-            if (contexts !== false)
+            if (contexts !== false) {
+                // Replace 'resource://usercontext-content' prefix in the urls of the context icons
+                // Due to unsolved bug https://bugzilla.mozilla.org/show_bug.cgi?id=1499000
+                for (let context of contexts) {
+                    context.iconUrl = context.iconUrl.replace(/resource:\/\/usercontext-content/, "icons");
+                }
+                //console.log("CONTEXTS iconUrl replaced", contexts);
+
                 // On FF+=57 add containers from contexts
                 stores = stores.concat(contexts);
+            }
 
             // Get only storeIds
             // TODO make a function to acess to this private attribute
