@@ -491,7 +491,7 @@ function parseJSONFile(content, firefox_version) {
 }
 
 function set_info_text(content) {
-    $('#info_text').text(content);
+    $('#info_text').html(content);
 }
 
 function get_options() {

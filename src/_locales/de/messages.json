@@ -346,7 +346,7 @@
   },
 
   "cookieRestoredError": {
-    "message": "Fehler, kein Cookie wiederhergestellt.\n$json_error$",
+    "message": "Fehler, kein Cookie wiederhergestellt.<br>$json_error$",
     "description": "Alert when a file is imported with an error from the json parser.",
     "placeholders": {
       "json_error" : {
@@ -356,7 +356,7 @@
   },
 
   "cookieRestoredSingleError": {
-    "message": "Fehler, mindestens ein Cookie konnte nicht wiederhergestellt werden.\n$error$\nKeine Sorge, meist handelt es sich dabie um Session-Cookies, die bereits abgelaufen sind.",
+    "message": "Fehler, mindestens ein Cookie konnte nicht wiederhergestellt werden:<br>$error$<br>Keine Sorge; die meiste Zeit diese sind Session-Cookies, die abgelaufen sind.",
     "description": "Alert when a file is imported with an error during the save process.",
     "placeholders": {
       "error" : {

@@ -371,7 +371,7 @@
   },
 
   "cookieRestoredError": {
-    "message": "Erreur, aucun cookie n'a été restauré.\n$json_error$",
+    "message": "Erreur, aucun cookie n'a été restauré.<br>$json_error$",
     "description": "Alert when a file is imported with an error from the json parser.",
     "placeholders": {
       "json_error" : {
@@ -381,7 +381,7 @@
   },
 
   "cookieRestoredSingleError": {
-    "message": "Erreur, au moins un cookie n'a pas été sauvegardé.\n$error$\nNe vous inquiétez pas; en temps normal il s'agit de cookies de session qui ont expiré.",
+    "message": "Erreur, au moins un cookie n'a pas été sauvegardé :<br>$error$<br>Ne vous inquiétez pas; la plupart du temps il s'agit de cookies de session qui ont expiré.",
     "description": "Alert when a file is imported with an error during the save process.",
     "placeholders": {
       "error" : {

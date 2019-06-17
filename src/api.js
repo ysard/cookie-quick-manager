@@ -475,7 +475,13 @@ vAPI.add_cookies = function(new_cookies_promises, protection_status) {
             if (protection_status)
                 return vAPI.set_cookie_protection(cookies_array, true);
 
-        }, vAPI.onError).then(() => {
+        }, (error) => {
+            // Handle errors from browser.cookies.set promises
+            // Ex: errors due to access to the private cookies storeId
+            vAPI.onError(error);
+            reject(JSON.stringify(error.message));
+
+        }).then(() => {
             // Ok => all cookies are added/protected properly
             // Reactivate the interface
             resolve();
