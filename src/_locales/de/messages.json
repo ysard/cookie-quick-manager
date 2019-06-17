@@ -325,6 +325,11 @@
     "description": "Content on modal dialog window, when a user is about to delete all cookies from a context."
   },
 
+  "modalMenuAlertContent": {
+    "message": "Ihre Aktion löscht alle Cookies aus dem aktuellen Kontext!\nWillst du weiter machen?",
+    "description": "Content of the modal JS alert when a user is about to delete all cookies from a context."
+  },
+
   "modalClipboardTitle": {
     "message": "Exportiere $cookie_number$ Cookie(s)",
     "description": "Header that tells the user how many cookies are exported in the textarea.",

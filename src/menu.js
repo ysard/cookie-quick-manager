@@ -68,7 +68,7 @@
                     let params = {
                         url: current_tab.url,
                         storeId: current_tab.cookieStoreId,
-                    }
+                    };
                     delete_cookies(params);
                 }
             }
@@ -77,10 +77,30 @@
                 element.onclick = function () {
                     // Delete all cookies for the current store
                     // Note: delete_cookies() closes the window
-                    let params = {
-                        storeId: current_tab.cookieStoreId,
-                    }
-                    delete_cookies(params);
+
+
+                    // Load display_deletion_alert flag
+                    let get_settings = browser.storage.local.get({
+                        display_deletion_alert: true,
+                    }).then((items) => {
+
+                        // Ability to show a modal alert
+                        // when a user wants to delete all cookies from at least 1 context
+                        if (items.display_deletion_alert)
+                            var deletion_confirmed = window.confirm(
+                                browser.i18n.getMessage("modalMenuAlertContent")
+                            );
+                        if (items.display_deletion_alert && !deletion_confirmed)
+                            // User didn't confirm deletion
+                            return;
+
+                        // Delete
+                        let params = {
+                            storeId: current_tab.cookieStoreId,
+                        };
+                        delete_cookies(params);
+                    });
+
                 }
             }
 
@@ -255,10 +275,10 @@
                 let params_current_cookies = {
                     url: current_tab.url,
                     storeId: current_tab.cookieStoreId,
-                }
+                };
                 let params_context_cookies = {
                     storeId: current_tab.cookieStoreId,
-                }
+                };
 
                 // -> firstPartyDomain argument is available on Firefox 59+=
                 if (version >= 59) {
