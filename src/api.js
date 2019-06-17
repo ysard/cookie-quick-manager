@@ -250,17 +250,33 @@ vAPI.get_stores = function() {
 
     return new Promise((resolve, reject) => {
 
-        browser.contextualIdentities.query({}).then((contexts) => {
+        browser.extension.isAllowedIncognitoAccess().then((allowed_incognito_access) => {
+            console.log("get_stores:: allowed incognito access?", allowed_incognito_access);
+            //console.log({default_stores: vAPI.default_stores});
+
+            if (!allowed_incognito_access) {
+                // The extension is not allowed to access private windows
+                // Keep only default context
+                vAPI.storesAllowed = [vAPI.default_stores[0]];
+            } else {
+                // Keep all default contexts
+                vAPI.storesAllowed = vAPI.default_stores;
+            }
+
+            // Query other contexts
+            return browser.contextualIdentities.query({});
+        })
+        .then((contexts) => {
             // contexts === false on Firefox < 57
-            // on FF+=57 contexts doesn't contain default stores: firefox-private or firefox-default
+            // on FF57- contexts doesn't contain default stores: firefox-private or firefox-default
             //console.log({CONTEXTS: contexts});
 
             // Init stores with default stores
-            let stores = vAPI.default_stores;
-            //console.log({default_stores: vAPI.default_stores});
+            let stores = vAPI.storesAllowed;
+            //console.log({storesAllowed: vAPI.storesAllowed});
 
-            // On FF+=57 add containers
             if (contexts !== false)
+                // On FF+=57 add containers from contexts
                 stores = stores.concat(contexts);
 
             // Get only storeIds
@@ -709,6 +725,7 @@ vAPI.remove_permission = function(permission_name) {
 
 /*********** Global variables ***********/
 
+// Private attribute, see vAPI.storesAllowed
 vAPI.default_stores = [
     {
         name: browser.i18n.getMessage("container_default"),
@@ -728,7 +745,10 @@ vAPI.default_stores = [
     },
 ];
 
-vAPI.storeIds = ['firefox-default', 'firefox-private'];
+// vAPI.default_stores without firefox-private if the extension is not allowed to access private windows
+// This attribute is "public" and should be used instead of vAPI.default_stores
+vAPI.storesAllowed = [];
+vAPI.storeIds = []; //Ex: ['firefox-default', 'firefox-private', ...];
 
 vAPI.template_JSON = {
     name: 'JSON',

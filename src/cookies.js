@@ -857,7 +857,7 @@ function showStores(stores) {
         if (element_id === '#search_store') {
             // Prepend stores with 'all' option for the search filter
             // WARNING: do not call unshift method here. stores is not readonly
-            // and is repercuted to vAPI.default_stores (when contexts == false)...
+            // and is repercuted to vAPI.storesAllowed (when contexts == false)...
             stores = [{
                 name: browser.i18n.getMessage("container_all"),
                 icon: "circle",
