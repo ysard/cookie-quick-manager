@@ -460,7 +460,7 @@
   },
 
   "oDisplay_deletion_alert": {
-    "message": " Display an alert before removing cookies from entire browsing context(s) (\"Delete all\" button)",
+    "message": " Display an alert before removing cookies from entire browsing context(s) (\"Delete all\" button or \"Delete Current Context cookies\" popup menu entry)",
     "description": "Settings page: Checkbox"
   },
 

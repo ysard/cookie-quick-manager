@@ -459,7 +459,7 @@
   },
 
   "oDisplay_deletion_alert": {
-    "message": " Affiche une alerte avant la suppression des cookies de contexte(s) de navigation (Bouton \"Supprimer tout\")",
+    "message": " Affiche une alerte avant la suppression des cookies de contexte(s) de navigation (Bouton \"Supprimer tout\" ou entrée du popup menu \"Supprimer les cookies du contexte\")",
     "description": "Settings page: Checkbox"
   },
 

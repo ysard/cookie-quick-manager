@@ -36,6 +36,8 @@
       }
       form label {
         font-weight: normal;
+        /* For multiline labels next to checkboxes */
+        vertical-align: top;
       }
       form input {
         vertical-align: bottom;
@@ -161,7 +163,7 @@
             </div>
             <div class="form-group row">
               <input type="checkbox" name="display_deletion_alert" id="display_deletion_alert">
-              <label for="display_deletion_alert" data-i18n-content="oDisplay_deletion_alert"> Display an alert before removing cookies from entire browsing context(s) (<em>Delete all</em> button)</label>
+              <label for="display_deletion_alert" data-i18n-content="oDisplay_deletion_alert"> Display an alert before removing cookies from entire browsing context(s) <br>(<em>Delete all</em> button or <em>Delete Current Context cookies</em> popup menu entry)</label>
             </div>
             <h2 data-i18n-content="oExport">Export</h2>
             <div class="form-group row">

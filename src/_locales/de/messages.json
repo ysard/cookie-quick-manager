@@ -434,7 +434,7 @@
   },
 
   "oDisplay_deletion_alert": {
-    "message": " Zeigen Sie eine Warnung an, bevor Sie Cookies aus dem gesamten Browserkontext entfernen (Schaltfläche \"Alle löschen\")",
+    "message": " Zeigen Sie eine Warnung an, bevor Sie Cookies aus dem gesamten Browserkontext entfernen (Schaltfläche \"Alle löschen\" oder \"Aktuelle Kontext-Cookies löschen\" Popup-Menüeintrag)",
     "description": "Settings page: Checkbox"
   },
 
