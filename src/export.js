@@ -119,7 +119,10 @@ $("#file_elem").change(function(event) {
     var reader = new FileReader();
     reader.onload = function(event) {
         // Restore content
-        handleUploadedFile(event.target.result);
+        handleUploadedFile(event.target.result, file.type);
+    };
+    reader.onerror = function (event) {
+        console.error(event.target.error.name);
     };
     reader.readAsText(file);
 });
@@ -357,86 +360,208 @@ function export_content_to_file(content) {
     document.body.appendChild(f);
 }
 
-function handleUploadedFile(content) {
+function handleUploadedFile(content, mimetype) {
     // Take a file content and dispatch it to the good parser
+    // Handle errors due to parsers.
 
     browser.runtime.getBrowserInfo().then((browser_info) => {
 
         // Detect Firefox version:
         // -> sameSite attribute is available on Firefox 63+=
         // {name: "Firefox", vendor: "Mozilla", version: "60.0.1", buildID: ""}
-        let firefox_version = parseInt(browser_info.version.split('.')[0]);
-        parseJSONFile(content, firefox_version);
+        let firefox_version = parseInt(browser_info.version.split('.')[0], 10);
+        let cookies_promises;
+
+        // Detect format based on MimeType: JSON or Netscape
+        if (mimetype == "application/json")
+            cookies_promises = parseJSONFile(content, firefox_version);
+        else if (mimetype == "text/plain")
+            cookies_promises = parseNETSCAPEFile(content, firefox_version);
+        else {
+            console.error("handleUploadedFile:: MimeType not supported", mimetype);
+            return;
+        }
+
+        cookies_promises.then((promises) => {
+            add_cookies(promises);
+        }, (error) => {
+            // Parser error (JSON)
+            set_info_text(browser.i18n.getMessage("cookieRestoredError", error));
+            $('#modal_info').modal('show');
+        }).catch((error) => {
+            console.error("Unexpected error:", error);
+        });
+    });
+}
+
+function parseNETSCAPEFile(content, firefox_version) {
+/* Parse Netscape file and return a list of cookies.set promises.
+ * NOTE: About default values. The netscape format is less rich than the JSON format,
+ * thus some features of the cookies are lost and are replaced by default values when inserting.
+ *
+ * - sameSite: 'no_restriction'.
+ * - httpOnly: false (cookie accessible from JS code).
+ * - storeId: current selected context.
+ * - firstPartyDomain: empty string (No way to know which is the FPI domain).
+ *
+ * NOTE: About Netscape file format (tabulated only):
+ *  0             1               2           3               4              5           6
+ * '{DOMAIN_RAW}\t{ISDOMAIN_RAW}\t{PATH_RAW}\t{ISSECURE_RAW}\t{EXPIRES_RAW}\t{NAME_RAW}\t{CONTENT_RAW}'
+ */
+
+    return new Promise((resolve, reject) => {
+
+        // Build cookies
+        vAPI.FPI_detection().then(() => {
+            // Parse lines of the file
+            let lines = content.split(/\r\n|\n/);
+            let line;
+
+            let promises = [];
+            for(let i=0, n=lines.length; i < n; i++){
+                // Tabulated file only
+                line = lines[i].split('\t');
+
+                // Skip empty lines or comments
+                if (line.length != 7 || line[0] == '#') {
+                    console.error(`Error: Skip line ${i + 1}`);
+                    continue;
+                }
+
+                // Get data from columns
+                let params = {
+                    domain: line[0],
+                    hostOnly: (line[1].toLowerCase() == "true"),
+                    path: line[2],
+                    secure: (line[3].toLowerCase() == "true"),
+                    name: line[5],
+                    value: line[6],
+                };
+
+                if ($('#search_store').val() != "all")
+                    // If context is all: let the browser select the default context
+                    params.storeId = $('#search_store').val();
+
+
+                if (line[4] != 0) {
+                    // expirationDate is not provided for session cookies
+                    // If omitted, the cookie becomes a session cookie.
+                    let expirationDate = parseInt(line[4], 10);
+
+                    if (isNaN(expirationDate)) {
+                        console.error(`Error during the parse of expiration date: Skip line ${i + 1}`);
+                        continue;
+                    } else if (expirationDate <= ((Date.now() / 1000|0) + 1))
+                        // Refuse expired cookies
+                        continue;
+
+                    params.expirationDate = expirationDate;
+                }
+
+                if (vAPI.FPI !== undefined)
+                    // FPI enabled or disabled but supported
+                    // firstPartyDomain can be set
+                    // If it is not a FPI cookie, set empty string ""
+                    params.firstPartyDomain = "";
+
+                // Set Url
+                params.url = vAPI.getHostUrl(params); // use attrs: secure, domain, path
+
+                // hostOnly flag is automatically set according to the presence
+                // of the leading point in the url
+                delete params["domain"];
+
+                // Not an expected param
+                delete params["hostOnly"];
+
+                promises.push(browser.cookies.set(params));
+            }
+            resolve(promises);
+        });
     });
 }
 
 function parseJSONFile(content, firefox_version) {
-    // Parse json file and return a cookie object
+    // Parse JSON file and return a list of cookies.set promises.
 
-    try {
-        // Throw SyntaxError if JSON is not correctly formatted
-        var json_content = JSON.parse(content);
-    } catch (error) {
-        if (error instanceof SyntaxError) {
-            console.log(error);
-            set_info_text(browser.i18n.getMessage("cookieRestoredError", error));
-        } else {
-            throw error;
+    return new Promise((resolve, reject) => {
+
+        try {
+            // Throw SyntaxError if JSON is not correctly formatted
+            var json_content = JSON.parse(content);
+        } catch (error) {
+                // PS: if (error instanceof SyntaxError)
+                console.error(error);
+                reject(error);
+                return;
         }
-        $('#modal_info').modal('show');
-        return;
-    }
+
+        // Build cookies
+        vAPI.FPI_detection().then(() => {
+            //console.log(vAPI.FPI);
+
+            let promises = [];
+            for (let json_cookie of json_content) {
+                let params = {
+                    url: json_cookie["Host raw"],
+                    name: json_cookie["Name raw"],
+                    value: json_cookie["Content raw"],
+                    path: json_cookie["Path raw"],
+                    httpOnly: (json_cookie["HTTP only raw"] === 'true'),
+                    secure: (json_cookie["Send for raw"] === 'true'),
+                    storeId: (json_cookie["Private raw"]  === 'true') ? 'firefox-private' : 'firefox-default',
+                };
+
+                // -> sameSite attribute is available on Firefox 63+=
+                if (firefox_version >= 63 && json_cookie["SameSite raw"] !== undefined) {
+                    params['sameSite'] = json_cookie["SameSite raw"];
+                }
+
+                if (json_cookie["Store raw"] !== undefined) {
+                    params['storeId'] = json_cookie["Store raw"];
+                }
+
+                // expirationDate is not provided for session cookies
+                // If omitted, the cookie becomes a session cookie.
+                if (json_cookie["Expires raw"] != "0") {
+                    // Refuse expired cookies
+                    let expirationDate = parseInt(json_cookie["Expires raw"], 10);
+                    if (expirationDate <= ((Date.now() / 1000|0) + 1))
+                        continue;
+
+                    params['expirationDate'] = expirationDate;
+                }
+
+                if (vAPI.FPI !== undefined) {
+                    // FPI enabled or disabled but supported
+                    // firstPartyDomain can be set
+                    // If it is not a FPI cookie, set empty string ""
+                    params['firstPartyDomain'] = (json_cookie["First Party Domain"]) ? json_cookie["First Party Domain"] : "";
+                }
+
+                promises.push(browser.cookies.set(params));
+            }
+            resolve(promises);
+        });
+    });
+}
+
+function add_cookies(promises) {
+    // Take a list of cookie.set promises and execute them
+    // Cookies are protected on the fly according to the option "Protect cookies during import"
+    // Handle errors due to the insertion of cookies.
+
+    let cookies_number = promises.length;
 
     // Handle import_protected_cookies global option
     var get_settings = browser.storage.local.get({
         import_protected_cookies: false
     });
-    let cookies_number = 0;
-    vAPI.FPI_detection(get_settings).then((items) => {
+
+    get_settings.then((items) => {
         //console.log(items);
         //console.log(vAPI.FPI);
 
-        // Build cookies
-        let promises = [];
-        for (let json_cookie of json_content) {
-            let params = {
-                url: json_cookie["Host raw"],
-                name: json_cookie["Name raw"],
-                value: json_cookie["Content raw"],
-                path: json_cookie["Path raw"],
-                httpOnly: (json_cookie["HTTP only raw"] === 'true'),
-                secure: (json_cookie["Send for raw"] === 'true'),
-                storeId: (json_cookie["Private raw"]  === 'true') ? 'firefox-private' : 'firefox-default',
-            };
-
-            // -> sameSite attribute is available on Firefox 63+=
-            if (firefox_version >= 63 && json_cookie["SameSite raw"] !== undefined) {
-                params['sameSite'] = json_cookie["SameSite raw"];
-            }
-
-            if (json_cookie["Store raw"] !== undefined) {
-                params['storeId'] = json_cookie["Store raw"];
-            }
-
-            // Session cookie has no expiration date
-            if (json_cookie["Expires raw"] != "0") {
-                // Refuse expired cookies
-                let expirationDate = parseInt(json_cookie["Expires raw"], 10);
-                if (expirationDate <= ((Date.now() / 1000|0) + 1))
-                    continue;
-                params['expirationDate'] = expirationDate;
-            }
-
-            if (vAPI.FPI !== undefined) {
-                // FPI enabled or disabled but supported
-                // firstPartyDomain can be set
-                // If it is not a FPI cookie, set empty string ""
-                params['firstPartyDomain'] = (json_cookie["First Party Domain"]) ? json_cookie["First Party Domain"] : "";
-            }
-
-            promises.push(browser.cookies.set(params));
-        }
-        cookies_number = promises.length;
         return vAPI.add_cookies(Promise.all(promises), items.import_protected_cookies);
 
     })
@@ -447,7 +572,7 @@ function parseJSONFile(content, firefox_version) {
         $("#actualize_button").click();
         $('#modal_info').modal('show');
     }, (error) => {
-        console.log({AddError: error});
+        console.error({AddError: error});
         set_info_text(browser.i18n.getMessage("cookieRestoredSingleError", error));
         // If null: no error but no save
         $("#actualize_button").click();
