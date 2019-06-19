@@ -1016,10 +1016,13 @@ function callback_delete_cookies(delete_button_selector) {
     delete_cookies(promise, delete_button_selector);
 }
 
-function no_cookie_alert(domNode) {
+function no_cookie_alert($list) {
     // No cookies to display
+    // Take a jquery element: $domainList or $cookieList.
     // Add info to the given node (cookie-list or domain-list div)
-    // WARNING: currently take a native DOM element instead a jquery one...
+    // Empty the given list.
+    $list.empty();
+    let domNode = $list[0];
     let p = document.createElement("p");
     let content = document.createTextNode(browser.i18n.getMessage("noCookieAlert")); //"No cookies in this tab."
     let parent = domNode.parentNode;
@@ -1196,6 +1199,7 @@ function showDomains(storeIds) {
     let searched_store = $('#search_store').val();
     let $domainList = $('#domain-list');
     let fragment = document.createDocumentFragment();
+    let domains_displayed_count = 0;
 
     // Filter on selected store
     if (searched_store != 'all')
@@ -1211,7 +1215,7 @@ function showDomains(storeIds) {
         // Sort domains names alphabetically
         var domains_names = Object.keys(domains);
         domains_names.sort();
-        var domains_displayed_count = 0;
+
         //add an <li> item with the name and value of the cookie to the list
         domains_names.forEach(function(domain_name){
 
@@ -1251,17 +1255,6 @@ function showDomains(storeIds) {
         $domainList.empty();
         $domainList.append(fragment);
 
-        // Display the number of domains
-        // TODO: display the number of cookies ?
-        let column_title = document.querySelector('#list_and_details h2');
-        if (column_title.childNodes.length == 2) {
-            // Counter is already initialized
-            column_title.childNodes[1].textContent = " (" + domains_displayed_count + ")";
-        } else {
-            // Set the counter for the first time
-            column_title.appendChild(document.createTextNode(" (" + domains_displayed_count + ")"));
-        }
-
         // Print no cookie alert if we filtered domains, and there are no more domains to display.
         if (domains_displayed_count == 0) {
             // No domain to display
@@ -1278,10 +1271,20 @@ function showDomains(storeIds) {
         console.log({"Error showDomains": error});
         // Reset lists and display the error message.
         let $cookieList = $('#cookie-list');
-        $domainList.empty();
-        $cookieList.empty();
-        no_cookie_alert($domainList[0]);
-        no_cookie_alert($cookieList[0]);
+        no_cookie_alert($domainList);
+        no_cookie_alert($cookieList);
+    })
+    .finally(() => {
+        // Display the number of domains
+        // TODO: display the number of cookies ?
+        let column_title = document.querySelector('#list_and_details h2');
+        if (column_title.childNodes.length == 2) {
+            // Counter is already initialized
+            column_title.childNodes[1].textContent = " (" + domains_displayed_count + ")";
+        } else {
+            // Set the counter for the first time
+            column_title.appendChild(document.createTextNode(" (" + domains_displayed_count + ")"));
+        }
     });
 }
 
@@ -1306,8 +1309,7 @@ function showCookiesList(event, refresh_domain_badges) {
         } else {
             // Reset the cookie list and display the error message.
             let $cookieList = $('#cookie-list');
-            $cookieList.empty();
-            no_cookie_alert($cookieList[0]);
+            no_cookie_alert($cookieList);
         }
     }
 
@@ -1384,21 +1386,19 @@ function showCookiesList(event, refresh_domain_badges) {
                 // Restore the index of the previously selected cookie (see $("#save_button").click())
                 $('#cookie-list').find('li').eq(last_selected_cookie_index).trigger('click', true);
 
-            last_selected_cookie_index = null;
-
         } else {
-            last_selected_cookie_index = null;
             // No cookie to display: Search the clicked domain and remove it
             // Print no cookie alert if we filtered subdomains, and there are no more cookies to display.
             no_more_cookies_in_selected_domain();
         }
     }).catch((error) => {
-        last_selected_cookie_index = null;
         // No cookie to display: Search the clicked domain and remove it
         // Print no cookie alert if we filtered subdomains, and there are no more cookies to display.
         // We are here when auto-actualize is enabled and when a cookie is deleted by a website
         console.log({"Error showCookiesList": error});
         no_more_cookies_in_selected_domain();
+    }).finally(() => {
+        last_selected_cookie_index = null;
     });
 }
 
