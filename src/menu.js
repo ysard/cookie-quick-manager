@@ -117,7 +117,6 @@
             }
 
             else if (id == "options") {
-                console.log('1 fois');
                 element.onclick = function () {
                     // Open Options Page
                     browser.runtime.openOptionsPage();
@@ -303,12 +302,11 @@
                 a = document.querySelector('#delete_context_cookies');
                 // text content is a child node, at the 2nd pos
                 // Truncate number of cookie greater than 99 (which could cause a resizing of the window)
-                let displayed_length = (cookies_array[1].length < 100) ? " (" + cookies_array[1].length + ")": " (99+)"
+                let displayed_length = (cookies_array[1].length < 100) ? " (" + cookies_array[1].length + ")": " (99+)";
                 content = document.createTextNode(displayed_length);
                 a.appendChild(content);
             });
         });
-
     }
 
     /*********** Global variables ***********/
