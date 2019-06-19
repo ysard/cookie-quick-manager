@@ -143,7 +143,7 @@
             // -> firstPartyDomain argument is available on Firefox 59+=
             // {name: "Firefox", vendor: "Mozilla", version: "60.0.1", buildID: ""}
             let version = browser_info.version.split('.')[0];
-            if (parseInt(version) >= 59)
+            if (parseInt(version, 10) >= 59)
                 params['firstPartyDomain'] = null;
 
             return vAPI.delete_cookies(browser.cookies.getAll(params));
@@ -243,7 +243,7 @@
 
                 // Detect Firefox version:
                 // {name: "Firefox", vendor: "Mozilla", version: "60.0.1", buildID: ""}
-                let version = parseInt(browser_info.version.split('.')[0]);
+                let version = parseInt(browser_info.version.split('.')[0], 10);
 
                 // -> LocalStorage and indexedDB is not available on Firefox 56
                 // removalOptions.hostnames is available since FF 58

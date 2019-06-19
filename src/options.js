@@ -213,7 +213,7 @@
             // {name: "Firefox", vendor: "Mozilla", version: "60.0.1", buildID: ""}
             let version = browser_info.version.split('.')[0];
 
-            if ((vAPI.FPI === undefined) || (parseInt(version) < 59)) {
+            if ((vAPI.FPI === undefined) || (parseInt(version, 10) < 59)) {
                 // Firefox 58-=
                 // FPI is not available or we don't want it
                 $('#fpi_status').prop('disabled', true);

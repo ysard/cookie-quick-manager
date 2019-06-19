@@ -194,7 +194,7 @@ vAPI.get_all_cookies = function(storeIds) {
             let version = browser_info.version.split('.')[0];
 
             let promises = [];
-            if (parseInt(version) >= 59) {
+            if (parseInt(version, 10) >= 59) {
                 // Add firstPartyDomain argument to getAll() function
                 for (let storeId of storeIds) {
                     promises.push(browser.cookies.getAll({storeId: storeId, firstPartyDomain: null}));
@@ -396,7 +396,7 @@ vAPI.delete_cookies = function(promise) {
                     // => display button content in red
                     reject("No error but not removed");
                 }
-                console.log({"Removed": deleted_cookie});
+               // console.log({"Removed": deleted_cookie});
             }
             // Ok => all cookies are deleted properly
             // Reactivate the interface
@@ -538,7 +538,7 @@ vAPI.getCookiesFromSelectedDomain = function() {
             // filtered by forcing the checkbox query-subdomains to be unchecked.
             // (if it is checked, we can't filter all the domains...)
             // See https://bugzilla.mozilla.org/show_bug.cgi?id=1465063
-            let version = parseInt(browser_info.version.split('.')[0]);
+            let version = parseInt(browser_info.version.split('.')[0], 10);
 
             var promises = [];
             if (version >= 62) {
