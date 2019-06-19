@@ -268,9 +268,11 @@ function build_cookie_dump() {
         '{FPI_RAW}': $('#fpi-domain').val(),
     };
 
-    // Replace variables in template
     for (let key_pattern in params) {
-        template_temp = template_temp.replace(key_pattern, params[key_pattern]);
+        // Get rid of $ forms in the replacement string
+        // Thx to https://stackoverflow.com/questions/28102491/javascript-better-way-to-escape-dollar-signs-in-the-string-used-by-string-prot
+        // http://www.ecma-international.org/publications/files/ECMA-ST/Ecma-262.pdf
+        template_temp = template_temp.replace(key_pattern, function () {return params[key_pattern]});
     }
     return new Array(template_temp);
     //return JSON.stringify(JSON.parse(template_temp), null, 2);
@@ -338,7 +340,10 @@ function build_domain_dump(cookie) {
 
     // Replace variables in template
     for (let key_pattern in params) {
-        template_temp = template_temp.replace(key_pattern, params[key_pattern]);
+        // Get rid of $ forms in the replacement string
+        // Thx to https://stackoverflow.com/questions/28102491/javascript-better-way-to-escape-dollar-signs-in-the-string-used-by-string-prot
+        // http://www.ecma-international.org/publications/files/ECMA-ST/Ecma-262.pdf
+        template_temp = template_temp.replace(key_pattern, function () {return params[key_pattern]});
     }
     return template_temp;
 }
