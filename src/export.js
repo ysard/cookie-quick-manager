@@ -391,6 +391,7 @@ function parseJSONFile(content, firefox_version) {
     var get_settings = browser.storage.local.get({
         import_protected_cookies: false
     });
+    let cookies_number = 0;
     vAPI.FPI_detection(get_settings).then((items) => {
         //console.log(items);
         //console.log(vAPI.FPI);
@@ -435,17 +436,16 @@ function parseJSONFile(content, firefox_version) {
 
             promises.push(browser.cookies.set(params));
         }
-
+        cookies_number = promises.length;
         return vAPI.add_cookies(Promise.all(promises), items.import_protected_cookies);
 
     })
     .then((ret) => {
         // Display modal info
-        set_info_text(browser.i18n.getMessage("cookieRestoredSuccess"));
+        set_info_text(browser.i18n.getMessage("cookieRestoredSuccess", cookies_number));
         // Actualize interface
         $("#actualize_button").click();
         $('#modal_info').modal('show');
-
     }, (error) => {
         console.log({AddError: error});
         set_info_text(browser.i18n.getMessage("cookieRestoredSingleError", error));

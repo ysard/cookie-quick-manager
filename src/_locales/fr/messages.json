@@ -371,8 +371,13 @@
   },
 
   "cookieRestoredSuccess": {
-    "message": "Restauration effectuée !",
-    "description": "Alert when a file is imported with success."
+    "message": "$number$ cookie(s) restauré(s) avec succès !",
+    "description": "Alert when a file is imported with success.",
+    "placeholders": {
+      "number" : {
+        "content" : "$1"
+      }
+    }
   },
 
   "cookieRestoredError": {
