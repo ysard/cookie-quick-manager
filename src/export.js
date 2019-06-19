@@ -203,77 +203,37 @@ function build_cookie_dump() {
     // displayed in details.
     // Data: from the User Interface.
 
-    function get_timestamp(raw) {
-        // If raw is true, return the unix timestamp if the cookie is not a session cookie
-        // otherwise, return 0.
-        // If raw is false, return human readable date or "At the end of the session" for a
-        // session cookie.
-        var issession = $('#issession').is(':checked');
-        if (raw) {
-            return (!issession) ? $('#expiration_date').data("DateTimePicker").date().unix() : 0;
-        }
-        return (!issession) ? $('#expiration_date').data("DateTimePicker").date().format(vAPI.date_format) : "At the end of the session";
-    }
-
-    function get_domain_status(raw) {
-        // Return the domain status of cookie.
-        // If raw is true, return false is cookie is valid for subdomains
-        // If raw is false, return "Valid for subdomains" or "Valid for host only".
-        // PS:
-        //   foo.com => host-only
-        //   .foo.com => subdomains
-        //   www.foo.com => host-only
-        var domain = $('#domain').val();
-        if (raw) {
-            // Return false if cookie is also valid for subdomains
-            return (domain[0] == '.') ? false : true;
-        }
-        return (domain[0] == '.') ? "Valid for subdomains" : "Valid for host only";
-    }
-
-    function get_secure_status(raw) {
-        // Return the secure status of the cookie
-        // If raw is true, return true or false
-        var issecure = $('#issecure').is(':checked');
-        if (raw) {
-            return issecure;
-        }
-        return (issecure) ? "Encrypted connections only" : "Any type of connection";
-    }
-
-    function get_samesite_status() {
-        let $samesite_val = $('#samesite').val();
-        return ($samesite_val != null) ? $samesite_val : "no_restriction";
-    }
-
-    // Make a local copy of the template
-    var template_temp = cookie_clipboard_template.template;
-
-    // Update variables
-    var params = {
-        '{HOST_RAW}': vAPI.getHostUrl_from_UI(),
-        '{DOMAIN_RAW}': $('#domain').val(),
-        '{NAME_RAW}': secure_string($('#name').val()),
-        '{PATH_RAW}': $('#path').val(),
-        '{CONTENT_RAW}': secure_string($('#value').val()),
-        '{EXPIRES}': get_timestamp(false),
-        '{EXPIRES_RAW}': get_timestamp(true),
-        '{ISSECURE}': get_secure_status(false),
-        '{ISSECURE_RAW}': get_secure_status(true),
-        '{ISHTTPONLY_RAW}': $('#httponly').is(':checked'),
-        '{SAMESITE_RAW}': get_samesite_status(),
-        '{ISDOMAIN}': get_domain_status(false),
-        '{ISDOMAIN_RAW}': get_domain_status(true),
-        '{STORE_RAW}': $('#store').val(),
-        '{FPI_RAW}': $('#fpi-domain').val(),
+    let cookie = {
+        domain: $('#domain').val(),
+        name: $('#name').val(),
+        path: $('#path').val(),
+        value: $('#value').val(),
+        session: $('#issession').is(':checked'),
+        secure: $('#issecure').is(':checked'),
+        httpOnly: $('#httponly').is(':checked'),
+        sameSite: $('#samesite').val(), // Can be null if not supported
+        storeId: $('#store').val(),
+        firstPartyDomain: $('#fpi-domain').val(),
     };
 
-    for (let key_pattern in params) {
-        // Get rid of $ forms in the replacement string
-        // Thx to https://stackoverflow.com/questions/28102491/javascript-better-way-to-escape-dollar-signs-in-the-string-used-by-string-prot
-        // http://www.ecma-international.org/publications/files/ECMA-ST/Ecma-262.pdf
-        template_temp = template_temp.replace(key_pattern, function () {return params[key_pattern]});
-    }
+    // If raw is true, return the unix timestamp if the cookie is not a session cookie
+    // otherwise, return 0.
+    // If raw is false, return human readable date or "At the end of the session" for a
+    // session cookie.
+    cookie.expirationDate = (!cookie.session) ? $('#expiration_date').data("DateTimePicker").date().unix() : 0;
+
+    // Return the domain status of cookie.
+    // If raw is true, return false is cookie is valid for subdomains
+    // If raw is false, return "Valid for subdomains" or "Valid for host only".
+    // PS:
+    //   foo.com => host-only
+    //   .foo.com => subdomains
+    //   www.foo.com => host-only
+    cookie.hostOnly = ($('#domain').val()[0] == '.') ? false : true;
+
+    // Get the updated template according to the given cookie object.
+    let template_temp = build_domain_dump(cookie);
+
     return new Array(template_temp);
     //return JSON.stringify(JSON.parse(template_temp), null, 2);
 }
