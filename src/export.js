@@ -263,9 +263,9 @@ function build_domain_dump(cookie) {
         //   www.foo.com => host-only
         if (raw) {
             // Return false if cookie is also valid for subdomains
-            return cookie.httpOnly;
+            return cookie.hostOnly;
         }
-        return (cookie.httpOnly) ? "Valid for subdomains" : "Valid for host only";
+        return (cookie.hostOnly) ? "Valid for host only" : "Valid for subdomains";
     }
 
     function get_secure_status(raw) {
@@ -295,7 +295,7 @@ function build_domain_dump(cookie) {
         '{ISDOMAIN}': get_domain_status(false),
         '{ISDOMAIN_RAW}': cookie.hostOnly,
         '{STORE_RAW}': cookie.storeId,
-        '{FPI_RAW}': cookie.firstPartyDomain ? cookie.firstPartyDomain : "",
+        '{FPI_RAW}': cookie.firstPartyDomain ? cookie.firstPartyDomain : "", // This attr is absent on old FF
     };
 
     // Replace variables in template
