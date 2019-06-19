@@ -162,6 +162,14 @@ $("#save_button").click(function() {
         if (cookie === null) {
             $("#save_button span").addClass("button-error");
         } else {
+            // Keep index of the current to selected cookie; it will be restored in showCookiesList()
+            // If a cookie is created or modified it will "jump" in the list bacause
+            // cookies are sorted first according to their context, and then according to their order of creation.
+            // By keeping the index, we force the selection of the next cookie in the list;
+            // the old cookie will have left its place.
+            // See #62
+            last_selected_cookie_index = $('#cookie-list').find('li.active').index();
+
             // Supress red color, disable & reset text editing for the next cookie
             $("#save_button span").removeClass("button-error");
             disable_cookie_details();
@@ -1362,15 +1370,24 @@ function showCookiesList(event, refresh_domain_badges) {
             if (refresh_domain_badges !== undefined && refresh_domain_badges === true)
                 update_selected_domain_badges();
 
-            // Simulate click on the first cookie in the list when the list is built
-            $("#cookie-list li").first().click();
+            // Simulate click on a cookie
+            if (!last_selected_cookie_index)
+                // Simulate click on the first cookie in the list when the list is built
+                $("#cookie-list li").first().click();
+            else
+                // Restore the index of the previously selected cookie (see $("#save_button").click())
+                $('#cookie-list').find('li').eq(last_selected_cookie_index).trigger('click', true);
+
+            last_selected_cookie_index = null;
 
         } else {
+            last_selected_cookie_index = null;
             // No cookie to display: Search the clicked domain and remove it
             // Print no cookie alert if we filtered subdomains, and there are no more cookies to display.
             no_more_cookies_in_selected_domain();
         }
     }).catch((error) => {
+        last_selected_cookie_index = null;
         // No cookie to display: Search the clicked domain and remove it
         // Print no cookie alert if we filtered subdomains, and there are no more cookies to display.
         // We are here when auto-actualize is enabled and when a cookie is deleted by a website
@@ -1673,6 +1690,9 @@ var cookies_onChangedListener = (function(changeInfo) {
 /*********** Global variables ***********/
 
 var $current_selected_list = $('#domain-list');
+// Keep index of the current to selected cookie; it will be restored in showCookiesList()
+// and set in $("#save_button").click()
+var last_selected_cookie_index;
 var context_menu_elements;
 var protected_cookies;
 var display_deletion_alert;
