@@ -80,9 +80,10 @@ $("#auto_actualize_checkbox").click(function() {
 $("#save_button").click(function() {
     /* Save a cookie displayed on details zone
      * ---
-     * NOTE: If the expirationDate is set in the past and the cookie was not expired,
+     * NOTE: By default if the expirationDate is set in the past and the cookie was not expired,
      * it will be automatically deleted.
      * If the cookie is already expired, there is no suppression and no update (no changed event emitted)
+     * ! We do not try to set the cookie in this case. !
      * ---
      *
      * Leading dot:
@@ -139,9 +140,14 @@ $("#save_button").click(function() {
         var unix_timestamp = $('#expiration_date').data("DateTimePicker").date().unix();
         params['expirationDate'] = unix_timestamp;
         //console.log(new Date(unix_timestamp * 1000));
+        if (unix_timestamp <= (Date.now()/1000)) {
+            // Refuse to set a cookie with a date in the past (see docstring)
+            $("#save_button span").addClass("button-error");
+            return;
+        }
     }
     // Set cookie
-    console.log("Built cookie:", params);
+    //console.log("Built cookie:", params);
 
     vAPI.FPI_detection().then(() => {
 
