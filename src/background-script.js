@@ -98,34 +98,9 @@ browser.cookies.onChanged.addListener(function(changeInfo) {
      *
      * Add event:
      * Object {removed: false, cookie: Object, cause: "explicit" }
-     *
-     * if (changeInfo.removed && changeInfo.cause == "explicit") {
-     *     // Reset 2 lists
-     *     document.getElementById('domain-list').innerHTML = "";
-     *     document.getElementById('cookie-list').innerHTML = "";
-     *     // Repop first list
-     *     getStores();
-     *     // todo update details
-     *     // ça vaut peut être pas le coup de réinitialiser les 2 listes tant qu'il y a encore
-     *     // des éléments dans la seconde...
-     *     // vérifier depuis changeInfo.cookie, le domaine et vérifier si ce domaine a encore des cookies.
-     *     // si non, tout rafrachir, si oui on reclique dessus
-     * }
-     *
-     *    if (changeInfo.removed && changeInfo.cause == "overwrite") {
-     *        // Simulate click on domain
-     *        $('#domain-list').find('li.active').click();
-     *
-     *    // send directly the id of the cookie overwritten
-     *    // {id: domain, storeIds: domains[domain].storeIds}
-     *    // Impossible de savoir si d'autres cookies font ref à un autre store
-     *    // => obligé de simuler le clic
-     *    //var event = {'data': {'id': changeInfo.cookie.domain}};
-     *    //showCookiesList(event);
-     *    }
      */
 
-    // Do not protect the cookie if website protection is not enabed
+    // Do not protect the cookie if website protection is not enabled
     if (prevent_protected_cookies_deletion && changeInfo.removed && changeInfo.cause == 'explicit') {
 
         // If the deleted cookie is not in protected_cookies array: do nothing

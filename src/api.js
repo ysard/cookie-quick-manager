@@ -251,7 +251,7 @@ vAPI.get_stores = function() {
     return new Promise((resolve, reject) => {
 
         browser.extension.isAllowedIncognitoAccess().then((allowed_incognito_access) => {
-            console.log("get_stores:: allowed incognito access?", allowed_incognito_access);
+            //console.log("get_stores:: allowed incognito access?", allowed_incognito_access);
             //console.log({default_stores: vAPI.default_stores});
 
             if (!allowed_incognito_access) {
