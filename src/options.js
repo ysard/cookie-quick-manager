@@ -288,6 +288,8 @@
                 return;
             }
 
+            // Protected cookies to show
+            $('#unprotectSelectedCookies').show();
             // Init treeview
             init_treeview(tree);
 
