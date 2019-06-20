@@ -505,6 +505,7 @@ browser.storage.onChanged.addListener(function (changes, area) {
 
     // Reload protected_cookies
     if (changes['protected_cookies'] !== undefined)
+        // TODO: Add lock badge on displayed cookies if needed...
         protected_cookies = changes.protected_cookies.newValue;
 
     // Load/remove css skin
@@ -1398,7 +1399,7 @@ function showCookiesList(event, refresh_domain_badges) {
         console.log({"Error showCookiesList": error});
         no_more_cookies_in_selected_domain();
     }).finally(() => {
-        last_selected_cookie_index = null;
+        last_selected_cookie_index = undefined;
     });
 }
 
@@ -1683,6 +1684,9 @@ var cookies_onChangedListener = (function(changeInfo) {
         if (changeInfo.cause == 'explicit') {
             // Simulate click on the same domain with recalculation of badges
             // (because almost 1 new cookie is added, with maybe a new container)
+
+            // Keep index of the current to selected cookie; it will be restored in showCookiesList()
+            last_selected_cookie_index = $('#cookie-list').find('li.active').index();
             $('#domain-list').find('li.active').trigger('click', true);
         }
     } else {
