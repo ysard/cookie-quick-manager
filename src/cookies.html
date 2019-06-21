@@ -61,7 +61,8 @@
         font-size: 13px;
         position: absolute;
         right: 0px;
-        top: 8px;
+        top: 0px;
+        /*top: 8px;*/
       }
       .cookie-expired, .cookie-expired.active, .cookie-expired.active:hover, .button-error {
         color: red;
@@ -88,18 +89,40 @@
       #search_domain {
         width: 250px;
       }
+
+      #filter-menu {
+        /* Avoid redondant padding above .dropdown-header */
+        padding-top: 0px;
+      }
+      #filter-menu .dropdown-header {
+        border-bottom: 1px solid #e7e7e7;
+        background-color: #f8f8f8;
+        padding: 4px 15px;
+      }
+      #filter-menu a {
+        padding-left: 30px;
+      }
       .search_filter_block {
         /* position of items in the filter dropdown menu */
         display: inline-block;
         width: 100%;
         min-width: 250px;
+
+        border-bottom: 1px solid #e7e7e7;
+        background-color: #f8f8f8;
+        padding: 4px 15px;
       }
       #search_filter {
         /* position of items in the filter dropdown menu */
         display: inline-block;
-        margin: 4px 6px;
-        width: calc(100% - 12px);
+        width: 100%;
+        padding-left: 7px;
+        padding-right: 7px;
+        border-radius: 4px;
+        /* Allow a text block below */
+        float: none;
       }
+
       #search_store {
         padding-left: 7px;
       }
@@ -289,12 +312,14 @@
               <!-- Additional filter on names and values -->
               <button tabindex="3" type="button" class="btn btn-default dropdown-toggle dropdown-toggle-split" data-toggle="dropdown"><span class="caret"></span></button>
 
-              <ul class="dropdown-menu dropdown-menu-right">
-                <li class="dropdown-header" data-i18n-content="filterByAttributeHeader">Filter cookies</li>
-                <li class="search_filter_block">
-                  <input type="text" class="form-control" id="search_filter" placeholder="Search a word in the cookie data"></li>
-                <li><a href="#" id="add_filter_name" title="Click to search for the term in the names of cookies" data-i18n-title="tooltipQueryFilterInNames" data-i18n-content="filterByAttributeNames">in names</a></li>
-                <li><a href="#" id="add_filter_values" title="Click to search for the term in the values of cookies" data-i18n-title="tooltipQueryFilterInValues" data-i18n-content="filterByAttributeValues">in values</a></li>
+              <ul id="filter-menu" class="dropdown-menu dropdown-menu-right">
+                <li class="dropdown-header" data-i18n-content="filterByAttributeHeader">Filter by cookies data</li>
+                <li class="dropdown-header search_filter_block">
+                  <input type="text" class="form-control" id="search_filter" placeholder="String to search...">
+                  <div data-i18n-content="filterByAttributeTip">Choose an item to add a filter to the search form</div>
+                </li>
+                <li><a href="#" id="add_filter_name" title="Click here to search this term in the names of cookies" data-i18n-title="tooltipQueryFilterInNames" data-i18n-content="filterByAttributeNames">in the names</a></li>
+                <li><a href="#" id="add_filter_values" title="Click here to search this term in the values of cookies" data-i18n-title="tooltipQueryFilterInValues" data-i18n-content="filterByAttributeValues">in the values</a></li>
               </ul>
             </div>
           </div>

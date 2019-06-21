@@ -54,13 +54,18 @@
     "description": "Filter dropdown menu header."
   },
 
+  "filterByAttributeTip": {
+    "message": "Choisissez un item pour ajouter un filtre au formulaire",
+    "description": "Tip sentence below the search form. Width of the text is limited! (the menu may overflow on the left of the screen)."
+  },
+
    "filterByAttributeNames": {
-    "message": "…dans les noms",
+    "message": "dans les noms",
     "description": "Filter dropdown menu item."
   },
 
    "filterByAttributeValues": {
-    "message": "…dans les valeurs",
+    "message": "dans les valeurs",
     "description": "Filter dropdown menu item."
   },
 
@@ -274,12 +279,12 @@
   },
 
   "tooltipQueryFilterInNames": {
-    "message": "Cliquer pour rechercher le terme dans les noms des cookies",
+    "message": "Cliquer ici pour rechercher le terme dans les noms des cookies",
     "description": "Description of the role of the item in the advanced filtering menu."
   },
 
   "tooltipQueryFilterInValues": {
-    "message": "Cliquer pour rechercher le terme dans les valeurs des cookies",
+    "message": "Cliquer ici pour rechercher le terme dans les valeurs des cookies",
     "description": "Description of the role of the item in the advanced filtering menu."
   },
 

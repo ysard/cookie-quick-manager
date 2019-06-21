@@ -50,17 +50,22 @@
   },
 
   "filterByAttributeHeader": {
-    "message": "Erweiterte Filterung von Cookies",
+    "message": "Filtern von Cookie-Daten",
     "description": "Filter dropdown menu header."
   },
 
+  "filterByAttributeTip": {
+    "message": "Wählen Sie einen Eintrag einen Filter hinzufügen",
+    "description": "Tip sentence below the search form. Width of the text is limited! (the menu may overflow on the left of the screen)."
+  },
+
    "filterByAttributeNames": {
-    "message": "…in den Namen",
+    "message": "in den Namen",
     "description": "Filter dropdown menu item."
   },
 
    "filterByAttributeValues": {
-    "message": "…in den Werten",
+    "message": "in den Werten",
     "description": "Filter dropdown menu item."
   },
 
@@ -249,12 +254,12 @@
   },
 
   "tooltipQueryFilterInNames": {
-    "message": "Klicken Sie hier, um in den Namen von Cookies nach dem Begriff zu suchen",
+    "message": "Klicken Sie hier, um nach dem Begriff in den Namen der Cookies zu suchen",
     "description": "Description of the role of the item in the advanced filtering menu."
   },
 
   "tooltipQueryFilterInValues": {
-    "message": "Klicken Sie hier, um nach dem Begriff in den Werten von Cookies zu suchen",
+    "message": "Klicken Sie hier, um diesen Begriff in den Werten von Cookies zu suchen",
     "description": "Description of the role of the item in the advanced filtering menu."
   },
 
