@@ -1380,7 +1380,7 @@ function showCookiesList(event, refresh_domain_badges) {
                 update_selected_domain_badges();
 
             // Simulate click on a cookie
-            if (!last_selected_cookie_index)
+            if (last_selected_cookie_index === undefined)
                 // Simulate click on the first cookie in the list when the list is built
                 $("#cookie-list li").first().click();
             else
