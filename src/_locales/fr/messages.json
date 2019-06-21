@@ -49,6 +49,16 @@
     "description": "Attribute of a cookie in the details panel."
   },
 
+  "search_domainPlaceholder": {
+    "message": "Chercher un nom de domaine...",
+    "description": "Input field used to search domains by their names."
+  },
+
+  "search_filterPlaceholder": {
+    "message": "Chercher un mot...",
+    "description": "Input field used to filter cookies by their attributes."
+  },
+
   "filterByAttributeHeader": {
     "message": "Filtrage avancé des cookies",
     "description": "Filter dropdown menu header."

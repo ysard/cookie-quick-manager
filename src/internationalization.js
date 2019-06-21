@@ -66,9 +66,13 @@
         if (supported_locales.includes(browser.i18n.getUILanguage())) {
             insertI18nContentIntoDocument();
             insertI18nTitleIntoDocument();
+
+            // Quick & dirty fix for input tags with placeholder attribute
+            insertI18nPlaceholderIntoDocument('search_domain');
+            insertI18nPlaceholderIntoDocument('search_filter');
         }
         insertI18nPopoverContentIntoDocument();
-    }
+    };
 
     function insertI18nContentIntoDocument() {
         // Set text content for UI elements
@@ -110,4 +114,10 @@
         });
     };
 
+    function insertI18nPlaceholderIntoDocument(elementID) {
+        // Set placeholders for element with the given id
+
+        let i18nElement = document.getElementById(elementID);
+        i18nElement.setAttribute('placeholder', browser.i18n.getMessage(elementID + 'Placeholder'));
+    };
 }));
