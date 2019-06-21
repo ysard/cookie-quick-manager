@@ -201,7 +201,7 @@
           <ul>
             <li><a href="https://github.com/ysard/cookie-quick-manager/" data-i18n-content="oLicense">Source code (Under GPLv3 license)</a></li>
             <li><a href="https://github.com/ysard/cookie-quick-manager/issues" data-i18n-content="oIssues">Report an issue</a></li>
-            <li><span data-i18n-content="oThanks">Thanks:</span> Gschanuel, Killogy, Laniakea64, Lejomoz, Machou, Practik, Seanryan-seanryan, bendover22, bughit, AX-Turbo, StanGets.</li>
+            <li><span data-i18n-content="oThanks">Thanks (help and bug reports):</span> Gschanuel, Killogy, Laniakea64, Lejomoz, Machou, Practik, Seanryan-seanryan, bendover22, bughit, AX-Turbo, StanGets, Sane-Max, SpaceClicker, grandemestre, iG8R.</li>
             <li><span data-i18n-content="oTranslations">Translations:</span> Cyanotyp (de), Scheinercc (de).</li>
             <li><span data-i18n-content="oExternalDependencies">External dependencies (GPLv3 compatible):</span>
               <ul>
@@ -216,6 +216,24 @@
           </ul>
           <div id="changelog">
           <h2>Changelog</h2>
+            <span>0.4rc4-0.5rc1</span>
+            <ul>
+                <li>Support for 'Proper Private Browsing Behavior' starting from FF67; Related to #63</li>
+                <li>Return of contextual identities icons; Related to #57</li>
+                <li>Add an alert when removing cookies from a context from the context menu. Related to #58</li>
+                <li>Try to make editing and adding cookies easier by limiting cursor position changes. Related to #62</li>
+                <li>Fix menu height; Related to #60</li>
+                <li>Popup menu: set width with em instead of px, this should solve some problems for untested font sizes; fix typos; Related to #60</li>
+                <li>No longer let the user put an expiration date in the past; avoids unintended deletion of cookies</li>
+                <li>Fix bug during export: dollar sign in values of cookies</li>
+                <li>Refactoring function used to export 1 cookie</li>
+                <li>Import: Display the number of cookies successfully imported</li>
+                <li>Import: Add a Netscape file parser</li>
+                <li>Migration to JQuery 3.4.1</li>
+                <li>[gui] Keep selected cookie when auto-refresh is activated</li>
+                <li>[gui] Improve advanced filter menu</li>
+                <li>Various gui fixes and translations added</li>
+            </ul>
             <span>0.4rc2-0.4rc3</span>
             <ul>
                 <li>Add a list of external dependencies and some translations in Options</li>
