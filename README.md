@@ -73,6 +73,35 @@ This kind of persistant data (even after clearing cache), was invented to store 
 The extension is still in development with the launch of Firefox Quantum; questions, bug reports and feature requests are open on the [GitHub repository](https://github.com/ysard/cookie-quick-manager/issues).
 
 
+# How to contribute ?
+
+1. You can contribute by reporting bugs or problems encountered by creating an issue on [this page] (https://github.com/ysard/cookie-quick-manager/issues)
+
+
+2. You can translate the application into your language.
+The files are at this address:
+https://github.com/ysard/cookie-quick-manager/tree/fpi/src/_locales
+
+You must fork the repository and then make a pull-request with your changes.
+See this documentation with illustrations:
+
+- https://help.github.com/en/articles/fork-a-repo
+- https://help.github.com/en/articles/creating-a-pull-request-from-a-fork
+
+Then execute the following commands:
+
+    cd cookie-quick-manager
+    make get_missing_from_new_language LOCALE = "from"
+
+(here, `de` is the locale code for Deutch language)
+
+The previous command will create a file in `src/_locales/<your_locale>/messages.json`,
+then display the list of elements to be translated.
+The file does not need to be translated to 100% to be used!
+
+You must then make your pull request on github.
+
+
 # License
 
 [GPLv3](https://github.com/ysard/cookie-quick-manager/blob/master/LICENSE").
