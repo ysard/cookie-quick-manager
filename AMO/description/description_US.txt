@@ -20,7 +20,7 @@ This WebExtension is compatible with Firefox 57 and is inspired by addons like <
 <li>Search: A user can search for cookies of a domain and subdomains which depend on it.</li>
 <li>Edit/Create: All the attributes of a cookie can be modified: domain, path, name, value, expiration date, as well as secure and httponly flags.</li>
 <li>Delete: Remove the cookies of the current website in two clicks.</li>
-<li>Export: The export and import of a cookie or cookies from a domain in JSON or Netscape format is just as easy.</li>
+<li>Export: The export and import of one or many cookies from one or many domains at a time in <b>JSON</b> or <b>Netscape</b> format is just as easy.</li>
 <li>First-Party Isolation: Supported with some limitations (due to API bugs) on Firefox 59, 60, and 61, and without limitations on Firefox 62 (scheduled on September 2018).</li>
 <li>Contexts: Contexts (also called Multi-Account Containers, or Contextual Identities) are supported. A user can search and display cookies inside a container, or copy cookies from a container to another, or save a cookie in a specific context.</li>
 <li>SameSite: The SameSite flag is supported. This is a partial protection against the risks associated with Cross-Site Request Forgery (CSRF) and Cross-Site Script Inclusion (XSSI) attacks, implemented since Firefox 63.</li>
