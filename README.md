@@ -11,6 +11,11 @@ This WebExtension is compatible with Firefox 57 and is inspired by addons like [
 
 **November 2018: Cookie Quick Manager is now available on Android!**
 
+<p align="center">
+<img  src="https://raw.githubusercontent.com/ysard/cookie-quick-manager/fpi/AMO/screenshots/github.png">
+</p>
+
+
 # Features
 
 * User friendly: Clear and structured user interface. Each parameter and functionality is described when the mouse is over the element.
