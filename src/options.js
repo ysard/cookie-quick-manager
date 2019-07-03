@@ -56,7 +56,7 @@
             set_option({'open_in_new_tab': $(this).is(':checked')});
         });
         $('#display_deletion_alert').change(function() {
-            // Delete all cookies when the browser restarts
+            // Display an alert when a user wants to delete all cookies from a context
             set_option({'display_deletion_alert': $(this).is(':checked')});
         });
         $('#template').change(function() {

@@ -86,13 +86,14 @@
 
                         // Ability to show a modal alert
                         // when a user wants to delete all cookies from at least 1 context
-                        if (items.display_deletion_alert)
-                            var deletion_confirmed = window.confirm(
+                        if (items.display_deletion_alert) {
+                            let deletion_confirmed = window.confirm(
                                 browser.i18n.getMessage("modalMenuAlertContent", cookies_context_number)
                             );
-                        if (items.display_deletion_alert && !deletion_confirmed)
-                            // User didn't confirm deletion
-                            return;
+                            if (!deletion_confirmed)
+                                // User didn't confirm deletion
+                                return;
+                        }
 
                         // Delete
                         let params = {
@@ -100,7 +101,6 @@
                         };
                         delete_cookies(params);
                     });
-
                 }
             }
 
