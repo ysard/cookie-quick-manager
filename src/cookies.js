@@ -1202,6 +1202,20 @@ function showDomains(storeIds) {
     let fragment = document.createDocumentFragment();
     let domains_displayed_count = 0;
 
+    function finally_callback() {
+        // Display the number of domains
+        // TODO: display the number of cookies ?
+        // TODO: use finally method introduced on FF 58
+        let column_title = document.querySelector('#list_and_details h2');
+        if (column_title.childNodes.length == 2) {
+            // Counter is already initialized
+            column_title.childNodes[1].textContent = " (" + domains_displayed_count + ")";
+        } else {
+            // Set the counter for the first time
+            column_title.appendChild(document.createTextNode(" (" + domains_displayed_count + ")"));
+        }
+    }
+
     // Filter on selected store
     if (searched_store != 'all')
         storeIds = [searched_store];
@@ -1265,6 +1279,8 @@ function showDomains(storeIds) {
         // Simulate click on the first domain in the list when the list is built
         $("#domain-list li").first().click();
 
+        finally_callback();
+
     })
     .catch((error) => {
         // No domain to display
@@ -1274,18 +1290,7 @@ function showDomains(storeIds) {
         let $cookieList = $('#cookie-list');
         no_cookie_alert($domainList);
         no_cookie_alert($cookieList);
-    })
-    .finally(() => {
-        // Display the number of domains
-        // TODO: display the number of cookies ?
-        let column_title = document.querySelector('#list_and_details h2');
-        if (column_title.childNodes.length == 2) {
-            // Counter is already initialized
-            column_title.childNodes[1].textContent = " (" + domains_displayed_count + ")";
-        } else {
-            // Set the counter for the first time
-            column_title.appendChild(document.createTextNode(" (" + domains_displayed_count + ")"));
-        }
+        finally_callback();
     });
 }
 
@@ -1392,13 +1397,16 @@ function showCookiesList(event, refresh_domain_badges) {
             // Print no cookie alert if we filtered subdomains, and there are no more cookies to display.
             no_more_cookies_in_selected_domain();
         }
+        // TODO: Used finally method introduced on FF58
+        last_selected_cookie_index = undefined;
     }).catch((error) => {
         // No cookie to display: Search the clicked domain and remove it
         // Print no cookie alert if we filtered subdomains, and there are no more cookies to display.
         // We are here when auto-actualize is enabled and when a cookie is deleted by a website
         console.log({"Error showCookiesList": error});
         no_more_cookies_in_selected_domain();
-    }).finally(() => {
+
+        // TODO: Used finally method introduced on FF58
         last_selected_cookie_index = undefined;
     });
 }
