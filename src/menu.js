@@ -88,7 +88,7 @@
                         // when a user wants to delete all cookies from at least 1 context
                         if (items.display_deletion_alert)
                             var deletion_confirmed = window.confirm(
-                                browser.i18n.getMessage("modalMenuAlertContent")
+                                browser.i18n.getMessage("modalMenuAlertContent", cookies_context_number)
                             );
                         if (items.display_deletion_alert && !deletion_confirmed)
                             // User didn't confirm deletion
@@ -305,6 +305,8 @@
                 let displayed_length = (cookies_array[1].length < 100) ? " (" + cookies_array[1].length + ")": " (99+)";
                 content = document.createTextNode(displayed_length);
                 a.appendChild(content);
+
+                cookies_context_number = cookies_array[1].length;
             });
         });
     }
@@ -312,5 +314,6 @@
     /*********** Global variables ***********/
 
     var current_tab;
+    var cookies_context_number;
 
 }));

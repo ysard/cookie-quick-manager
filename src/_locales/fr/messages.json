@@ -366,8 +366,13 @@
   },
 
   "modalMenuAlertContent": {
-    "message": "Votre action effacera tous les cookies du contexte courant !\nSouhaitez-vous continuer?",
-    "description": "Content of the modal JS alert when a user is about to delete all cookies from a context."
+    "message": "Votre action effacera tous les cookies du contexte de navigation courant ($cookie_number$) !\nSouhaitez-vous continuer?",
+    "description": "Content of the modal JS alert when a user is about to delete all cookies from a context.",
+    "placeholders": {
+      "cookie_number" : {
+        "content" : "$1"
+      }
+    }
   },
 
   "modalClipboardTitle": {
