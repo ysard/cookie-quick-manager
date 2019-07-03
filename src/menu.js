@@ -166,7 +166,7 @@
         get_settings.then((items) => {
 
             // Open new tab
-            if (items.open_in_new_tab !== undefined && items.open_in_new_tab === true) {
+            if (items.open_in_new_tab === undefined || items.open_in_new_tab === true) {
                 let new_tab = browser.tabs.create({url: createData.url});
                 new_tab.then(() => {
                     console.log("The tab has been created");

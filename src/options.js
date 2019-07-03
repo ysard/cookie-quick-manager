@@ -183,7 +183,7 @@
             import_protected_cookies: false,
             prevent_protected_cookies_deletion: true,
             skin: 'default',
-            open_in_new_tab: false,
+            open_in_new_tab: true,
             display_deletion_alert: true,
             template: 'JSON',
         });
