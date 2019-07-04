@@ -1008,7 +1008,7 @@ function delete_cookies(promise, delete_button_selector) {
 }
 
 function callback_delete_cookies(delete_button_selector) {
-    // Delete all cookies of the current context
+    // Delete all visible cookies
     // Called when a user clicks on 'delete_all_button' in the modal window,
     // or directly on 'ask_total_deletion_button' in the UI if 'display_deletion_alert' is false.
     // delete_button_selector can be undefined if #ask_total_deletion_button is not clicked

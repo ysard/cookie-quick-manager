@@ -357,17 +357,17 @@
 
   "modalAlertTitle": {
     "message": "Êtes-vous sûr de vouloir effacer ces cookies ?",
-    "description": "Title on modal dialog window, when a user is about to delete all cookies from a context."
+    "description": "Title on modal dialog window, when a user is about to delete all visible cookies."
   },
 
   "modalAlertContent": {
-    "message": "Votre action effacera les cookies du contexte courant ! C'est-à-dire, pas seulement ceux que vous voyez en résultat de recherche ou ceux qui sont actuellement sélectionnés.",
-    "description": "Content on modal dialog window, when a user is about to delete all cookies from a context."
+    "message": "Votre action effacera tous les cookies visibles ! C'est-à-dire, seulement ceux que vous voyez en résultat de recherche.",
+    "description": "Content on modal dialog window, when a user is about to delete all visible cookies."
   },
 
   "modalMenuAlertContent": {
     "message": "Votre action effacera tous les cookies du contexte de navigation courant ($cookie_number$) !\nSouhaitez-vous continuer?",
-    "description": "Content of the modal JS alert when a user is about to delete all cookies from a context.",
+    "description": "Content of the modal JS alert when a user is about to delete all visible cookies.",
     "placeholders": {
       "cookie_number" : {
         "content" : "$1"
