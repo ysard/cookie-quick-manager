@@ -78,7 +78,6 @@
                     // Delete all cookies for the current store
                     // Note: delete_cookies() closes the window
 
-
                     // Load display_deletion_alert flag
                     let get_settings = browser.storage.local.get({
                         display_deletion_alert: true,
@@ -149,6 +148,10 @@
             return vAPI.delete_cookies(browser.cookies.getAll(params));
         })
         .then((ret) => {
+            // Force the closing of the window
+            window.close();
+        }, (err) => {
+            console.error(err);
             // Force the closing of the window
             window.close();
         });
