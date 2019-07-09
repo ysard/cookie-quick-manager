@@ -318,6 +318,11 @@
     "description": "Checkbox to monitor cookies and refresh the interface."
   },
 
+  "tooltipOptionsPage": {
+    "message": "Ouvrir le panneau de contrôle",
+    "description": "Button to open the options page"
+  },
+
   "tooltipADelete": {
     "message": "Supprimer tous les cookies du contexte sélectionné",
     "description": "Button to delete all the cookies in the selected context."

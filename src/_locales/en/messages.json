@@ -94,6 +94,11 @@
     "description": "Checkbox to monitor cookies and refresh the interface."
   },
 
+  "tooltipOptionsPage": {
+    "message": "Open the dashboard",
+    "description": "Button to open the options page"
+  },
+
   "menu_protect_all": {
     "message": "Protect all cookies",
     "description": "Dropdown menu option."
