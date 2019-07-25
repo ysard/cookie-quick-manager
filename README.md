@@ -109,4 +109,4 @@ You must then make your pull request on github.
 
 # License
 
-[GPLv3](https://github.com/ysard/cookie-quick-manager/blob/master/LICENSE").
+[GPLv3](https://github.com/ysard/cookie-quick-manager/blob/master/LICENSE).
