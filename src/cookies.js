@@ -210,10 +210,14 @@ $("#delete_button").click(function() {
 
 $("#protect_button").click(function() {
     // Update the protect status of the current cookie
+    
+    let lock_badge = "lock-badge glyphicon glyphicon-lock";
 
-    // Do nothing if no cookie is selected
     let domain = $("#domain").val();
     let name = $('#name').val();
+    let container = $("#store").val();
+
+    // Do nothing if no cookie is selected
     if (name == '')
         return;
 
@@ -221,23 +225,32 @@ $("#protect_button").click(function() {
     if (!(domain in protected_cookies))
         protected_cookies[domain] = [];
     // Check name
-    if (protected_cookies[domain].indexOf(name) === -1) {
+    if (!protected_cookies[domain].find(each_cookie => each_cookie.name === name && each_cookie.container === container)) {
         // This cookie will be protected
-        protected_cookies[domain].push(name);
-
+        protected_cookies[domain].push({name, container});
+        
+        if($('#cookie-list').find('li.active')[0].lastChild.className !== lock_badge) {
+            let badge_span = document.createElement("span");
+            badge_span.className = lock_badge;
+            $('#cookie-list').find('li.active')[0].appendChild(badge_span);
+        }
+            
         set_protect_lock_icon(true);
     } else {
         // This cookie will not be protected anymore
-        protected_cookies[domain] = protected_cookies[domain].filter(item => ![name,].includes(item));
-
+        protected_cookies[domain] = protected_cookies[domain].filter(item => !(item.name === name && item.container === container));
+        
+        if($('#cookie-list').find('li.active')[0].lastChild.className === lock_badge)
+            $('#cookie-list').find('li.active')[0].lastChild.remove();
         set_protect_lock_icon(false);
     }
-    //console.log(protected_cookies);
+    console.log(protected_cookies);
     // Set new protected_cookies on storage area
     browser.storage.local.set({"protected_cookies": protected_cookies})
     .then((ret) => {
         // Simulate click on domain
-        $('#domain-list').find('li.active').click();
+        // $('#domain-list').find('li.active').click();
+        // $('#cookie-list').find('li.active').click();
     }, onError)
     .catch(err => console.error(err));
 });
@@ -1365,7 +1378,7 @@ function showCookiesList(event, refresh_domain_badges) {
 
                 // Display a lock badge if cookie is protected
                 if (cookie.domain in protected_cookies
-                    && protected_cookies[cookie.domain].indexOf(cookie.name) !== -1) {
+                    && protected_cookies[cookie.domain].find(each_cookie => each_cookie.name === cookie.name && each_cookie.container === cookie.storeId)) {
                     let lock_badge = document.createElement("span");
                     lock_badge.className = "lock-badge glyphicon glyphicon-lock";
                     li.appendChild(lock_badge);
@@ -1479,7 +1492,7 @@ function display_cookie_details(event) {
     // If the cookie is not in protected_cookies array: display lock icon
     // otherwise, display unlock icon
     if (protected_cookies[cookie.domain] === undefined ||
-        protected_cookies[cookie.domain].indexOf(cookie.name) === -1) {
+        !protected_cookies[cookie.domain].find(each_cookie => each_cookie.name === cookie.name && each_cookie.container === cookie.storeId)) {
         // is not protected
         set_protect_lock_icon(false);
     } else {
@@ -1517,8 +1530,9 @@ function delete_current_cookie() {
     // DO NOT delete protected cookie
     let cookie_domain = $('#domain').val();
     let cookie_name = $('#name').val();
+    let cookie_container = $('#store').val();
     if (cookie_domain in protected_cookies
-        && protected_cookies[cookie_domain].indexOf(cookie_name) !== -1) {
+        && protected_cookies[cookie_domain].find(each_cookie => each_cookie.name === cookie_name && each_cookie.container === cookie_container)) {
         return;
     }
 

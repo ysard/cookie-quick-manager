@@ -365,7 +365,7 @@ vAPI.delete_cookies = function(promise) {
             for (let cookie of cookies) {
                 // DO NOT delete protected cookies
                 if (cookie.domain in protected_cookies
-                    && protected_cookies[cookie.domain].indexOf(cookie.name) !== -1)
+                    && protected_cookies[cookie.domain].find(each_cookie => each_cookie.name === cookie.name && each_cookie.container === cookie.storeId))
                     continue;
 
                 // Remove current cookie
@@ -630,21 +630,22 @@ vAPI.set_cookie_protection = function(cookies, protect_flag) {
 
                 // Check name
                 let name = cookie.name;
-                if (protect_flag && items.protected_cookies[domain].indexOf(name) === -1) {
+                let container = cookie.storeId;
+                if (protect_flag && !items.protected_cookies[domain].find(each_cookie => each_cookie.name === name && each_cookie.container === container)) {
                     // This cookie will be protected
                     console.log({'protect: add': name});
-                    items.protected_cookies[domain].push(name);
+                    items.protected_cookies[domain].push({name, container});
                     continue;
                 }
 
-                if ((!protect_flag) && (items.protected_cookies[domain].indexOf(name) !== -1)) {
+                if ((!protect_flag) && (items.protected_cookies[domain].find(each_cookie => each_cookie.name === name && each_cookie.container === container))) {
                     // This cookie will not be protected anymore
                     console.log({'protect: rm': name});
                     // Remove the current cookie name from list if it is already present
-                    items.protected_cookies[domain] = items.protected_cookies[domain].filter(present_name => {
-                        // To delete the cookie name, we have to return false if name == present_name
-                        // So, return true if name != present_name
-                        return name != present_name;
+                    items.protected_cookies[domain] = items.protected_cookies[domain].filter(present_item => {
+                        // To delete the cookie name, we have to return false if item == present_item
+                        // So, return true if item != present_item
+                        return !(name == present_item.name && container == present_item.container);
                     });
                 }
             }
