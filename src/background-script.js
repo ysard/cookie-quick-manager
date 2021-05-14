@@ -105,7 +105,7 @@ browser.cookies.onChanged.addListener(function(changeInfo) {
 
         // If the deleted cookie is not in protected_cookies array: do nothing
         if (protected_cookies[changeInfo.cookie.domain] === undefined ||
-            protected_cookies[changeInfo.cookie.domain].indexOf(changeInfo.cookie.name) === -1)
+            !protected_cookies[changeInfo.cookie.domain].find(each_cookie => each_cookie.name === changeInfo.cookie.name && each_cookie.container === changeInfo.cookie.storeId))
             return;
 
         // Rebuild the cookie given by the event
