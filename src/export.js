@@ -296,7 +296,7 @@ function build_domain_dump(cookie) {
         '{ISHTTPONLY_RAW}': cookie.httpOnly,
         '{SAMESITE_RAW}': cookie.sameSite ? cookie.sameSite : "no_restriction",
         '{ISDOMAIN}': get_domain_status(false),
-        '{ISDOMAIN_RAW}': cookie.hostOnly,
+        '{ISDOMAIN_RAW}': !cookie.hostOnly,
         '{STORE_RAW}': cookie.storeId,
         '{FPI_RAW}': cookie.firstPartyDomain ? cookie.firstPartyDomain : "", // This attr is absent on old FF
     };
