@@ -283,6 +283,8 @@ function build_domain_dump(cookie) {
     // Make a local copy of the template
     var template_temp = cookie_clipboard_template.template;
 
+    var isNetscape = cookie_clipboard_template.name == 'NETSCAPE';
+
     var params = {
         '{HOST_RAW}': vAPI.getHostUrl(cookie),
         '{DOMAIN_RAW}': cookie.domain,
@@ -292,11 +294,11 @@ function build_domain_dump(cookie) {
         '{EXPIRES}': get_timestamp(false),
         '{EXPIRES_RAW}': get_timestamp(true),
         '{ISSECURE}': get_secure_status(false),
-        '{ISSECURE_RAW}': get_secure_status(true),
-        '{ISHTTPONLY_RAW}': cookie.httpOnly,
+        '{ISSECURE_RAW}': isNetscape ? get_secure_status(true).toString().toUpperCase() : get_secure_status(true),
+        '{ISHTTPONLY_RAW}': isNetscape ? cookie.httpOnly.toString().toUpperCase() : cookie.httpOnly,
         '{SAMESITE_RAW}': cookie.sameSite ? cookie.sameSite : "no_restriction",
         '{ISDOMAIN}': get_domain_status(false),
-        '{ISDOMAIN_RAW}': cookie.hostOnly,
+        '{ISDOMAIN_RAW}': isNetscape ? cookie.hostOnly.toString().toUpperCase() : cookie.hostOnly,
         '{STORE_RAW}': cookie.storeId,
         '{FPI_RAW}': cookie.firstPartyDomain ? cookie.firstPartyDomain : "", // This attr is absent on old FF
     };
