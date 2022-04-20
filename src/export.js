@@ -292,11 +292,11 @@ function build_domain_dump(cookie) {
         '{EXPIRES}': get_timestamp(false),
         '{EXPIRES_RAW}': get_timestamp(true),
         '{ISSECURE}': get_secure_status(false),
-        '{ISSECURE_RAW}': get_secure_status(true),
+        '{ISSECURE_RAW}': get_secure_status(true).toString().toUpperCase(),
         '{ISHTTPONLY_RAW}': cookie.httpOnly,
         '{SAMESITE_RAW}': cookie.sameSite ? cookie.sameSite : "no_restriction",
         '{ISDOMAIN}': get_domain_status(false),
-        '{ISDOMAIN_RAW}': cookie.hostOnly,
+        '{ISDOMAIN_RAW}': cookie.hostOnly.toString().toUpperCase(),
         '{STORE_RAW}': cookie.storeId,
         '{FPI_RAW}': cookie.firstPartyDomain ? cookie.firstPartyDomain : "", // This attr is absent on old FF
     };

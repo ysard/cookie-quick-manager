@@ -790,7 +790,7 @@ vAPI.template_JSON = {
 vAPI.template_Netscape = {
     name: 'NETSCAPE',
     template: '{DOMAIN_RAW}\t{ISDOMAIN_RAW}\t{PATH_RAW}\t{ISSECURE_RAW}\t{EXPIRES_RAW}\t{NAME_RAW}\t{CONTENT_RAW}',
-    left_tag: '',
+    left_tag: '# Netscape HTTP Cookie File\n\n',
     right_tag: '',
     separator: '\n',
 };
